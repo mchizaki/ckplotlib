@@ -9,7 +9,7 @@ Context manager of `ckplotlib.ckplot.ckfigure` enables you to markup and save hi
 ### plot example
 ```[python]
 import numpy as np
-x = np.linspace( 0, 10, 100 )
+x = np.linspace( 0, 10, 500 )
 y = np.sin( x )
 ```
 
@@ -24,6 +24,7 @@ import ckplotlib.ckplot as cplt
 plt.figure()
 plt.plot( x, y )
 ```
+![mplt0](sample/fig_mplt0.svg)
 
 #### ckplotlib normal
 ```[python]
@@ -31,6 +32,7 @@ with cplt.ckfigure():
     plt.figure()
     plt.plot( x, y )
 ```
+![mplt0](sample/fig_cplt0.svg)
 
 #### markup and save figure
 ```[python]
@@ -48,4 +50,5 @@ with cplt.ckfigure( **figure_props ):
     plt.figure()
     plt.plot( x, y )
 ```
+![mplt0](sample/fig_cplt1.svg)
 
