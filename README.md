@@ -1,10 +1,10 @@
 # ckplotlib
 Add-on library of Matplotlib for publication quality plots
 
-# Usage: under construction
+# Usage [under construction]
 
 ## ckfigure
-Context manager of `ckplotlib.ckplot.ckfigure` enables you to easily plot and save high quality figures
+Context manager of `ckplotlib.ckplot.ckfigure` enables you to markup and save high-quality figures easily.
 
 ### plot example
 ```[python]
