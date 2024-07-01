@@ -1,1 +1,1 @@
-from .__version__ import version
+from ._version import version
