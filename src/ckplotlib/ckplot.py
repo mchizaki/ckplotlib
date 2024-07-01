@@ -126,8 +126,8 @@ def modify_loglim(
     exponent_range_max: float = 1e8,
     max_is_fixed: bool = True,
     min_is_fixed: bool = False,
-    minima: list | npt.NDarray | None = None,
-    maxima: list | npt.NDarray | None = None
+    minima: list | npt.NDArray | None = None,
+    maxima: list | npt.NDArray | None = None
 ) -> None:
     modified = False
     max_range = 10**exponent_range_max
