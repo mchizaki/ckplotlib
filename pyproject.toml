@@ -8,12 +8,13 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
 ]
 requires-python = ">=3.10"
-dynamic = ["version"]
 dependencies = [
     "numpy",
     "matplotlib",
     "pandas"
 ]
+# dynamic = ["version"]
+version = "0.0.2"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
@@ -23,8 +24,8 @@ version = {attr = "ckplotlib.version"}
 
 [tool.setuptools_scm]
 write_to = "src/ckplotlib/_version.py"
-version_scheme = "python-simplified-semver"
-local_scheme = "no-local-version"
+# version_scheme = "python-simplified-semver"
+# local_scheme = "no-local-version"
 
 [build-system]
 requires = ["setuptools", "setuptools_scm"]
