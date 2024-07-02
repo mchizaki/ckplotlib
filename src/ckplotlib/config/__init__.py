@@ -22,6 +22,7 @@ CONFIG_FILE_HOME = os.path.join(
 @dataclass
 class CkFigureConfig:
     use_mplstyle_base: bool
+    show_mplstyle_src: bool
     mplstyle_font: str
     cycle: str
     legend_bbox_to_anchor: tuple
@@ -63,6 +64,7 @@ ini_ckfigure = iniread[ 'ckfigure' ]
 #==============================================================#
 ckFigureConfig = CkFigureConfig(
     use_mplstyle_base = ini_ckfigure.getboolean( 'use_mplstyle_base' ),
+    show_mplstyle_src = ini_ckfigure.getboolean( 'show_mplstyle_src' ),
     mplstyle_font     = ini_ckfigure[ 'mplstyle_font' ],
     cycle             = ini_ckfigure[ 'cycle' ],
     legend_bbox_to_anchor = _str2tuple( ini_ckfigure[ 'legend_bbox_to_anchor' ] )

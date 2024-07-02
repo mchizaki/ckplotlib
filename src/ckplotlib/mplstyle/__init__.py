@@ -161,7 +161,8 @@ def get_mplstyle_path(
         dirs     = search_dirs
     )
 
-    print( f' > mplstyle: "{mplstyle}"' )
+    if ckFigureConfig.show_mplstyle_src:
+        print( f' > mplstyle: "{mplstyle}"' )
     return mplstyle
 
 
