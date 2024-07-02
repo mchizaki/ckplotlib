@@ -13,18 +13,7 @@ y = np.sin( x )
 #%% [markdown]
 """
 ## Plot examples
-### matplotlib normal
 """
-#%%
-plt.figure()
-plt.plot( x, y )
-plt.savefig(
-    'fig_plt0.svg',
-    format      = 'svg',
-    dpi         = 150,
-    pad_inches  = 0.2,
-    bbox_inches = 'tight',
-)
 
 
 #%% [markdown]
@@ -217,3 +206,20 @@ figure_props = cplt.get_figure_props(
 with cplt.ckfigure( **figure_props ):
     plt.figure()
     plt.plot( x, 5 * np.sin( x ) )
+
+
+
+#%% [markdown]
+"""
+### matplotlib normal
+"""
+#%%
+plt.figure()
+plt.plot( x, y )
+plt.savefig(
+    'result/fig_plt0.svg',
+    format      = 'svg',
+    dpi         = 150,
+    pad_inches  = 0.2,
+    bbox_inches = 'tight',
+)
