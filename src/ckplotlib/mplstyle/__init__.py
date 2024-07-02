@@ -1,18 +1,25 @@
 """
 * Written by CK
-* Last update on June 27, 2024
 """
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import os
 from copy import copy
+from glob import glob
+from .. import get_configdir
+from ..config import ckFigureConfig
 
-MPLSTYLE_DIRNAME = os.path.dirname( __file__ )
+CURRENT_DIR      = '.'
+CPL_MPLSTYLE_DIR = os.path.dirname( __file__ )
+CPL_CONFIG_DIR   = get_configdir()
+MPL_CONFIG_DIR   = mpl.get_configdir()
 
-SYSTEM_STYLELIB_DIR = os.path.join(
-    mpl.get_configdir(),
-    'stylelib'
-)
+SEARCH_DIRS = [
+    CURRENT_DIR,
+    CPL_CONFIG_DIR,
+    MPL_CONFIG_DIR,
+    CPL_MPLSTYLE_DIR
+]
 
 
 ################################################################
@@ -105,13 +112,23 @@ def _get_mplstyle_path(
         fname = f'{mplstyle}.mplstyle'
 
     for mplstyle_dir in dirs:
-        path = os.path.join(
-            mplstyle_dir,
-            fname
-        )
-        exists = os.path.isfile( path )
-        if exists:
-            return path
+        if mplstyle_dir == CURRENT_DIR:
+            # recursive option is not used to avoid searching a lot of files
+            mplstyle_path_list = glob( f'{mplstyle_dir}/{fname}' )
+        else:
+            mplstyle_path_list = glob( f'{mplstyle_dir}/**/{fname}', recursive = True )
+
+        if len( mplstyle_path_list ) > 0:
+            return mplstyle_path_list[0]
+
+        # path = os.path.join(
+        #     mplstyle_dir,
+        #     fname
+        # )
+        # exists = os.path.isfile( path )
+        # if exists:
+        #     return path
+
 
     # error
     print( '[error] ckplotlib.mplstyle._get_mplstyle_path' )
@@ -122,7 +139,7 @@ def _get_mplstyle_path(
 def get_mplstyle_path(
     mplstyle: str,
     dirname: str|None = None
-    ) -> str | None:
+) -> str | None:
     """
     search & return mplstyle file
     if "mplstyle" is path:
@@ -131,15 +148,11 @@ def get_mplstyle_path(
         search from directories
         1. dirname [if is not None]
         2. current directory
-        3. MPLSTYLE_DIRNAME
-        4. SYSTEM_STYLELIB_DIR
+        3. CPL_MPLSTYLE_DIR
+        4. MPL_CONFIG_DIR
     """
 
-    search_dirs = [
-        '.',
-        MPLSTYLE_DIRNAME,
-        SYSTEM_STYLELIB_DIR
-    ]
+    search_dirs = SEARCH_DIRS.copy()
     if dirname is not None:
         search_dirs.insert( 0, dirname )
 
@@ -147,6 +160,8 @@ def get_mplstyle_path(
         mplstyle = mplstyle,
         dirs     = search_dirs
     )
+
+    print( f' > mplstyle: "{mplstyle}"' )
     return mplstyle
 
 
@@ -154,7 +169,7 @@ def use_mplstyle(
     mplstyle: str,
     dirname: str|None = None,
     use: bool = False
-    ) -> dict:
+) -> dict:
     """
     search mplstyle file
     if "mplstyle" is path:
@@ -163,8 +178,8 @@ def use_mplstyle(
         search from directories
         1. dirname [if is not None]
         2. current directory
-        3. MPLSTYLE_DIRNAME
-        4. SYSTEM_STYLELIB_DIR
+        3. CPL_MPLSTYLE_DIR
+        4. MPL_CONFIG_DIR
     """
     mplstyle = get_mplstyle_path(
         mplstyle = mplstyle,
@@ -178,76 +193,6 @@ def use_mplstyle(
         props.update( **_mplstyle2dict( mplstyle ) )
 
     return props
-
-
-
-
-# def _use_mplstyle(
-#     mplstyle: str,
-#     dirs: list = []
-# ):
-#     """
-#     search mplstyle file
-#     1. mplstyle (if "mplstyle" is path)
-#     2. search from directories sepecified as list of dirs
-#         - dirs[0]
-#         - dirs[1]
-#     """
-
-#     # mplstyle is written as path
-#     exists = os.path.isfile( mplstyle )
-#     if exists:
-#         plt.style.use( mplstyle )
-#         return
-
-
-#     fname = f'{mplstyle}.mplstyle'
-#     for mplstyle_dir in dirs:
-#         path = os.path.join(
-#             mplstyle_dir,
-#             fname
-#         )
-#         exists = os.path.isfile( path )
-#         if exists:
-#             plt.style.use( path )
-#             return
-
-#     # error
-#     print( '[error] ckplotlib.mplstyle._use_mplstyle' )
-#     print( f'invalid mplstyle name "{mplstyle}".' )
-#     sys.exit(1)
-
-
-
-
-# def use_mplstyle(
-#     mplstyle: str,
-#     dirname: str|None = None
-#     ):
-#     """
-#     search mplstyle file
-#     if "mplstyle" is path:
-#         use "mplstyle"
-#     else:
-#         search from directories
-#         1. dirname [if is not None]
-#         2. current directory
-#         3. MPLSTYLE_DIRNAME
-#         4. SYSTEM_STYLELIB_DIR
-#     """
-
-#     search_dirs = [
-#         '.',
-#         MPLSTYLE_DIRNAME,
-#         SYSTEM_STYLELIB_DIR
-#     ]
-#     if dirname is not None:
-#         search_dirs.insert( 0, dirname )
-
-#     _use_mplstyle(
-#         mplstyle = mplstyle,
-#         dirs     = search_dirs
-#     )
 
 
 def _strip_comment( s: str ) -> str:
@@ -310,19 +255,23 @@ def use_mplstyle_base( use: bool = True ) -> dict:
     """
     - import base.mplstyle
     """
-    base_mplstyle = f'{MPLSTYLE_DIRNAME}/base.mplstyle'
-    if use:
-        plt.style.use( base_mplstyle )
-    return _mplstyle2dict( base_mplstyle )
+    mplstyle_path = get_mplstyle_path( 'base.mplstyle' )
+    if mplstyle_path is not None:
+        if use:
+            plt.style.use( mplstyle_path )
+        return _mplstyle2dict( mplstyle_path )
+    else:
+        return {}
 
 
 #==============================================================#
 # use_mplstyle_font
 #==============================================================#
 def use_mplstyle_font(
-        mplstyle: str = 'arial',
-        adjust_mathtext_space_ratio: float | None = 0.4,
-        use: bool = True
+    mplstyle: str = ckFigureConfig.mplstyle_font,
+    adjust_mathtext_space_ratio: float | None = 0.4,
+    use: bool = True,
+    append_font_constants_func = None
 ) -> dict:
     """
     ### use_mplstyle
@@ -334,38 +283,37 @@ def use_mplstyle_font(
             else:
                 search from directories of
                 1. currect directory
-                2. f'{MPLSTYLE_DIRNAME}/font'
-                3. SYSTEM_STYLELIB_DIR
-    - adjust mathtext space
+                2. f'{CPL_MPLSTYLE_DIR}/font'
+                3. MPL_CONFIG_DIR
+    - adjust mathtext space [optional]
         - adjust_mathtext_space_ratio: [default: 0.4]
         (no change if the ratio is 1)
+    - append_font_constants_func [optional]
+        - if you manually make `FontConstants`,
+        define callable function to append thy `FontConstants`
+        to `matplotlib._mathtext._font_constant_mappingis`
     """
+    if mplstyle is None or mplstyle == 'none':
+        print( 'no fonts are specified' )
+        return {}
 
-    props = {}
 
-    if   mplstyle == 'arial':
-        props = use_mplstyle_arial( use = use )
-
-    elif mplstyle == 'times':
-        props = use_mplstyle_times( use = use )
-
+    mplstyle_path = get_mplstyle_path( mplstyle )
+    if mplstyle_path is not None:
+        if use:
+            plt.style.use( mplstyle_path )
+        props = _mplstyle2dict( mplstyle_path )
     else:
-        _mplstyle = mplstyle
+        props = {}
 
-        search_dirs = [
-            '.',
-            f'{MPLSTYLE_DIRNAME}/font',
-            SYSTEM_STYLELIB_DIR
-        ]
 
-        mplstyle = _get_mplstyle_path(
-            mplstyle = _mplstyle,
-            dirs     = search_dirs
-        )
-        if mplstyle is not None:
-            if use:
-                plt.style.use( mplstyle )
-            props = _mplstyle2dict( mplstyle )
+    # append FontConstants to matplotlib._mathtext._font_constant_mapping
+    if callable( append_font_constants_func ):
+        append_font_constants_func()
+    elif mplstyle == 'arial':
+        _append_arial_font_constants()
+    elif mplstyle == 'times':
+        _append_times_font_constants()
 
 
     if adjust_mathtext_space_ratio is not None:
@@ -374,21 +322,6 @@ def use_mplstyle_font(
         )
 
     return props
-
-
-def use_mplstyle_arial( use: bool = True ) -> dict:
-    mplstyle = f'{MPLSTYLE_DIRNAME}/font/arial.mplstyle'
-    if use:
-        plt.style.use( mplstyle )
-    _append_arial_font_constants()
-    return _mplstyle2dict( mplstyle )
-
-def use_mplstyle_times( use: bool = True ) -> dict:
-    mplstyle = f'{MPLSTYLE_DIRNAME}/font/times.mplstyle'
-    if use:
-        plt.style.use( mplstyle )
-    _append_times_font_constants()
-    return _mplstyle2dict( mplstyle )
 
 
 

@@ -1,6 +1,5 @@
 """
 * Written by CK
-* Last update on Feb. 20, 2024
 """
 from matplotlib.colors import LinearSegmentedColormap
 
@@ -26,7 +25,7 @@ ckcolors = [
     ckcolor['blue'      ]
 ]
 
-colors_default = [
+matplotlib_colors = [
     '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
     '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'
 ]

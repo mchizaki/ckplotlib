@@ -1,6 +1,5 @@
 """
 * Written by CK
-* Last update on Feb. 20, 2024
 """
 import numpy as np
 from matplotlib.ticker import LogLocator, MaxNLocator, AutoMinorLocator

@@ -1,10 +1,11 @@
 """
 * Written by CK
-* Last update on June 27, 2024
 """
+import sys
 import matplotlib.pyplot as plt
 from cycler import cycler, Cycler
-from .color import ckcolor
+from .color import ckcolor, matplotlib_colors
+from .config import ckFigureConfig
 
 def make_cycle( **kwargs ) -> Cycler:
     return (
@@ -15,6 +16,25 @@ def make_cycle( **kwargs ) -> Cycler:
 #==============================================================#
 # cycle
 #==============================================================#
+if ckFigureConfig.cycle == 'ck':
+    DEFAULT_CYCLE = cycler( color = [
+        'k',
+        ckcolor['red'       ],
+        ckcolor['blue'      ],
+        ckcolor['lightblue' ],
+        ckcolor['green'     ],
+        ckcolor['orange'    ],
+        ckcolor['magenta'   ]
+    ])
+elif ckFigureConfig.cycle == 'matplotlib':
+    DEFAULT_CYCLE = cycler( color = matplotlib_colors )
+else:
+    print( '[error] ckplotlib.cycle' )
+    print( 'invalid cycle in the config file.' )
+    sys.exit(1)
+
+
+
 cycle_8colors = make_cycle(
     color = [
         'k',

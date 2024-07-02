@@ -1,6 +1,5 @@
 """
 * Written by CK
-* Last update on June 27, 2024
 """
 import matplotlib.pyplot as plt
 import os

@@ -1,6 +1,5 @@
 """
 * Written by CK
-* Last update on June 27, 2024
 """
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -20,12 +19,13 @@ from .savefig import savefig, SAVE_PARAMS
 from .savecsv import savecsv
 from .ticker import WideLogLocator, WideLogAutoMinorLocator
 
+from .config import ckFigureConfig
 from .mplstyle import use_mplstyle_base as _use_mplstyle_base
 from .mplstyle import use_mplstyle_font, use_mplstyle
 from .color import ckcolor, ckcmap
 
 from .savecsv import addlinename
-from .cycle import skip_cycle
+from .cycle import skip_cycle, DEFAULT_CYCLE
 
 
 ################################################################
@@ -35,25 +35,11 @@ from .cycle import skip_cycle
 # legend
 #==============================================================#
 LGD_PARAMS = dict(
-    bbox_to_anchor = (1.00, 0.95)
+    bbox_to_anchor = ckFigureConfig.legend_bbox_to_anchor
 )
 HANDLE_LENGTH_ZERO = dict(
     handlelength = 0.5
 )
-
-
-#==============================================================#
-# cycle
-#==============================================================#
-DEFAULT_CK_CYCLE = cycler( color = [
-    'k',
-    ckcolor['red'       ],
-    ckcolor['blue'      ],
-    ckcolor['lightblue' ],
-    ckcolor['green'     ],
-    ckcolor['orange'    ],
-    ckcolor['magenta'   ]
-])
 
 
 #==============================================================#
@@ -1230,7 +1216,7 @@ class CkFigure:
     ) -> None:
 
         if self.save_props.get( 'fname' ) and print_name:
-            print( f'> {self.save_props[ "fname" ]}' )
+            print( f' > {self.save_props[ "fname" ]}' )
 
         # setstyle & savefig
         ckAxesProps_results = self.set_figure_style()
@@ -1451,9 +1437,9 @@ def get_figure_props(
 @contextmanager
 def ckfigure(
     *fig_props_list:   dict,
-    cycle:             dict|Cycler|None = DEFAULT_CK_CYCLE,
-    use_mplstyle_base: bool             = True,
-    mplstyle_font:     str | None       = 'arial',
+    cycle:             dict|Cycler|None = DEFAULT_CYCLE,
+    use_mplstyle_base: bool             = ckFigureConfig.use_mplstyle_base,
+    mplstyle_font:     str | None       = ckFigureConfig.mplstyle_font,
     mplstyle:          str | None       = None,
     mplstyle_dir:      str | None       = None,
     inline_show:       bool             = True,
@@ -1473,7 +1459,7 @@ def ckfigure(
         _props = _use_mplstyle_base( use = False )
         mpl_rc_params.update( _props )
 
-    if mplstyle_font is not None:
+    if mplstyle_font is not None or mplstyle_font == 'none':
         _props = use_mplstyle_font( mplstyle_font,  use = False )
         mpl_rc_params.update( _props )
 
