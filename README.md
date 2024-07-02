@@ -179,8 +179,6 @@ with cplt.ckfigure(**props):
 
 
 
-
-
 ## ckfigure options
 
 Context manager of `ckplotlib.ckplot.ckfigure` can receive the `figure_props` of `dict`.
@@ -282,10 +280,10 @@ plt_prop_kwargs = dict(
 
 ### export plotted data as csv file
 
-- **csv: *bool*, default: `True`**<br>
+- **csv : *bool*, default: `True`**<br>
   if `True`: save csv file
-- **savecsv_subdirname: *str | None*, default: `None`**<br>if `None` or `"."`: csv file is saved in the same directory as the image files of the figure (`<save_dirname>`); otherwise, `<save_dirname>/<savecsv_subdirname>`.
-- **savecsv_props: *dict*, default:**<br>
+- **savecsv_subdirname : *str | None*, default: `None`**<br>if `None` or `"."`: csv file is saved in the same directory as the image files of the figure (`<save_dirname>`); otherwise, `<save_dirname>/<savecsv_subdirname>`.
+- **savecsv_props : *dict*, default:**<br>
 
   ```python
   dict(
@@ -302,36 +300,67 @@ plt_prop_kwargs = dict(
 
 ### Range options
 
-- **xmin, xmax, ymin, ymax: *float | None*, default: `None`**
+- **xmin, xmax, ymin, ymax : *float | None*, default: `None`**
     - minimum/maximum value that determines the display range of graph. These arguments are an alternative to `matplotlib.pyplot.xlim` and `ylim`.
     - if `None`: automatically determinted
-
-- **common_xlim, common_ylim: *bool*, default: `True`** <br>use common axis range when the figure includes multiple ax subplots
+- **common_xlim, common_ylim : *bool*, default: `True`** <br>Use common axis range when the figure includes multiple ax subplots
+- **is_ylim_adjust_xlim : *bool*, default: `True`**
+- **axes_xmargins, axes_ymargins : *list[float]*, default: `[0.05, 0.05]`**<br>Padding from minimum and maximum values in the graph,
+    specified as a percentage of the size of Axis [from 0 to 1]
+- **adjust_lim: *bool*, default: `True`**<br>Set `False` if you do no want `ckplotlib` to adjust the drawing range.
 
 
 
 ### Range options for logscale
 
-- **is_xlog_intlim: *bool*, default: `False`** | **is_ylog_intlim: *float*, default: `True`**
-    - if `True`: axis range of $[10^a, 10^b]$ is determined so that $a$ and $b$ are integers.
-    - These respective options are valid if `plt.xscale` and `plt.yscale` are `"logscale"`.
-- **is_xlog_format, is_ylog_format, *bool*, default: `True`**
-    - Exponential notation like $10^a$ is used
-    - These respective options are valid if `plt.xscale` and `plt.yscale` are `"logscale"`.
-- log range max
-    - these props are valid if plt.x/yscale is 'log'
-    - `set_x/ylog_range_max`
-    - `set_x/ylog_range_max_props`
-        - `exponent_range_max`: 8
-        - `max_is_fixed`: True
-        - `min_is_fixed`: False
-- `axes_xmargins` and `axes_ymargins`:
-    padding from minimum and maximum values in the graph,
-    specified as a percentage of the size of Axis [from 0 to 1]
-    e.g. axes_xmargins = [ 0.05, 0.05 ]
-- annotate
-    - `annotate_str`
-    - `annotate_props`
+The respective options for `x` and `y` axis are valid if `plt.xscale` and `plt.yscale` are `"logscale"`.
+
+- **is_xlog_intlim : *bool*, default: `False`** | **is_ylog_intlim : *float*, default: `True`**<br>if `True`: axis range of $[10^a, 10^b]$ is determined so that $a$ and $b$ are integers.
+
+- **is_xlog_format, is_ylog_format : *bool*, default: `True`**<br>Exponential notation like $10^a$ is used
+
+- Range max options:
+    - **set_xlog_range_max, set_ylog_range_max : *bool*, default: `False`**<br>if `True`: Limit the drawing range according to the `set_x(y)log_range_max_props` option.
+
+    - **set_xlog_range_max_props, set_ylog_range_max_props : *dict*, default:** 
+
+        ```python
+        dict(
+            exponent_range_max = 8,
+            max_is_fixed       = True,
+            min_is_fixed       = False
+        )
+        ```
+
+        Limit the drawing range so that it does not exceed $10^{\mathrm{exponent\_range\_max}}$. Set `max_is_fixed` (`min_is_fixed`) to `True` to fix the maximum (minimum) side of the drawing range. Do not set both `max_is_fixed` and `min_is_fixed` to the same setting.
+
+
+
+### annotate
+
+- **annotate_str : *str | None*, default: `None`**
+
+- **annotate_props : *dict*, default:**
+
+  ```python
+  dict(
+      x        = None,
+      y        = None,
+      loc      = 'bottom',
+      ha       = 'left',
+      va       = 'top',
+      border   = True,
+      fontsize = 'x-small'
+  )
+  ```
+
+  
+
+### Others
+
+- 
+- 
+- **no_line : *bool*, default: `False`**<br>Set to `True` if you intend that `matplotlib.pyplot.Line2D` is not included in the figure. Normally, this decision is made automatically, so this option is not likely to be used.
 
 
 
