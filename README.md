@@ -37,6 +37,11 @@ y3 = 1 - 0.2 * x/5
 
 ### matplotlib and ckplotlib figures
 
+```python
+import matplotlib.pyplot as plt
+import ckplotlib.ckplot as cplt
+```
+
 | matplotlib                         | ckplotlib                           |
 | ---------------------------------- | ----------------------------------- |
 | ![mplt0](sample/fig_plt_test1.svg) | ![mplt0](sample/fig_cplt_test1.svg) |
@@ -184,183 +189,138 @@ with cplt.ckfigure(**props):
 Context manager of `ckplotlib.ckplot.ckfigure` can receive the `figure_props` of `dict`.
 The function of `ckplotlib.ckplot.get_figure_props` helps you create `figure_props` dictionary.
 
-Arguments of `ckplotlib.ckplot.get_figure_props` (all arguments are optional):
-```python
-fig:          bool
-save_dirname: str
-save_fname:   str
-save_props:   dict
 
-csv:                bool
-savecsv_subdirname: str
-savecsv_props:      dict
 
-plt_props:       dict
-plt_prop_kwargs: dict
-
-xmin: float
-xmax: float
-ymin: float
-ymax: float
-common_xlim: bool
-common_ylim: bool
-is_ylim_adjust_xlim: bool
-
-is_xlog_intlim: bool
-is_ylog_intlim: bool
-is_xlog_format: bool
-is_ylog_format: bool
-
-set_xlog_range_max: bool
-set_ylog_range_max: bool
-set_xlog_range_max_props: dict
-set_ylog_range_max_props: dict
-
-axes_xmargins: list[float, float]
-axes_ymargins: list[float, float]
-
-annotate_str:   str
-annotate_props: dict
-
-no_line:    bool
-adjust_lim: bool
-
-xlog_ticker_exponent_range_thr: int
-ylog_ticker_exponent_range_thr: int
-```
+All options of `ckplotlib.ckplot.get_figure_props` are as follows:
 
 
 
-### markup options of `matplotlib.pyplot`
+1. markup options of `matplotlib.pyplot`
 
-- **plt_props: *dict*, default: `{}`**
-- **plt_prop_kwargs : *dict*, default: `{}`**
+   - **plt_props: *dict*, default: `{}`**
 
-e.g.
+   - **plt_prop_kwargs : *dict*, default: `{}`**
 
-```python
-plt_props = dict(
-    xlabel = 'Temperature (K)',
-    yscale = 'log'
-)
+   e.g.
 
-plt_prop_kwargs = dict(
-    legend = dict(
-        bbox_to_anchor = (1, 1)
-    )
-)
-```
+   ```python
+   plt_props = dict(
+       xlabel = 'Temperature (K)',
+       yscale = 'log'
+   )
+   
+   plt_prop_kwargs = dict(
+       legend = dict(
+           bbox_to_anchor = (1, 1)
+       )
+   )
+   ```
 
+2. save figure
 
+   - **fig : *bool*, default: `True`** <br>if `True`: save the figure image
 
-### save figure
+   - **save_dirname : *str | None*, default:  `None`** <br>directory name of the saved figure file
 
-- **fig : *bool*, default: `True`** <br>if `True`: save the figure image
-- **save_dirname : *str | None*, default:  `None`** <br>directory name of the saved figure file
-- **save_fname : *str*, default: `None`**<br>file name of saved figure file. If `None`: skip saving the figure image.
-- **save_props : *dict*, default:**<br>
+   - **save_fname : *str*, default: `None`**<br>file name of saved figure file. If `None`: skip saving the figure image.
 
-  ```python
-  dict(
-      dirname: str | None = None,
-      fname:   str | None = None,
-      png_dpi: int        = 300,
-      svg_dpi: int        = 150,
-      SAVE_PARAMS: dict = dict(
-          bbox_inches: str   = 'tight',
-          pad_inches:  float = 0.2
-      ),
-      save_png: bool = True,
-      save_svg: bool = True,
-      save_pkl: bool = False
-  )
-  ```
+   - **save_props : *dict*, default:**<br>
 
+     ```python
+     dict(
+         dirname: str | None = None,
+         fname:   str | None = None,
+         png_dpi: int        = 300,
+         svg_dpi: int        = 150,
+         SAVE_PARAMS: dict = dict(
+             bbox_inches: str   = 'tight',
+             pad_inches:  float = 0.2
+         ),
+         save_png: bool = True,
+         save_svg: bool = True,
+         save_pkl: bool = False
+     )
+     ```
 
+3. export plotted data as csv file
 
-### export plotted data as csv file
+   - **csv : *bool*, default: `True`**<br>
+     if `True`: save csv file
 
-- **csv : *bool*, default: `True`**<br>
-  if `True`: save csv file
-- **savecsv_subdirname : *str | None*, default: `None`**<br>if `None` or `"."`: csv file is saved in the same directory as the image files of the figure (`<save_dirname>`); otherwise, `<save_dirname>/<savecsv_subdirname>`.
-- **savecsv_props : *dict*, default:**<br>
+   - **savecsv_subdirname : *str | None*, default: `None`**<br>if `None` or `"."`: csv file is saved in the same directory as the image files of the figure (`<save_dirname>`); otherwise, `<save_dirname>/<savecsv_subdirname>`.
 
-  ```python
-  dict(
-      dirname:    str | None = None,
-      subdirname: str | None = None,
-      fname:      str | None = None,
-      header:     str | None = None,
-      common_x:         bool = True,
-      subplot_common_x: bool = False
-  )
-  ```
+   - **savecsv_props : *dict*, default:**<br>
 
+     ```python
+     dict(
+         dirname:    str | None = None,
+         subdirname: str | None = None,
+         fname:      str | None = None,
+         header:     str | None = None,
+         common_x:         bool = True,
+         subplot_common_x: bool = False
+     )
+     ```
 
+4. Range options
 
-### Range options
+   - **xmin, xmax, ymin, ymax : *float | None*, default: `None`**
+       - minimum/maximum value that determines the display range of graph. These arguments are an alternative to `matplotlib.pyplot.xlim` and `ylim`.
+       - if `None`: automatically determinted
 
-- **xmin, xmax, ymin, ymax : *float | None*, default: `None`**
-    - minimum/maximum value that determines the display range of graph. These arguments are an alternative to `matplotlib.pyplot.xlim` and `ylim`.
-    - if `None`: automatically determinted
-- **common_xlim, common_ylim : *bool*, default: `True`** <br>Use common axis range when the figure includes multiple ax subplots
-- **is_ylim_adjust_xlim : *bool*, default: `True`**
-- **axes_xmargins, axes_ymargins : *list[float]*, default: `[0.05, 0.05]`**<br>Padding from minimum and maximum values in the graph,
-    specified as a percentage of the size of Axis [from 0 to 1]
-- **adjust_lim: *bool*, default: `True`**<br>Set `False` if you do no want `ckplotlib` to adjust the drawing range.
+   - **common_xlim, common_ylim : *bool*, default: `True`** <br>Use common axis range when the figure includes multiple ax subplots
 
+   - **is_ylim_adjust_xlim : *bool*, default: `True`**
 
+   - **axes_xmargins, axes_ymargins : *list[float]*, default: `[0.05, 0.05]`**<br>Padding from minimum and maximum values in the graph,
+       specified as a percentage of the size of Axis [from 0 to 1]
 
-### Range options for logscale
+   - **adjust_lim: *bool*, default: `True`**<br>Set `False` if you do no want `ckplotlib` to adjust the drawing range.
 
-The respective options for `x` and `y` axis are valid if `plt.xscale` and `plt.yscale` are `"logscale"`.
+5. Range options for logscale<br>The respective options for `x` and `y` axis are valid if `plt.xscale` and `plt.yscale` are `"logscale"`.
 
-- **is_xlog_intlim : *bool*, default: `False`** | **is_ylog_intlim : *float*, default: `True`**<br>if `True`: axis range of $[10^a, 10^b]$ is determined so that $a$ and $b$ are integers.
+   - **is_xlog_intlim : *bool*, default: `False`** | **is_ylog_intlim : *float*, default: `True`**<br>if `True`: axis range of $[10^a, 10^b]$ is determined so that $a$ and $b$ are integers.
 
-- **is_xlog_format, is_ylog_format : *bool*, default: `True`**<br>Exponential notation like $10^a$ is used
+   - **is_xlog_format, is_ylog_format : *bool*, default: `True`**<br>Exponential notation like $10^a$​ is used
 
-- Range max options:
-    - **set_xlog_range_max, set_ylog_range_max : *bool*, default: `False`**<br>if `True`: Limit the drawing range according to the `set_x(y)log_range_max_props` option.
+   - **xlog_ticker_exponent_range_thr** | **ylog_ticker_exponent_range_thr, *int*, default: `10`**
 
-    - **set_xlog_range_max_props, set_ylog_range_max_props : *dict*, default:** 
+   - Range max options:
+       - **set_xlog_range_max, set_ylog_range_max : *bool*, default: `False`**<br>if `True`: Limit the drawing range according to the `set_x(y)log_range_max_props` option.
 
-        ```python
-        dict(
-            exponent_range_max = 8,
-            max_is_fixed       = True,
-            min_is_fixed       = False
-        )
-        ```
+       - **set_xlog_range_max_props, set_ylog_range_max_props : *dict*, default:** 
 
-        Limit the drawing range so that it does not exceed $10^{\mathrm{exponent\_range\_max}}$. Set `max_is_fixed` (`min_is_fixed`) to `True` to fix the maximum (minimum) side of the drawing range. Do not set both `max_is_fixed` and `min_is_fixed` to the same setting.
+           ```python
+           dict(
+               exponent_range_max = 8,
+               max_is_fixed       = True,
+               min_is_fixed       = False
+           )
+           ```
 
+           Limit the drawing range so that it does not exceed `10**exponent_range_max`. Set `max_is_fixed` (`min_is_fixed`) to `True` to fix the maximum (minimum) side of the drawing range. Do not set both `max_is_fixed` and `min_is_fixed` to the same setting.
 
+6. annotate
 
-### annotate
+   - **annotate_str : *str | None*, default: `None`**
 
-- **annotate_str : *str | None*, default: `None`**
+   - **annotate_props : *dict*, default:**
 
-- **annotate_props : *dict*, default:**
+     ```python
+     dict(
+         x        = None,
+         y        = None,
+         loc      = 'bottom',
+         ha       = 'left',
+         va       = 'top',
+         border   = True,
+         fontsize = 'x-small'
+     )
+     ```
 
-  ```python
-  dict(
-      x        = None,
-      y        = None,
-      loc      = 'bottom',
-      ha       = 'left',
-      va       = 'top',
-      border   = True,
-      fontsize = 'x-small'
-  )
-  ```
+7. Others
 
-  
-
-### Others
-
-- 
-- 
-- **no_line : *bool*, default: `False`**<br>Set to `True` if you intend that `matplotlib.pyplot.Line2D` is not included in the figure. Normally, this decision is made automatically, so this option is not likely to be used.
+   - **no_line : *bool*, default: `False`**<br>Set to `True` if you intend that `matplotlib.pyplot.Line2D` is not included in the figure. Normally, this decision is made automatically, so this option is not likely to be used.
 
 
 
