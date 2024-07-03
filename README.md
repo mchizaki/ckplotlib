@@ -226,31 +226,32 @@ Context manager of `ckplotlib.ckplot.ckfigure` has many options to markup and sa
 
    - **show : *bool*, default: `False`**<br>This is an option for an alternative function to `matplotlib.pyplot.show()`. If `True`: show figure by `matplotlib.pyplot.show()`. If `*figure_props_list` is used, only the last figure in the list is displayed.
 
-     > [!Important]
-     >
-     > Do not use `matplotlib.pyplot.show()` as follows:
-     >
-     > ```python
-     > with cplt.ckfigure(**props):
-     >     plt.figure()
-     >     plt.plot(x, y1, label=r'$\sin(x)$')
-     >     plt.plot(x, y2, label=f'$\cos(x)$')
-     >     ...
-     >     plt.show()
-     > ```
-     >
-     > This script causes the following error message:
-     >
-     > ```
-     > [error] CkFigure.set_figure_style
-     > plot axes do not exist.
-     > ```
-     >
-     > This is because `ckplotlib` tries to makeup and save the figure after `plt.show()`. Please use the option of `show` when you use `ckfigure` instead of `matplotlib.pyplot.show()`.
-
    - **inline_show : *bool*, default: `True`**<br>If `True`: show figure when you use Matplotlib Inline Back-end.
 
    - **close : *bool*, default: `True`**<br>If `True`: close figure after saving figures.
+
+> [!Important]
+>
+> Do not use `matplotlib.pyplot.show()` as follows:
+>
+> ```python
+> with cplt.ckfigure(**props):
+>     plt.figure()
+>     plt.plot(x, y1, label=r'$\sin(x)$')
+>     plt.plot(x, y2, label=f'$\cos(x)$')
+>     ...
+>     plt.show()
+> ```
+>
+> This script causes the following error message:
+>
+> ```
+> [error] CkFigure.set_figure_style
+> plot axes do not exist.
+> ```
+>
+> This is because `ckplotlib` tries to makeup and save the figure after `plt.show()`. Please use the option of `show` instead of `matplotlib.pyplot.show()` when you use `ckfigure`.
+
 
 2. Other options
 
@@ -704,27 +705,27 @@ cos_theta = np.cos(theta)
       ...
    ```
 
-   > [!Note]
-   >
-   > Do not use the same name for xcol_name when `common_x = False`.
-   >
-   > ```python
-   > ...
-   > with cplt.ckfigure(**figure_props):
-   >     plt.figure()
-   >     plt.plot(theta, sin_theta)
-   >     cplt.addlinename('theta', 'sin(theta)')
-   >     plt.plot(theta, cos_theta)
-   >     cplt.addlinename('theta', 'cos(theta)')
-   > ```
-   >
-   > This script causes the following error messasge:
-   >
-   > ```
-   > [error] ckplotlib.savecsv._get_ax_data
-   > When common_x option is False, x columns names must not be duplicates.
-   > names = ['theta', 'theta']
-   > ```
+> [!Note]
+>
+> Do not use the same name for xcol_name when `common_x = False`.
+>
+> ```python
+> ...
+> with cplt.ckfigure(**figure_props):
+>     plt.figure()
+>     plt.plot(theta, sin_theta)
+>     cplt.addlinename('theta', 'sin(theta)')
+>     plt.plot(theta, cos_theta)
+>     cplt.addlinename('theta', 'cos(theta)')
+> ```
+>
+> This script causes the following error messasge:
+>
+> ```
+> [error] ckplotlib.savecsv._get_ax_data
+> When common_x option is False, x columns names must not be duplicates.
+> names = ['theta', 'theta']
+> ```
 
 
 
