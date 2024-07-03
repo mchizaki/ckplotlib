@@ -1504,13 +1504,13 @@ def ckfigure(
             #--------------------------------------------------------------#
             if len( fig_props_list ) == 0:
                 ckFig = CkFigure( **fig_props )
-                ckFig.make_figure( inline_show )
+                ckFig.make_figure( inline_show = inline_show )
 
             else:
                 for fig_props_tmp in fig_props_list:
                     fig_props = deepmerge( fig_props, fig_props_tmp )
                     ckFig = CkFigure( **fig_props )
-                    ckFig.make_figure( inline_show )
+                    ckFig.make_figure( inline_show = inline_show )
 
 
     #==============================================================#
