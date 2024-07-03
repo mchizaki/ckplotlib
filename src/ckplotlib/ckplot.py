@@ -204,13 +204,13 @@ def modify_loglim(
 def annotate(
     ax: plt.Axes,
     text: str,
+    fontsize: str | int = 'x-small',
+    border:    bool = True,
+    loc: str | None = None,
     x: float | None = None,
     y: float | None = None,
-    loc: str | None = None,
-    ha:         str = 'left',
-    va:         str = 'top',
-    border:    bool = True,
-    fontsize: str | int = 'x-small',
+    ha:  str | None = None,
+    va:  str | None = None,
     **kwargs
 ) -> None:
     """
@@ -226,35 +226,38 @@ def annotate(
         **kwargs.get( 'bbox', {} )
     )
 
-    if x is None and y is None:
-        posx, posy = 1.05, 0.015
-    else:
-        posx, posy = x, y
+    posx = 1.05
+    posy = 0.015
+    _ha  = 'left'
+    _va = 'top'
 
-    if loc is None:
-        pass
-    elif loc == 'bottom':
+    if loc == 'bottom':
         posx, posy = 1.05, -0.2
-        va = 'bottom'
-        ha = 'left'
+        _va = 'bottom'
+        _ha = 'left'
     elif loc == 'inner lower left':
         posx, posy = 0.03, 0.03
-        va = 'bottom'
-        ha = 'left'
+        _va = 'bottom'
+        _ha = 'left'
     elif loc == 'inner lower right':
         posx, posy = 0.97, 0.03
-        va = 'bottom'
-        ha = 'right'
+        _va = 'bottom'
+        _ha = 'right'
     elif loc == 'inner upper left':
         posx, posy = 0.03, 0.97
-        va = 'top'
-        ha = 'left'
+        _va = 'top'
+        _ha = 'left'
     elif loc=='inner upper right':
         posx, posy = 0.97, 0.97
-        va = 'top'
-        ha = 'right'
+        _va = 'top'
+        _ha = 'right'
     else:
         pass
+
+    if x is not None: posx = x
+    if y is not None: posy = y
+    if ha is not None: _ha = ha
+    if va is not None: _va = va
 
     if border:
         boxdict.update( linewidth = 1 )  # The default padding is pad = 0.3 [the unit where fontsize is 1]
@@ -267,8 +270,8 @@ def annotate(
         s    = text,
         size = fontsize,
         transform = ax.transAxes,
-        verticalalignment   = va,
-        horizontalalignment = ha,
+        verticalalignment   = _va,
+        horizontalalignment = _ha,
         bbox = boxdict,
         **_kwargs
     )
@@ -516,14 +519,14 @@ class CkFigure:
         fname       = None,
         png_dpi     = 300,
         svg_dpi     = 150,
-        SAVE_PARAMS = SAVE_PARAMS,
-        save_png    = True,
-        save_svg    = True,
-        save_pkl    = False
+        save_png    = ckFigureConfig.png,
+        save_svg    = ckFigureConfig.svg,
+        save_pkl    = False,
+        save_params = SAVE_PARAMS
     )
 
     # export plotted data as csv file
-    csv = True
+    csv = ckFigureConfig.csv
     savecsv_props = dict(
         dirname    = None,
         subdirname = None,
@@ -550,13 +553,13 @@ class CkFigure:
     # annotate
     annotate_str = None
     annotate_props = dict(
+        fontsize = 'x-small',
+        border   = True,
+        loc      = 'bottom',
         x        = None,
         y        = None,
-        loc      = 'bottom',
-        ha       = 'left',
-        va       = 'top',
-        border   = True,
-        fontsize = 'x-small'
+        ha       = None,
+        va       = None
     )
 
     # padding from minimum and maximum values in the graph,
@@ -1109,11 +1112,11 @@ class CkFigure:
         * fig         = plt.gcf()
         * png_dpi     = 300
         * svg_dpi     = 150
-        * SAVE_PARAMS = SAVE_PARAMS
         * save_png    = True
         * save_svg    = True
         * save_pkl    = False
         * replace     = True
+        * save_params = SAVE_PARAMS
         """
         if not self.fig: return
 

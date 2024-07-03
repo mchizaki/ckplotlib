@@ -127,6 +127,63 @@ with cplt.ckfigure( **figure_props ):
 
 #%% [markdown]
 """
+### with axes_margin option
+"""
+#%%
+figure_props = cplt.get_figure_props(
+    save_dirname = 'result',
+    save_fname   = 'fig_cplt_axes_margin',
+    axes_xmargins = [ 0.05, 0.2 ],
+    axes_ymargins = [ 0, 0.3 ]
+)
+
+with cplt.ckfigure( **figure_props ):
+    plt.figure()
+    plt.plot( x, y )
+
+
+#%% [markdown]
+"""
+### with annotate
+"""
+#%%
+figure_props = cplt.get_figure_props(
+    save_dirname = 'result',
+    save_fname   = 'fig_cplt_annotate',
+    annotate_str = 'annotate\ntest'
+)
+with cplt.ckfigure( **figure_props ):
+    plt.figure()
+    plt.plot( x, y )
+
+figure_props = cplt.get_figure_props(
+    save_dirname = 'result',
+    save_fname   = 'fig_cplt_annotate2',
+    annotate_str = 'annotate\ntest',
+    annotate_props = dict(
+        loc = None
+    )
+)
+with cplt.ckfigure( **figure_props ):
+    plt.figure()
+    plt.plot( x, y )
+
+figure_props = cplt.get_figure_props(
+    save_dirname = 'result',
+    save_fname   = 'fig_cplt_annotate3',
+    annotate_str = 'annotate\ntest',
+    annotate_props = dict(
+        loc = 'inner lower left'
+    )
+)
+with cplt.ckfigure( **figure_props ):
+    plt.figure()
+    plt.plot( x, y )
+
+
+
+#%% [markdown]
+"""
 ### logscale
 """
 #%%
@@ -216,16 +273,19 @@ with cplt.ckfigure( **figure_props ):
 #%%
 figure_props = cplt.get_figure_props(
     save_dirname = 'result',
-    save_fname   = 'fig_cplt_log5',
+    save_fname   = 'fig_cplt_ylog_range_max',
     plt_props = dict(
         yscale = 'log'
     ),
     set_ylog_range_max = True
 )
 
+x1 = np.logspace( -30, 2, 500 )
+x2 = np.linspace( 0, 100, 500 )
 with cplt.ckfigure( **figure_props ):
     plt.figure()
-    plt.plot( x, 5 * np.exp( -x * 10 ) )
+    plt.plot( x1, x1 )
+    plt.plot( x2, 100 * np.exp( -x2 / 10 ) )
 
 
 
@@ -243,3 +303,5 @@ plt.savefig(
     pad_inches  = 0.2,
     bbox_inches = 'tight',
 )
+
+

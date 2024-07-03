@@ -184,18 +184,71 @@ with cplt.ckfigure(**props):
 
 
 
-## ckfigure options
+## ckplotlib.ckplot.ckfigure
 
-Context manager of `ckplotlib.ckplot.ckfigure` can receive the `figure_props` of `dict`.
-The function of `ckplotlib.ckplot.get_figure_props` helps you create `figure_props` dictionary.
+Context manager of `ckplotlib.ckplot.ckfigure` has many options to markup and save your figures.
+
+### calling ckfigure
+
+1. using `figure_props`
+
+   ```python
+   with cplt.ckfigure( **figure_props, **kwargs ):
+   ```
+
+2. using `figure_props_list`<br>`figure_props_list` is a list of multiple `figure_props`, namely,
+
+   ```python
+   figure_props_list = [fig_props1, fig_props2, ...]
+   ```
+
+   You can call ckfigure by using the figure props list as follows:
+
+   ```python
+   with cplt.ckfigure( *figure_props_list, **kwargs ):
+   ```
 
 
 
-All options of `ckplotlib.ckplot.get_figure_props` are as follows:
+### options
+
+#### kwargs
+
+1. Options whose default values are set in `ini` file
+
+   - **cycle : *cycler.Cycler | dict | None*, default: `ckplotlib.cycle.ck_cycle`**
+
+   - **use_mplstyle_base : *bool*, default: `True`**<br>If `True`: search and read `base.mplstyle`
+
+   - **mplstyle_font : *{'arial', 'times', any font name, 'none'} | None*, default: `"arial"`**<br>
+
+     If `None` or `"none"`: skip reading font-mplstyle file. otherwise: search and read font-mplstyle file of `mplstyle_font` (* file name with or without fmt of `.mplstyle`)
+
+   - **inline_show : *bool*, default: `True`**<br>If `True`: show figure when you use Matplotlib Inline Back-end.
+
+   - **close : *bool*, default: `True`**<br>If `True`: close figure after saving figures.
+
+2. Other options
+
+   - **mplstyle : *str | None*, default: `None`**<br>Specify the file name of mplstyle you want to load additionally, if any (* file name with or without fmt of `.mplstyle`)
+   - **mplstyle_dir : *str | None*, default: `None`**
+     Specify a directory name if there is additional directory to search mplstyle files.
 
 
 
-1. markup options of `matplotlib.pyplot`
+#### figure_props
+
+Dictionary with figure settings.  The function of `ckplotlib.ckplot.get_figure_props` helps you create `figure_props` dictionary. (Next Section)
+
+
+
+
+
+## ckplotlib.ckplot.get_figure_props
+
+`ckplotlib.ckplot.get_figure_props` is a function to help you create `figure_props` dictionary for `ckplotlib.ckplot.ckfigure`. All options are as follows:
+
+1. Markup options of `matplotlib.pyplot`
 
    - **plt_props: *dict*, default: `{}`**
 
@@ -216,7 +269,7 @@ All options of `ckplotlib.ckplot.get_figure_props` are as follows:
    )
    ```
 
-2. save figure
+2. Save figure
 
    - **fig : *bool*, default: `True`** <br>if `True`: save the figure image
 
@@ -236,15 +289,19 @@ All options of `ckplotlib.ckplot.get_figure_props` are as follows:
              bbox_inches: str   = 'tight',
              pad_inches:  float = 0.2
          ),
-         save_png: bool = True,
-         save_svg: bool = True,
+         save_png: bool = True, # set by config.ini
+         save_svg: bool = True, # set by config.ini
          save_pkl: bool = False
      )
      ```
 
-3. export plotted data as csv file
+     - (*all keys are optional)
+     - **dirname : *str | None*, default: `None`**<br>This is updated by `<save_dirname>` if `save_dirname` is not `None`.
+     - **fname: *str | None*, default: `None`**<br>This is updated by `<save_fname>` if `save_fname` is not `None`.
 
-   - **csv : *bool*, default: `True`**<br>
+3. Export plotted data as csv file
+
+   - **csv : *bool*, default: `True`(set by `config.ini`)**<br>
      if `True`: save csv file
 
    - **savecsv_subdirname : *str | None*, default: `None`**<br>if `None` or `"."`: csv file is saved in the same directory as the image files of the figure (`<save_dirname>`); otherwise, `<save_dirname>/<savecsv_subdirname>`.
@@ -262,6 +319,94 @@ All options of `ckplotlib.ckplot.get_figure_props` are as follows:
      )
      ```
 
+     - (*all keys are optional)
+
+     - **dirname : *str | None*, default: `None`**<br>Save directory name. If `None`: same directory as the figure image `<save_dirname>`.
+
+     - **subdirname : *str | None*, default: `None`**<br>This is updated by `<savecsv_subdirname>` if `savecsv_subdirname` is not `None`.
+
+     - **fname : *str*, default: `None`**<br>Save file name. If `None`: same file name as the figure image `<save_fname>`.
+
+     - **header : *str | None*, default: `None`**<br>csv file example with `header = 'this is header'`
+
+       ```csv
+       this is header
+       theta,sin(theta),cos(theta)
+       0.0,0.0,1.0
+       1.0,0.8414709848078965,0.5403023058681398
+       2.0,0.9092974268256817,-0.4161468365471424
+       ...
+       ```
+
+     - **common_x : *bool*, default: `True`**<br>If `True`: x data is output to the same column of the csv file.<br>
+       Example:
+
+       ```python
+       x1 = np.array([0, 1, 2, 3])
+       x2 = np.array([0, 2, 4, 6])
+       with cplt.ckfigure(**figure_props):
+           plt.figure()
+           plt.plot(x1, x1**2)
+           plt.plot(x2, x2**2)
+       ```
+
+       - csv file with `common_x = True`:
+
+         ```
+         x,    y1,    y2
+         0,   0.0,   0.0
+         1,   1.0,
+         2,   4.0,   4.0
+         3,   9.0,
+         4,      ,  16.0
+         6,      ,  36.0
+         ```
+
+       - csv file with `common_x = False`:
+
+         ```
+         x1,    y1,    x2,    y2
+          0,     0,     0,     0
+          1,     1,     2,     4
+          2,     4,     4,    16
+          3,     9,     6,    36
+         ```
+
+     - **subplot_common_x : *bool*, default: `False`**<br>If `True`: x data is output to the same column of the csv file when the figure object has multiple axes generated by `matplotlib.pyplot.subplot`, etc.<br>Example:
+
+       ```python
+       x1 = np.array([0, 1, 2, 3])
+       x2 = np.array([0, 2, 4, 6])
+       with cplt.ckfigure(**figure_props):
+           plt.figure()
+           plt.subplot(211)
+           plt.plot(x1, x1**2)
+           plt.subplot(212)
+           plt.plot(x2, x2**2)
+       ```
+
+       - csv file with `subplot_common_x = True`:
+
+         ```
+           x, f1[y], f2[y]
+         0.0,   0.0,   0.0
+         1.0,   1.0,
+         2.0,   4.0,   4.0
+         3.0,   9.0,
+            ,      ,  16.0
+            ,      ,  36.0
+         ```
+
+       - csv file with `subplot_common_x = False`:
+
+         ```
+         f1[x], f1[y], f2[x], f2[y]
+             0,     0,     0,     0
+             1,     1,     2,     4
+             2,     4,     4,    16
+             3,     9,     6,    36
+         ```
+
 4. Range options
 
    - **xmin, xmax, ymin, ymax : *float | None*, default: `None`**
@@ -270,7 +415,7 @@ All options of `ckplotlib.ckplot.get_figure_props` are as follows:
 
    - **common_xlim, common_ylim : *bool*, default: `True`** <br>Use common axis range when the figure includes multiple ax subplots
 
-   - **is_ylim_adjust_xlim : *bool*, default: `True`**
+   - **is_ylim_adjust_xlim : *bool*, default: `True`**<br>y-axis range is determined by the maximum and minimum values of plotted data. If `True`,  the maximum/minimum value is determined by the data within the specified x-range. Otherwise, the maximum/minimum value is determined by all data including outside the specified x-axis range.
 
    - **axes_xmargins, axes_ymargins : *list[float]*, default: `[0.05, 0.05]`**<br>Padding from minimum and maximum values in the graph,
        specified as a percentage of the size of Axis [from 0 to 1]
@@ -289,8 +434,6 @@ All options of `ckplotlib.ckplot.get_figure_props` are as follows:
        | -------------------------------------- | -------------------------------------- |
        | ![cplt-log1](sample/fig_cplt_log1.svg) | ![cplt-log3](sample/fig_cplt_log3.svg) |
 
-       
-
    - Range max options:
        - **set_xlog_range_max | set_ylog_range_max : *bool*, default: `False`**<br>If `True`: Limit the drawing range according to the `set_x(y)log_range_max_props` option.
 
@@ -306,7 +449,13 @@ All options of `ckplotlib.ckplot.get_figure_props` are as follows:
 
            Limit the drawing range so that it does not exceed `10**exponent_range_max`. Set `max_is_fixed` (`min_is_fixed`) to `True` to fix the maximum (minimum) side of the drawing range. Do not set both `max_is_fixed` and `min_is_fixed` to the same setting.
 
-6. annotate
+           | set_ylog_range_max: `False`                                  | set_ylog_range_max: `True`                                |
+           | ------------------------------------------------------------ | --------------------------------------------------------- |
+           | ![cplt-log-range_max-original](sample/fig_cplt_ylog_range_max_original.svg) | ![cplt-log-range-max](sample/fig_cplt_ylog_range_max.svg) |
+
+       - **save_original_fig : *bool*, default: `True`**<br>If `True`: save the original figure image in `<save_dirname>/original/` when the figure is modified by the above options.
+
+6. Annotate
 
    - **annotate_str : *str | None*, default: `None`**
 
@@ -314,15 +463,30 @@ All options of `ckplotlib.ckplot.get_figure_props` are as follows:
 
      ```python
      dict(
-         x        = None,
-         y        = None,
-         loc      = 'bottom',
-         ha       = 'left',
-         va       = 'top',
-         border   = True,
-         fontsize = 'x-small'
+         fontsize: str | int = 'x-small',
+         border:        bool = True,
+         loc:     str | None = 'bottom',
+         x:     float | None = None,
+         y:     float | None = None,
+         ha:      str | None = None,
+         va:      str | None = None
      )
      ```
+
+     - (*all keys are optional)
+     - **fontsize : *str | int*, default: `'x_small'`**
+     - **border : *bool*, default: `True`**<br>If `True`: box with border line
+     - **loc : {`'bottom'` | `'inner lower left'` | `'inner lower right'` | `'inner upper left'` | `'inner upper right'` | `None`}**
+
+     `x`, `y`, `ha`, and `va` are automatically set to reflect the `loc` settings. These properties can also be set manually using following keys.
+
+     - **x | y: *float | None*, default: `None`**
+     - **ha: *{`'center'` | `'right'` | `'left'` | `None` }*, default: `None`**
+     - **va: *{`'center'` | `'top'` | `'bottom'` | `baseline` | `None` }*, default: `None`**
+
+     | loc: `bottom` (default)                         | loc: `inner lower left`                          |
+     | ----------------------------------------------- | ------------------------------------------------ |
+     | ![cplt-annotate1](sample/fig_cplt_annotate.svg) | ![cplt-annotate3](sample/fig_cplt_annotate3.svg) |
 
 7. Others
 
@@ -332,7 +496,82 @@ All options of `ckplotlib.ckplot.get_figure_props` are as follows:
 
 
 
-## Example figures (linear)
+
+
+## Config files [optional]
+
+If you want to change the default settings of `ckplotlib`, you have to create some config files in `~/.config/ckplotlib`. Example files are placed in `config_example/`.
+
+### `config.ini`
+
+`~/.config/ckplotlib/config.ini`
+
+1. ckfigure section
+   - **png : *bool*, default: `True`**<br>If `True`: save figure as png image
+   - **svg : *bool*, default: `True`**<br>If `True`: save figure as svg image
+   - **csv : *bool*, default: `True`**<br>If `True`: save figure data as csv file
+   - **use_mplstyle_base : *bool*, default: `True`**<br>If `True`: search and read `base.mplstyle`
+   - **show_mplstyle_src : *bool*, default: `False`**<br>If `True`: print the sources of used mplstyle files
+   - **show_savefname : *bool*, default: `True`**<br>If `True`: print file name of saved figures
+   - **inline_show : *bool*, default: `True`**<br>If `True`: show figure when you use Matplotlib Inline Back-end
+   - **close : *bool*, default: `True`**<br>If `True`: close figure after saving figures
+   - **mplstyle_font : *{arial, times, any font name, none}*, default: `arial`**<br>If `none`: skip reading font-mplstyle file. Otherwise: search and read font-mplstyle file of `mplstyle_font` (* file name with or without fmt of `.mplstyle`)
+   - **cycle : *{mpl | any text}*, default: `ck`**<br>If `mpl`: matplotlib default cycle is used
+   - **bbox_to_anchor : *tuple[float]*, default: `(1.00, 0.95)`**<br>
+
+Examples1 (times)
+
+```ini
+[ckfigure]
+mplstyle_font = times
+```
+
+Example2 (matplotlib style)
+
+```ini
+[ckfigure]
+use_mplstyle_base = False
+mplstyle_font = none
+cycle = mpl
+```
+
+Example3 (save only png)
+
+```ini
+[ckfigure]
+png = True
+svg = False
+csv = False
+```
+
+Example4 (all)
+
+```ini
+[ckfigure]
+png = True
+svg = True
+csv = True
+use_mplstyle_base = True
+show_mplstyle_src = False
+show_savefname = True
+inline_show = True
+close = True
+mplstyle_font = arial
+cycle = ck
+legend_bbox_to_anchor = (1.00, 0.95)
+```
+
+
+
+### mplstyle files
+
+If you want to use your favorite mplstyle, create mplstyle in a directory in `~/.config/ckplotlib/` (including in subdirectories). If you create `base.mplstyle` or `<font_name>.mplstyle` in this config directory, those files will have priority over the mplstyle files in `ckplotlib.mplstyle`.
+
+
+
+
+
+## Example figures
 
 common codes:
 ```python
@@ -341,13 +580,12 @@ import matplotlib.pyplot as plt
 import ckplotlib.ckplot as cplt
 
 x = np.linspace(0, 10, 500)
-y = np.sin(x)
 ```
 
 ### matplotlib normal
 ```python
 plt.figure()
-plt.plot(x, y)
+plt.plot(x, np.sin(x))
 ```
 ![mplt0](sample/fig_mplt0.svg)
 
@@ -355,7 +593,7 @@ plt.plot(x, y)
 ```python
 with cplt.ckfigure():
     plt.figure()
-    plt.plot(x, y)
+    plt.plot(x, np.sin(x))
 ```
 ![mplt0](sample/fig_cplt0.svg)
 
@@ -373,7 +611,135 @@ figure_props = cplt.get_figure_props(
 
 with cplt.ckfigure(**figure_props):
     plt.figure()
-    plt.plot(x, y)
+    plt.plot(x, np.sin(x))
 ```
 ![mplt0](sample/fig_cplt1.svg)
+
+
+
+### axes margin
+
+```python
+figure_props = cplt.get_figure_props(
+    save_dirname = 'result',
+    save_fname   = 'fig_cplt_axes_margin',
+    axes_xmargins = [0.05, 0.2],
+    axes_ymargins = [0, 0.3]
+)
+
+with cplt.ckfigure(**figure_props):
+    plt.figure()
+    plt.plot(x, y)
+```
+
+![cplt-axes-margin](sample/fig_cplt_axes_margin.svg)
+
+
+
+### annotate
+
+```python
+figure_props = cplt.get_figure_props(
+    save_dirname = 'result',
+    save_fname   = 'fig_cplt_annotate',
+    annotate_str = 'annotate\ntest'
+)
+with cplt.ckfigure( **figure_props ):
+    plt.figure()
+    plt.plot( x, y )
+```
+
+![cplt-annotate1](sample/fig_cplt_annotate.svg)
+
+
+
+### logscale
+
+```python
+figure_props = cplt.get_figure_props(
+    save_dirname = 'result',
+    save_fname   = 'fig_cplt_log1',
+    plt_props = dict(
+        xlabel = '$x$ label',
+        ylabel = '$y$ label',
+        yscale = 'log'
+    )
+)
+
+with cplt.ckfigure(**figure_props ):
+    plt.figure()
+    plt.plot(x, 5 * np.exp(-x))
+```
+
+![cplt-log1](sample/fig_cplt_log1.svg)
+
+
+
+### logscale (intlim False)
+
+```python
+figure_props = cplt.get_figure_props(
+    save_dirname = 'result',
+    save_fname   = 'fig_cplt_log2',
+    plt_props = dict(
+        xlabel = '$x$ label',
+        ylabel = '$y$ label',
+        yscale = 'log'
+    ),
+    is_ylog_intlim = False
+)
+
+with cplt.ckfigure(**figure_props):
+    plt.figure()
+    plt.plot(x, 5 * np.exp(-x))
+```
+
+![cplt-log2](sample/fig_cplt_log2.svg)
+
+
+
+### logscale (wide range)
+
+```python
+figure_props = cplt.get_figure_props(
+    save_dirname = 'result',
+    save_fname   = 'fig_cplt_log3',
+    plt_props = dict(
+        xlabel = '$x$ label',
+        ylabel = '$y$ label',
+        yscale = 'log'
+    )
+)
+
+with cplt.ckfigure(**figure_props):
+    plt.figure()
+    plt.plot(x, 5 * np.exp(-x * 10))
+```
+
+![cplt-log3](sample/fig_cplt_log3.svg)
+
+
+
+### logscale (data including minus or zero value)
+
+If the data contains zero values, the axis is not adjusted.
+
+```python
+figure_props = cplt.get_figure_props(
+    save_dirname = 'result',
+    save_fname   = 'fig_cplt_log4',
+    plt_props = dict(
+        xlabel = '$x$ label',
+        ylabel = '$y$ label',
+        yscale = 'log'
+    ),
+    is_ylog_intlim = False
+)
+
+with cplt.ckfigure(**figure_props):
+    plt.figure()
+    plt.plot(x, 5 * np.sin(x))
+```
+
+![cplt-log4](sample/fig_cplt_log4.svg)
 

@@ -4,6 +4,7 @@
 import matplotlib.pyplot as plt
 import os
 import pickle
+from .config import ckFigureConfig
 
 SAVE_PARAMS = dict(
     bbox_inches = 'tight',
@@ -17,12 +18,13 @@ def savefig(
     fig: plt.Figure | None = None,
     png_dpi:     int  = 300,
     svg_dpi:     int  = 150,
-    SAVE_PARAMS: dict = SAVE_PARAMS,
-    save_png:    bool = True,
-    save_svg:    bool = True,
+    save_png:    bool = ckFigureConfig.png,
+    save_svg:    bool = ckFigureConfig.svg,
     save_pkl:    bool = False,
-    # save_pgf:    bool = False,
-    replace:     bool = True
+    save_pgf:    bool = False,
+    replace:     bool = True,
+    save_params: dict = SAVE_PARAMS,
+    **kwargs
 ) -> None:
 
     if fig is None: fig = plt.gcf()
@@ -39,7 +41,8 @@ def savefig(
                 save_fpath,
                 format = 'png',
                 dpi    = png_dpi,
-                **SAVE_PARAMS
+                **save_params,
+                **kwargs
             )
 
     if save_svg:
@@ -49,17 +52,19 @@ def savefig(
                 save_fpath,
                 format = 'svg',
                 dpi    =  svg_dpi,
-                **SAVE_PARAMS
+                **save_params,
+                **kwargs
             )
 
-    # if save_pgf:
-    #     save_fpath = f'{save_fname}.pgf'
-    #     if replace or not os.path.isfile( save_fpath ):
-    #         fig.savefig(
-    #             save_fpath,
-    #             format = 'pgf',
-    #             **SAVE_PARAMS
-    #         )
+    if save_pgf:
+        save_fpath = f'{save_fname}.pgf'
+        if replace or not os.path.isfile( save_fpath ):
+            fig.savefig(
+                save_fpath,
+                format = 'pgf',
+                **save_params,
+                **kwargs
+            )
 
     if save_pkl:
         save_fpath = f'{save_fname}.pkl'

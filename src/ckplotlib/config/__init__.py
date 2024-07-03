@@ -22,6 +22,9 @@ CONFIG_FILE_HOME = os.path.join(
 
 @dataclass
 class CkFigureConfig:
+    png: bool
+    svg: bool
+    csv: bool
     use_mplstyle_base: bool
     show_mplstyle_src: bool
     show_savefname: bool
@@ -69,6 +72,9 @@ ini_ckfigure = iniread[ 'ckfigure' ]
 # get ckFigureConfig
 #==============================================================#
 ckFigureConfig = CkFigureConfig(
+    png = ini_ckfigure.getboolean( 'png' ),
+    svg = ini_ckfigure.getboolean( 'svg' ),
+    csv = ini_ckfigure.getboolean( 'csv' ),
     use_mplstyle_base = ini_ckfigure.getboolean( 'use_mplstyle_base' ),
     show_mplstyle_src = ini_ckfigure.getboolean( 'show_mplstyle_src' ),
     show_savefname    = ini_ckfigure.getboolean( 'show_savefname' ),
