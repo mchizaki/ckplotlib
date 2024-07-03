@@ -898,9 +898,9 @@ figure_props = cplt.get_figure_props(
     save_fname   = 'fig_cplt_annotate',
     annotate_str = 'annotate\ntest'
 )
-with cplt.ckfigure( **figure_props ):
+with cplt.ckfigure(**figure_props):
     plt.figure()
-    plt.plot( x, y )
+    plt.plot(x, y)
 ```
 
 ![cplt-annotate1](sample/fig_cplt_annotate.svg)
@@ -920,7 +920,7 @@ figure_props = cplt.get_figure_props(
     )
 )
 
-with cplt.ckfigure(**figure_props ):
+with cplt.ckfigure(**figure_props):
     plt.figure()
     plt.plot(x, 5 * np.exp(-x))
 ```
