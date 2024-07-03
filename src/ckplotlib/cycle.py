@@ -5,7 +5,6 @@ import sys
 import matplotlib.pyplot as plt
 from cycler import cycler, Cycler
 from .color import ckcolor, matplotlib_colors
-from .config import ckFigureConfig
 
 def make_cycle( **kwargs ) -> Cycler:
     return (
