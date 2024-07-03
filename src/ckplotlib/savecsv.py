@@ -190,7 +190,7 @@ def _get_fig_data(
         # xcol    = dfs[0].columns[0]
         xcol_left = dfs[0].columns[0]
         for df in dfs[1:]:
-            print(df)
+            # print(df)
             xcol_right = df.columns[0]
             new_dfs = pd.merge(
                 new_dfs,

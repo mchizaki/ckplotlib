@@ -517,11 +517,10 @@ class CkFigure:
     save_props = dict(
         dirname     = None,
         fname       = None,
+        png         = ckFigureConfig.png,
+        svg         = ckFigureConfig.svg,
         png_dpi     = ckFigureConfig.png_dpi,
         svg_dpi     = ckFigureConfig.svg_dpi,
-        save_png    = ckFigureConfig.png,
-        save_svg    = ckFigureConfig.svg,
-        save_pkl    = False,
         save_params = SAVE_PARAMS
     )
 
@@ -1110,11 +1109,10 @@ class CkFigure:
         * fname
         * dirname
         * fig         = plt.gcf()
+        * png         = True
+        * svg         = True
         * png_dpi     = 300
         * svg_dpi     = 150
-        * save_png    = True
-        * save_svg    = True
-        * save_pkl    = False
         * replace     = True
         * save_params = SAVE_PARAMS
         """
@@ -1217,7 +1215,8 @@ class CkFigure:
     def make_figure(
         self,
         print_name: bool = ckFigureConfig.show_savefname,
-        inline_show: bool = True
+        inline_show: bool = True,
+        show: bool = False
     ) -> None:
 
         if self.save_props.get( 'fname' ) and print_name:
@@ -1253,6 +1252,8 @@ class CkFigure:
         # save original figure if ylog_range_exceed_maxval
         #--------------------------------------------------------------#
         if not self.save_original_fig:
+            if show:
+                plt.show()
             return
 
         if self._range_exceed_maxval( ckAxesProps_results ):
@@ -1265,6 +1266,10 @@ class CkFigure:
             # setstyle & savefig
             ckFig_.set_figure_style()
             ckFig_.savefig()
+
+        if show:
+            self.set_figure_style()
+            plt.show()
 
 
 
@@ -1318,18 +1323,8 @@ def get_figure_props(
     save_original_fig: bool | None = None
 ) -> dict:
     """
-
-
-    plt_props = dict(
-        xlabel = 'Temperature (K)',
-        yscale = 'log'
-    )
-
-    plt_prop_kwargs = dict(
-        legend = dict(
-            bbox_to_anchor = (1, 1)
-        )
-    )
+    - `plt_props`
+    - `plt_prop_kwargs`
 
     - save figure
         - `fig`
@@ -1342,41 +1337,29 @@ def get_figure_props(
         - `savecsv_subdirname`
         - `savecsv_props`
 
-    - `xmin`, `xmax`, `ymin`, `ymax`
-        - minimum/maximum value that determines the display range of graph
-        - None => not specified: automatically determinted
+    - Range options
+        - `xmin`, `xmax`, `ymin`, `ymax`
+        - `common_xlim` | `common_ylim`
+        - `is_ylim_adjust_xlim`
+        - `axes_xmargins` | `axes_ymargins`
+        - `adjust_lim`
 
-    - `common_x/ylim`:
-        use common axis range if fig includes multiple ax subplots
+    - Range options for logscale
+        - `is_xlog_intlim` | `is_ylog_intlim`
+        - `is_xlog_format` | `is_ylog_format`
+        - `xlog_ticker_exponent_range_thr` | `ylog_ticker_exponent_range_thr`
+        - Range max options:
+            - `set_xlog_range_max` | `set_ylog_range_max`
+            - `set_xlog_range_max_props` | `set_ylog_range_max_props`
+            - `save_original_fig`
 
-    - `x/ylog_intlim`
-        - axis range = [10^a, 10^b] (a & b are integer)
-        - this props is valid if plt.xscale/yscale is 'log'
-
-    - `x/ylog_format`
-        - use exponential notation
-        - this props is valid if plt.xscale/yscale is 'log'
-
-    - log range max
-        - these props are valid if plt.x/yscale is 'log'
-        - `set_x/ylog_range_max`
-        - `set_x/ylog_range_max_props`
-            - `exponent_range_max`: 8
-            - `max_is_fixed`: True
-            - `min_is_fixed`: False
-
-    - `axes_xmargins` and `axes_ymargins`:
-        padding from minimum and maximum values in the graph,
-        specified as a percentage of the size of Axis [from 0 to 1]
-        e.g. axes_xmargins = [ 0.05, 0.05 ]
-
-    - annotate
+    - Annotation
         - `annotate_str`
         - `annotate_props`
 
+    - Others
+        - `no_line`
     """
-    # SAVE_DIRNAME = '.'
-    # SAVE_FNAME   = 'result'
 
     fig_props = {}
     fig_props.update( save_props = save_props.copy() )
@@ -1455,6 +1438,7 @@ def ckfigure(
     mplstyle:          str | None       = None,
     mplstyle_dir:      str | None       = None,
     inline_show:       bool             = ckFigureConfig.inline_show,
+    show:              bool             = False,
     close:             bool             = ckFigureConfig.close,
     **fig_props
 ):
@@ -1505,15 +1489,17 @@ def ckfigure(
             #--------------------------------------------------------------#
             # set style & save
             #--------------------------------------------------------------#
-            if len( fig_props_list ) == 0:
+            fig_props_list_len = len( fig_props_list )
+            if fig_props_list_len == 0:
                 ckFig = CkFigure( **fig_props )
-                ckFig.make_figure( inline_show = inline_show )
+                ckFig.make_figure( inline_show = inline_show, show = show )
 
             else:
-                for fig_props_tmp in fig_props_list:
+                for i, fig_props_tmp in enumerate( fig_props_list ):
+                    _show = False if i != fig_props_list_len - 1 else show
                     fig_props = deepmerge( fig_props, fig_props_tmp )
                     ckFig = CkFigure( **fig_props )
-                    ckFig.make_figure( inline_show = inline_show )
+                    ckFig.make_figure( inline_show = inline_show, show = _show )
 
 
     #==============================================================#

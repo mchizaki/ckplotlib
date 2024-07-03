@@ -25,6 +25,7 @@ with cplt.ckfigure():
     plt.figure()
     plt.plot( x, y )
 
+
 #%% [markdown]
 """
 ### ckplotlib normal (decorator)
@@ -44,7 +45,7 @@ myplotfunc()
 """
 #%%
 figure_props = cplt.get_figure_props(
-    save_dirname = 'result',
+    save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt0'
 )
 pprint( figure_props )
@@ -60,7 +61,7 @@ with cplt.ckfigure( **figure_props ):
 """
 #%%
 figure_props = cplt.get_figure_props(
-    save_dirname = 'result',
+    save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt1',
     plt_props = dict(
         xlabel = '$x$ label',
@@ -81,7 +82,7 @@ with cplt.ckfigure( **figure_props ):
 """
 #%%
 figure_props = cplt.get_figure_props(
-    save_dirname = 'result',
+    save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt2',
     plt_props = dict(
         xlabel = '$x$ label',
@@ -107,7 +108,7 @@ with cplt.ckfigure( **figure_props ):
 """
 #%%
 figure_props = cplt.get_figure_props(
-    save_dirname = 'result',
+    save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt3',
     plt_props = dict(
         xlabel = '$x$ label',
@@ -131,7 +132,7 @@ with cplt.ckfigure( **figure_props ):
 """
 #%%
 figure_props = cplt.get_figure_props(
-    save_dirname = 'result',
+    save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt_axes_margin',
     axes_xmargins = [ 0.05, 0.2 ],
     axes_ymargins = [ 0, 0.3 ]
@@ -148,7 +149,7 @@ with cplt.ckfigure( **figure_props ):
 """
 #%%
 figure_props = cplt.get_figure_props(
-    save_dirname = 'result',
+    save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt_annotate',
     annotate_str = 'annotate\ntest'
 )
@@ -157,7 +158,7 @@ with cplt.ckfigure( **figure_props ):
     plt.plot( x, y )
 
 figure_props = cplt.get_figure_props(
-    save_dirname = 'result',
+    save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt_annotate2',
     annotate_str = 'annotate\ntest',
     annotate_props = dict(
@@ -169,7 +170,7 @@ with cplt.ckfigure( **figure_props ):
     plt.plot( x, y )
 
 figure_props = cplt.get_figure_props(
-    save_dirname = 'result',
+    save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt_annotate3',
     annotate_str = 'annotate\ntest',
     annotate_props = dict(
@@ -181,14 +182,13 @@ with cplt.ckfigure( **figure_props ):
     plt.plot( x, y )
 
 
-
 #%% [markdown]
 """
 ### logscale
 """
 #%%
 figure_props = cplt.get_figure_props(
-    save_dirname = 'result',
+    save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt_log1',
     plt_props = dict(
         xlabel = '$x$ label',
@@ -208,7 +208,7 @@ with cplt.ckfigure( **figure_props ):
 """
 #%%
 figure_props = cplt.get_figure_props(
-    save_dirname = 'result',
+    save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt_log2',
     plt_props = dict(
         xlabel = '$x$ label',
@@ -229,7 +229,7 @@ with cplt.ckfigure( **figure_props ):
 """
 #%%
 figure_props = cplt.get_figure_props(
-    save_dirname = 'result',
+    save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt_log3',
     plt_props = dict(
         xlabel = '$x$ label',
@@ -250,7 +250,7 @@ If the data contains zero values, the axis is not adjusted.
 """
 #%%
 figure_props = cplt.get_figure_props(
-    save_dirname = 'result',
+    save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt_log4',
     plt_props = dict(
         xlabel = '$x$ label',
@@ -265,14 +265,13 @@ with cplt.ckfigure( **figure_props ):
     plt.plot( x, 5 * np.sin( x ) )
 
 
-
 #%% [markdown]
 """
 ### logscale with log_range_max option
 """
 #%%
 figure_props = cplt.get_figure_props(
-    save_dirname = 'result',
+    save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt_ylog_range_max',
     plt_props = dict(
         yscale = 'log'
@@ -303,5 +302,3 @@ plt.savefig(
     pad_inches  = 0.2,
     bbox_inches = 'tight',
 )
-
-
