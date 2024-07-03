@@ -517,8 +517,8 @@ class CkFigure:
     save_props = dict(
         dirname     = None,
         fname       = None,
-        png_dpi     = 300,
-        svg_dpi     = 150,
+        png_dpi     = ckFigureConfig.png_dpi,
+        svg_dpi     = ckFigureConfig.svg_dpi,
         save_png    = ckFigureConfig.png,
         save_svg    = ckFigureConfig.svg,
         save_pkl    = False,

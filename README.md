@@ -269,6 +269,8 @@ Dictionary with figure settings.  The function of `ckplotlib.ckplot.get_figure_p
    )
    ```
 
+   
+
 2. Save figure
 
    - **fig : *bool*, default: `True`** <br>if `True`: save the figure image
@@ -283,21 +285,42 @@ Dictionary with figure settings.  The function of `ckplotlib.ckplot.get_figure_p
      dict(
          dirname: str | None = None,
          fname:   str | None = None,
-         png_dpi: int        = 300,
-         svg_dpi: int        = 150,
-         SAVE_PARAMS: dict = dict(
+         png:    bool = True, # set by config.ini
+         svg:    bool = True, # set by config.ini
+         png_dpi: int = 300, # set by config.ini
+         svg_dpi: int = 150, # set by config.ini
+         save_params: dict = dict(
              bbox_inches: str   = 'tight',
              pad_inches:  float = 0.2
-         ),
-         save_png: bool = True, # set by config.ini
-         save_svg: bool = True, # set by config.ini
-         save_pkl: bool = False
+         ) # ckplotlib.savefig.SAVE_PARAMS
+         **kwargs
      )
      ```
 
      - (*all keys are optional)
+
      - **dirname : *str | None*, default: `None`**<br>This is updated by `<save_dirname>` if `save_dirname` is not `None`.
+
      - **fname: *str | None*, default: `None`**<br>This is updated by `<save_fname>` if `save_fname` is not `None`.
+
+     - **png : *bool*, default: `True`**<br>If `True`: save figure as png image
+
+     - **svg : *bool*, default: `True`**<br>If `True`: save figure as svg image
+
+     - **png_dpi : *int*, default: `300`**<br>Resolution in dos per inch for png images
+
+     - **svg_dpi : *int*, default: `150`**<br>Resolution in dos per inch for svg images
+
+     - **save_params : *dict*, default:**
+
+       ```python
+       dict(
+           bbox_inches: str   = 'tight',
+           pad_inches:  float = 0.2
+       )
+       ```
+
+       
 
 3. Export plotted data as csv file
 
@@ -331,10 +354,10 @@ Dictionary with figure settings.  The function of `ckplotlib.ckplot.get_figure_p
 
        ```csv
        this is header
-       theta,sin(theta),cos(theta)
-       0.0,0.0,1.0
-       1.0,0.8414709848078965,0.5403023058681398
-       2.0,0.9092974268256817,-0.4161468365471424
+       theta,          sin(theta),          cos(theta)
+         0.0,                 0.0,                 1.0
+         1.0,  0.8414709848078965,  0.5403023058681398
+         2.0,  0.9092974268256817, -0.4161468365471424
        ...
        ```
 
@@ -407,6 +430,8 @@ Dictionary with figure settings.  The function of `ckplotlib.ckplot.get_figure_p
              3,     9,     6,    36
          ```
 
+   
+
 4. Range options
 
    - **xmin, xmax, ymin, ymax : *float | None*, default: `None`**
@@ -421,6 +446,8 @@ Dictionary with figure settings.  The function of `ckplotlib.ckplot.get_figure_p
        specified as a percentage of the size of Axis [from 0 to 1]
 
    - **adjust_lim: *bool*, default: `True`**<br>Set `False` if you do no want `ckplotlib` to adjust the drawing range.
+
+   
 
 5. Range options for logscale<br>The respective options for `x` and `y` axes are valid if `plt.xscale` and `plt.yscale` are `"logscale"`.
 
@@ -455,6 +482,8 @@ Dictionary with figure settings.  The function of `ckplotlib.ckplot.get_figure_p
 
        - **save_original_fig : *bool*, default: `True`**<br>If `True`: save the original figure image in `<save_dirname>/original/` when the figure is modified by the above options.
 
+   
+
 6. Annotate
 
    - **annotate_str : *str | None*, default: `None`**
@@ -488,6 +517,8 @@ Dictionary with figure settings.  The function of `ckplotlib.ckplot.get_figure_p
      | ----------------------------------------------- | ------------------------------------------------ |
      | ![cplt-annotate1](sample/fig_cplt_annotate.svg) | ![cplt-annotate3](sample/fig_cplt_annotate3.svg) |
 
+   
+
 7. Others
 
    - **no_line : *bool*, default: `False`**<br>Set to `True` if you intend that `matplotlib.pyplot.Line2D` is not included in the figure. Normally, this decision is made automatically, so this option is not likely to be used.
@@ -507,9 +538,6 @@ If you want to change the default settings of `ckplotlib`, you have to create so
 `~/.config/ckplotlib/config.ini`
 
 1. ckfigure section
-   - **png : *bool*, default: `True`**<br>If `True`: save figure as png image
-   - **svg : *bool*, default: `True`**<br>If `True`: save figure as svg image
-   - **csv : *bool*, default: `True`**<br>If `True`: save figure data as csv file
    - **use_mplstyle_base : *bool*, default: `True`**<br>If `True`: search and read `base.mplstyle`
    - **show_mplstyle_src : *bool*, default: `False`**<br>If `True`: print the sources of used mplstyle files
    - **show_savefname : *bool*, default: `True`**<br>If `True`: print file name of saved figures
@@ -517,7 +545,13 @@ If you want to change the default settings of `ckplotlib`, you have to create so
    - **close : *bool*, default: `True`**<br>If `True`: close figure after saving figures
    - **mplstyle_font : *{arial, times, any font name, none}*, default: `arial`**<br>If `none`: skip reading font-mplstyle file. Otherwise: search and read font-mplstyle file of `mplstyle_font` (* file name with or without fmt of `.mplstyle`)
    - **cycle : *{mpl | any text}*, default: `ck`**<br>If `mpl`: matplotlib default cycle is used
-   - **bbox_to_anchor : *tuple[float]*, default: `(1.00, 0.95)`**<br>
+   - **legend_bbox_to_anchor : *tuple[float]*, default: `(1.00, 0.95)`**
+2. save section
+   - **png : *bool*, default: `True`**<br>If `True`: save figure as png image
+   - **svg : *bool*, default: `True`**<br>If `True`: save figure as svg image
+   - **csv : *bool*, default: `True`**<br>If `True`: save figure data as csv file
+   - **png_dpi : *int*, default: `300`**<br>Resolution in dos per inch for png images
+   - **svg_dpi : *int*, default: `150`**<br>Resolution in dos per inch for svg images
 
 Examples1 (times)
 
@@ -538,7 +572,7 @@ cycle = mpl
 Example3 (save only png)
 
 ```ini
-[ckfigure]
+[save]
 png = True
 svg = False
 csv = False
@@ -547,10 +581,14 @@ csv = False
 Example4 (all)
 
 ```ini
-[ckfigure]
+[save]
 png = True
 svg = True
 csv = True
+png_dpi = 300
+svg_dpi = 150
+
+[ckfigure]
 use_mplstyle_base = True
 show_mplstyle_src = False
 show_savefname = True

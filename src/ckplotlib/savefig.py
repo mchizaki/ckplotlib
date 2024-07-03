@@ -16,12 +16,12 @@ def savefig(
     fname: str,
     dirname:    str | None = None,
     fig: plt.Figure | None = None,
-    png_dpi:     int  = 300,
-    svg_dpi:     int  = 150,
-    save_png:    bool = ckFigureConfig.png,
-    save_svg:    bool = ckFigureConfig.svg,
-    save_pkl:    bool = False,
-    save_pgf:    bool = False,
+    png:         bool = ckFigureConfig.png,
+    svg:         bool = ckFigureConfig.svg,
+    pkl:         bool = False,
+    pgf:         bool = False,
+    png_dpi:     int  = ckFigureConfig.png_dpi,
+    svg_dpi:     int  = ckFigureConfig.svg_dpi,
     replace:     bool = True,
     save_params: dict = SAVE_PARAMS,
     **kwargs
@@ -34,7 +34,7 @@ def savefig(
         os.makedirs( dirname, exist_ok=True )
         save_fname = os.path.join( dirname, fname )
 
-    if save_png:
+    if png:
         save_fpath = f'{save_fname}.png'
         if replace or not os.path.isfile( save_fpath ):
             fig.savefig(
@@ -45,7 +45,7 @@ def savefig(
                 **kwargs
             )
 
-    if save_svg:
+    if svg:
         save_fpath = f'{save_fname}.svg'
         if replace or not os.path.isfile( save_fpath ):
             fig.savefig(
@@ -56,7 +56,7 @@ def savefig(
                 **kwargs
             )
 
-    if save_pgf:
+    if pgf:
         save_fpath = f'{save_fname}.pgf'
         if replace or not os.path.isfile( save_fpath ):
             fig.savefig(
@@ -66,7 +66,7 @@ def savefig(
                 **kwargs
             )
 
-    if save_pkl:
+    if pkl:
         save_fpath = f'{save_fname}.pkl'
         if replace or not os.path.isfile( save_fpath ):
             with open( save_fpath, 'wb' ) as f:

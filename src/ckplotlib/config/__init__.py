@@ -33,6 +33,8 @@ class CkFigureConfig:
     mplstyle_font: str
     cycle: str
     legend_bbox_to_anchor: tuple
+    png_dpi: int
+    svg_dpi: int
 
     def __post_init__( self ):
         if self.cycle == 'mpl':
@@ -65,16 +67,20 @@ if os.path.isfile( CONFIG_FILE_HOME ):
 
 iniread = configparser.RawConfigParser()
 iniread.read( config_files )
+
 ini_ckfigure = iniread[ 'ckfigure' ]
+ini_save     = iniread[ 'save' ]
 
 
 #==============================================================#
 # get ckFigureConfig
 #==============================================================#
 ckFigureConfig = CkFigureConfig(
-    png = ini_ckfigure.getboolean( 'png' ),
-    svg = ini_ckfigure.getboolean( 'svg' ),
-    csv = ini_ckfigure.getboolean( 'csv' ),
+    png = ini_save.getboolean( 'png' ),
+    svg = ini_save.getboolean( 'svg' ),
+    csv = ini_save.getboolean( 'csv' ),
+    png_dpi = int( ini_save[ 'png_dpi' ] ),
+    svg_dpi = int( ini_save[ 'svg_dpi' ] ),
     use_mplstyle_base = ini_ckfigure.getboolean( 'use_mplstyle_base' ),
     show_mplstyle_src = ini_ckfigure.getboolean( 'show_mplstyle_src' ),
     show_savefname    = ini_ckfigure.getboolean( 'show_savefname' ),
