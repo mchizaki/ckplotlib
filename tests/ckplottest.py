@@ -211,6 +211,26 @@ with cplt.ckfigure( **figure_props ):
 
 #%% [markdown]
 """
+### logscale with log_range_max option
+"""
+#%%
+figure_props = cplt.get_figure_props(
+    save_dirname = 'result',
+    save_fname   = 'fig_cplt_log5',
+    plt_props = dict(
+        yscale = 'log'
+    ),
+    set_ylog_range_max = True
+)
+
+with cplt.ckfigure( **figure_props ):
+    plt.figure()
+    plt.plot( x, 5 * np.exp( -x * 10 ) )
+
+
+
+#%% [markdown]
+"""
 ### matplotlib normal
 """
 #%%

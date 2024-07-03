@@ -7,6 +7,7 @@ import configparser
 from dataclasses import dataclass
 
 from .. import get_configdir
+from ..cycle import ck_cycle, mpl_cycle
 
 FNAME = 'config.ini'
 
@@ -23,20 +24,25 @@ CONFIG_FILE_HOME = os.path.join(
 class CkFigureConfig:
     use_mplstyle_base: bool
     show_mplstyle_src: bool
+    show_savefname: bool
+    inline_show: bool
+    close: bool
     mplstyle_font: str
     cycle: str
     legend_bbox_to_anchor: tuple
 
     def __post_init__( self ):
-        is_error = False
-        if self.cycle != 'ck' and self.cycle != 'matplotlib':
-            error_msg = 'invalid cycle'
-            is_error = True
+        if self.cycle == 'mpl':
+            # self.default_cycle = mpl_cycle
+            self.default_cycle = None
+        else:
+            self.default_cycle = ck_cycle
 
-        if is_error:
-            print( '[error] ckplotlib.config' )
-            print( f'{error_msg} in the ".ini" file' )
-            sys.exit(1)
+        # is_error = False
+        # if is_error:
+        #     print( '[error] ckplotlib.config' )
+        #     print( f'{error_msg} in the ".ini" file' )
+        #     sys.exit(1)
 
 
 
@@ -65,6 +71,9 @@ ini_ckfigure = iniread[ 'ckfigure' ]
 ckFigureConfig = CkFigureConfig(
     use_mplstyle_base = ini_ckfigure.getboolean( 'use_mplstyle_base' ),
     show_mplstyle_src = ini_ckfigure.getboolean( 'show_mplstyle_src' ),
+    show_savefname    = ini_ckfigure.getboolean( 'show_savefname' ),
+    inline_show       = ini_ckfigure.getboolean( 'inline_show' ),
+    close             = ini_ckfigure.getboolean( 'close' ),
     mplstyle_font     = ini_ckfigure[ 'mplstyle_font' ],
     cycle             = ini_ckfigure[ 'cycle' ],
     legend_bbox_to_anchor = _str2tuple( ini_ckfigure[ 'legend_bbox_to_anchor' ] )

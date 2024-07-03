@@ -277,18 +277,24 @@ All options of `ckplotlib.ckplot.get_figure_props` are as follows:
 
    - **adjust_lim: *bool*, default: `True`**<br>Set `False` if you do no want `ckplotlib` to adjust the drawing range.
 
-5. Range options for logscale<br>The respective options for `x` and `y` axis are valid if `plt.xscale` and `plt.yscale` are `"logscale"`.
+5. Range options for logscale<br>The respective options for `x` and `y` axes are valid if `plt.xscale` and `plt.yscale` are `"logscale"`.
 
-   - **is_xlog_intlim : *bool*, default: `False`** | **is_ylog_intlim : *float*, default: `True`**<br>if `True`: axis range of $[10^a, 10^b]$ is determined so that $a$ and $b$ are integers.
+   - **is_xlog_intlim : *bool*, default: `False`** | **is_ylog_intlim : *float*, default: `True`**<br>If `True`: axis range of $[10^a, 10^b]$ is determined so that $a$ and $b$ are integers.
 
-   - **is_xlog_format, is_ylog_format : *bool*, default: `True`**<br>Exponential notation like $10^a$​ is used
+   - **is_xlog_format | is_ylog_format : *bool*, default: `True`**<br>If `True`: Exponential notation like $10^a$​ is used.
 
-   - **xlog_ticker_exponent_range_thr** | **ylog_ticker_exponent_range_thr, *int*, default: `10`**
+   - **xlog_ticker_exponent_range_thr | ylog_ticker_exponent_range_thr, *int*, default: `10`**<br>If $b / a$ exceeds this threshold value where the axis range is $[10^a, 10^b]$, minor ticks are set at $10^m$ ($m$ is an integer).
+
+       | Normal logscale `ticker`               | Wide-range logscale `ticker`           |
+       | -------------------------------------- | -------------------------------------- |
+       | ![cplt-log1](sample/fig_cplt_log1.svg) | ![cplt-log3](sample/fig_cplt_log3.svg) |
+
+       
 
    - Range max options:
-       - **set_xlog_range_max, set_ylog_range_max : *bool*, default: `False`**<br>if `True`: Limit the drawing range according to the `set_x(y)log_range_max_props` option.
+       - **set_xlog_range_max | set_ylog_range_max : *bool*, default: `False`**<br>If `True`: Limit the drawing range according to the `set_x(y)log_range_max_props` option.
 
-       - **set_xlog_range_max_props, set_ylog_range_max_props : *dict*, default:** 
+       - **set_xlog_range_max_props | set_ylog_range_max_props : *dict*, default:** 
 
            ```python
            dict(

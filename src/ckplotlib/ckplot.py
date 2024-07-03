@@ -25,7 +25,7 @@ from .mplstyle import use_mplstyle_font, use_mplstyle
 from .color import ckcolor, ckcmap
 
 from .savecsv import addlinename
-from .cycle import skip_cycle, DEFAULT_CYCLE
+from .cycle import skip_cycle
 
 
 ################################################################
@@ -608,6 +608,8 @@ class CkFigure:
     # use common axis range if fig includes multiple ax subplots
     common_xlim = True
     common_ylim = True
+
+    save_original_fig = True
 
 
     #==============================================================#
@@ -1211,7 +1213,7 @@ class CkFigure:
     #==============================================================#
     def make_figure(
         self,
-        print_name: bool = True,
+        print_name: bool = ckFigureConfig.show_savefname,
         inline_show: bool = True
     ) -> None:
 
@@ -1247,6 +1249,9 @@ class CkFigure:
         #--------------------------------------------------------------#
         # save original figure if ylog_range_exceed_maxval
         #--------------------------------------------------------------#
+        if not self.save_original_fig:
+            return
+
         if self._range_exceed_maxval( ckAxesProps_results ):
             ckFig_ = copy.deepcopy( self )
             ckFig_.set_xlog_range_max = False
@@ -1305,7 +1310,9 @@ def get_figure_props(
     adjust_lim: bool | None = None,
 
     xlog_ticker_exponent_range_thr: int | None = None,
-    ylog_ticker_exponent_range_thr: int | None = None
+    ylog_ticker_exponent_range_thr: int | None = None,
+
+    save_original_fig: bool | None = None
 ) -> dict:
     """
 
@@ -1416,7 +1423,9 @@ def get_figure_props(
         adjust_lim = adjust_lim,
 
         xlog_ticker_exponent_range_thr = xlog_ticker_exponent_range_thr,
-        ylog_ticker_exponent_range_thr = ylog_ticker_exponent_range_thr
+        ylog_ticker_exponent_range_thr = ylog_ticker_exponent_range_thr,
+
+        save_original_fig = save_original_fig
     )
 
     for key, val in kwargs.items():
@@ -1437,13 +1446,13 @@ def get_figure_props(
 @contextmanager
 def ckfigure(
     *fig_props_list:   dict,
-    cycle:             dict|Cycler|None = DEFAULT_CYCLE,
+    cycle:             dict|Cycler|None = ckFigureConfig.default_cycle,
     use_mplstyle_base: bool             = ckFigureConfig.use_mplstyle_base,
     mplstyle_font:     str | None       = ckFigureConfig.mplstyle_font,
     mplstyle:          str | None       = None,
     mplstyle_dir:      str | None       = None,
-    inline_show:       bool             = True,
-    close:             bool             = True,
+    inline_show:       bool             = ckFigureConfig.inline_show,
+    close:             bool             = ckFigureConfig.close,
     **fig_props
 ):
 

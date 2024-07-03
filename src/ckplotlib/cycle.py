@@ -16,23 +16,16 @@ def make_cycle( **kwargs ) -> Cycler:
 #==============================================================#
 # cycle
 #==============================================================#
-if ckFigureConfig.cycle == 'ck':
-    DEFAULT_CYCLE = cycler( color = [
-        'k',
-        ckcolor['red'       ],
-        ckcolor['blue'      ],
-        ckcolor['lightblue' ],
-        ckcolor['green'     ],
-        ckcolor['orange'    ],
-        ckcolor['magenta'   ]
-    ])
-elif ckFigureConfig.cycle == 'matplotlib':
-    DEFAULT_CYCLE = cycler( color = matplotlib_colors )
-else:
-    print( '[error] ckplotlib.cycle' )
-    print( 'invalid cycle in the config file.' )
-    sys.exit(1)
-
+ck_cycle = cycler( color = [
+    'k',
+    ckcolor['red'       ],
+    ckcolor['blue'      ],
+    ckcolor['lightblue' ],
+    ckcolor['green'     ],
+    ckcolor['orange'    ],
+    ckcolor['magenta'   ]
+])
+mpl_cycle = cycler( color = matplotlib_colors )
 
 
 cycle_8colors = make_cycle(
