@@ -696,14 +696,10 @@ class CkFigure:
         )
 
 
-
-    #==============================================================#
-    # set graph style
-    #==============================================================#
-    def set_figure_style(
+    def setattr_figure_data(
         self,
         fig: plt.Figure | None = None
-    ) -> list[ _CkAxesProps ]:
+    ) -> None:
 
         if fig is None:
             fig = plt.gcf()
@@ -820,6 +816,18 @@ class CkFigure:
                 if self.ymin is not None: ax.ckAxesProps.ylim[0] = self.ymin
                 if self.ymax is not None: ax.ckAxesProps.ylim[1] = self.ymax
 
+
+    #==============================================================#
+    # set graph style
+    #==============================================================#
+    def set_figure_style(
+        self,
+        fig: plt.Figure | None = None
+    ) -> list[ _CkAxesProps ]:
+
+        if fig is None:
+            fig = plt.gcf()
+        self.setattr_figure_data( fig = fig )
 
         #--------------------------------------------------------------#
         # result
@@ -1274,6 +1282,126 @@ class CkFigure:
 
 
 
+def make_figures(
+    ckFigures: list[type[CkFigure]],
+    print_name: bool = ckFigureConfig.show_savefname,
+    inline_show: bool = True,
+    show: bool = False
+) -> None:
+
+    if len( ckFigures ) == 0:
+        return
+
+    if len( ckFigures ) == 1:
+        ckFigures[0].make_figure(
+            print_name  = print_name,
+            inline_shoe = inline_show,
+            show        = show
+        )
+        return
+
+
+    #==============================================================#
+    # init
+    #==============================================================#
+    #--------------------------------------------------------------#
+    # get save props
+    #--------------------------------------------------------------#
+    save_props = {}
+    savecsv_props = {}
+    for ckFigure in ckFigures:
+        save_props.update   ( **getattr( ckFigure, 'save_props',    {} ) )
+        savecsv_props.update( **getattr( ckFigure, 'savecsv_props', {} ) )
+
+    #--------------------------------------------------------------#
+    # check
+    #--------------------------------------------------------------#
+    axes = plt.gcf().get_axes()
+    if len( axes ) != len( ckFigures ):
+        print( '[error] ckplotlib.ckplot.make_figures' )
+        print( f'ckFigures len ({len( ckFigures )}) is not equal to axes len ({len( axes )}).' )
+        sys.exit(1)
+
+
+    #==============================================================#
+    # start
+    #==============================================================#
+    if save_props.get( 'fname' ) and print_name:
+        print( f' > {save_props[ "fname" ]}' )
+
+    # setstyle & savefig
+    ckAxesProps_results = []
+    for ckFigure, ax in zip( ckFigures, axes ):
+        ckFigure.setattr_figure_data()
+        ckAxesProps = ckFigure.set_figure_style_ax(
+            ax = ax,
+            setattr_ax_data = False
+        )
+        ckAxesProps_results.append( ckAxesProps )
+
+    ckFigures[-1].savefig( **save_props )
+    ckFigures[-1].savecsv( **savecsv_props )
+
+
+    #--------------------------------------------------------------#
+    # inline show
+    #--------------------------------------------------------------#
+    if inline_show and _is_inline():
+
+        save_svg = save_props[ 'save_svg' ] if 'save_svg' in save_props else True
+        if save_svg:
+            try:
+                from matplotlib_inline import backend_inline
+                backend_inline.set_matplotlib_formats( 'svg' )
+            except:
+                pass
+
+        try:
+            from IPython.display import display
+            display( plt.gcf() )
+        except:
+            pass
+
+
+    #--------------------------------------------------------------#
+    # save original figure if ylog_range_exceed_maxval
+    #--------------------------------------------------------------#
+    save_original_fig = all([
+        ckFigure.save_original_fig for ckFigure in ckFigures
+    ])
+    if not save_original_fig:
+        if show:
+            plt.show()
+        return
+
+    if ckFigures[-1]._range_exceed_maxval( ckAxesProps_results ):
+        for ckFigure, ax in zip( ckFigures, axes ):
+            ckFig_ = copy.deepcopy( ckFigure )
+            ckFig_.set_xlog_range_max = False
+            ckFig_.set_ylog_range_max = False
+
+            # setstyle & savefig
+            ckFig_.setattr_figure_data()
+            ckFig_.set_figure_style_ax(
+                ax = ax,
+                setattr_ax_data = False
+            )
+        save_props[ 'dirname' ] += '/original'
+        save_props[ 'fname' ] += '_original'
+        ckFig_.savefig( **save_props )
+
+    if show:
+        for ckFigure, ax in zip( ckFigures, axes ):
+            ckFigure.setattr_figure_data()
+            ckFigure.set_figure_style_ax(
+                ax = ax,
+                setattr_ax_data = False
+            )
+        plt.show()
+
+
+
+
 ################################################################
 # get figure props
 ################################################################
@@ -1433,13 +1561,14 @@ def get_figure_props(
 def ckfigure(
     *fig_props_list:   dict,
     cycle:             dict|Cycler|None = ckFigureConfig.default_cycle,
-    use_mplstyle_base: bool             = ckFigureConfig.use_mplstyle_base,
-    mplstyle_font:     str | None       = ckFigureConfig.mplstyle_font,
-    mplstyle:          str | None       = None,
-    mplstyle_dir:      str | None       = None,
-    inline_show:       bool             = ckFigureConfig.inline_show,
-    show:              bool             = False,
-    close:             bool             = ckFigureConfig.close,
+    use_mplstyle_base:             bool = ckFigureConfig.use_mplstyle_base,
+    mplstyle_font:           str | None = ckFigureConfig.mplstyle_font,
+    mplstyle:                str | None = None,
+    mplstyle_dir:            str | None = None,
+    inline_show:                   bool = ckFigureConfig.inline_show,
+    show:                          bool = False,
+    close:                         bool = ckFigureConfig.close,
+    common_subplot_props:          bool = True,
     **fig_props
 ):
 
@@ -1477,6 +1606,8 @@ def ckfigure(
     #==============================================================#
     # try - main plot -
     #==============================================================#
+    fig_props_list_len = len( fig_props_list )
+
     try:
         with mpl.rc_context( mpl_rc_params ):
 
@@ -1489,17 +1620,29 @@ def ckfigure(
             #--------------------------------------------------------------#
             # set style & save
             #--------------------------------------------------------------#
-            fig_props_list_len = len( fig_props_list )
             if fig_props_list_len == 0:
                 ckFig = CkFigure( **fig_props )
                 ckFig.make_figure( inline_show = inline_show, show = show )
 
             else:
-                for i, fig_props_tmp in enumerate( fig_props_list ):
-                    _show = False if i != fig_props_list_len - 1 else show
-                    fig_props = deepmerge( fig_props, fig_props_tmp )
-                    ckFig = CkFigure( **fig_props )
-                    ckFig.make_figure( inline_show = inline_show, show = _show )
+                if common_subplot_props:
+                    for i, fig_props_tmp in enumerate( fig_props_list ):
+                        _show = False if i != fig_props_list_len - 1 else show
+                        fig_props = deepmerge( fig_props, fig_props_tmp )
+                        ckFig = CkFigure( **fig_props )
+                        ckFig.make_figure( inline_show = inline_show, show = _show )
+
+                else:
+                    ckFigs = [
+                        CkFigure( **fig_props_tmp )
+                        for fig_props_tmp in fig_props_list
+                    ]
+                    make_figures(
+                        ckFigures   = ckFigs,
+                        inline_show = inline_show,
+                        show        = show
+                    )
+
 
 
     #==============================================================#

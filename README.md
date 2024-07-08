@@ -188,7 +188,7 @@ with cplt.ckfigure(**props):
 
 Context manager of `ckplotlib.ckplot.ckfigure` has many options to markup and save your figures.
 
-### calling ckfigure
+### Call signatures
 
 1. using `figure_props`
 
@@ -210,7 +210,7 @@ Context manager of `ckplotlib.ckplot.ckfigure` has many options to markup and sa
 
 
 
-### options
+### Options
 
 #### kwargs
 
@@ -229,6 +229,8 @@ Context manager of `ckplotlib.ckplot.ckfigure` has many options to markup and sa
    - **inline_show : *bool*, default: `True`**<br>If `True`: show figure when you use Matplotlib Inline Back-end.
 
    - **close : *bool*, default: `True`**<br>If `True`: close figure after saving figures.
+   
+   - **common_subplot_props : *bool*, default: `True`**<br>This option is valid when `fig_props_list` of ckfigure's option and `plt.subplot` are used. If this option is `False`, the individual `figure_props` can be applied to each subplot. Each `figure_props` is set as an element of a list of `figure_props_list`. The length of the list of `figure_props_list` and the number of subplots (namely, the length of the list of `plt.gcf().axes`) must be equal (See: <a id='#figure-example-subplot1'>Sample figures (subplot)</a>).
 
 > [!Important]
 >
@@ -478,7 +480,7 @@ plt_prop_kwargs = dict(
 
 The respective options for `x` and `y` axes are valid if `plt.xscale` and `plt.yscale` are `"logscale"`.
 
-- **is_xlog_intlim : *bool*, default: `False`** | **is_ylog_intlim : *float*, default: `True`**<br>If `True`: axis range of $[10^a, 10^b]$ is determined so that $a$ and $b$ are integers.
+- **is_xlog_intlim : *bool*, default: `False`** | **is_ylog_intlim : *bool*, default: `True`**<br>If `True`: axis range of $[10^a, 10^b]$ is determined so that $a$ and $b$ are integers.
 
 - **is_xlog_format | is_ylog_format : *bool*, default: `True`**<br>If `True`: Exponential notation like $10^a$​ is used.
 
@@ -710,13 +712,17 @@ cos_theta = np.cos(theta)
 > Do not use the same name for xcol_name when `common_x = False`.
 >
 > ```python
-> ...
+> figure_props = cplt.get_figure_props(
+>     savecsv_props = dict(
+>         common_x = False
+>     )
+> )
 > with cplt.ckfigure(**figure_props):
->     plt.figure()
->     plt.plot(theta, sin_theta)
->     cplt.addlinename('theta', 'sin(theta)')
->     plt.plot(theta, cos_theta)
->     cplt.addlinename('theta', 'cos(theta)')
+>  plt.figure()
+>  plt.plot(theta, sin_theta)
+>  cplt.addlinename('theta', 'sin(theta)')
+>  plt.plot(theta, cos_theta)
+>  cplt.addlinename('theta', 'cos(theta)')
 > ```
 >
 > This script causes the following error messasge:
@@ -809,7 +815,7 @@ If you want to use your favorite mplstyle, create mplstyle in a directory in `~/
 
 
 
-## Example figures
+## Sample figures
 
 common codes:
 ```python
@@ -976,7 +982,7 @@ with cplt.ckfigure(**figure_props):
 
 ### logscale (data including minus or zero value)
 
-If the data contains zero values, the axis is not adjusted.
+If the data contains a value less than zero, the axis is not adjusted.
 
 ```python
 figure_props = cplt.get_figure_props(
@@ -997,3 +1003,54 @@ with cplt.ckfigure(**figure_props):
 
 ![cplt-log4](sample/fig_cplt_log4.svg)
 
+
+
+### [subplot](#figure-example-subplot1)
+
+```python
+figure_props_list = [
+    cplt.get_figure_props(
+        save_dirname = SAVE_DIRNAME,
+        save_fname   = 'fig_cplt_subplot1',
+        plt_props = dict(
+            xlabel = '$x$ label',
+            ylabel = r'$\sin(x)$',
+            title  = 'title 1'
+        ),
+        ymin = -2,
+        ymax = 2
+    ),
+    cplt.get_figure_props(
+        plt_props = dict(
+            xlabel = '$x$ label',
+            ylabel = r'$\cos(x)$',
+            title  = 'title 2'
+        ),
+        plt_prop_kwargs = dict(
+            legend = dict(
+                title = 'lgd title'
+            )
+        ),
+        ymin = -2,
+        ymax = 2,
+        axes_xmargins = [ 0, 0.5 ],
+        axes_ymargins = [ 0, 0 ]
+    )
+]
+
+with cplt.ckfigure(
+    *figure_props_list,
+    common_subplot_props = False
+):
+    fs = plt.rcParams[ 'figure.figsize' ]
+    plt.figure( figsize = ( fs[0]*3, fs[1] ) )
+    plt.subplots_adjust( wspace = 0.5 )
+    plt.subplot(121)
+    plt.plot( x, np.sin( x ), 'k', label = r'$\sin(x)$' )
+    plt.plot( x, np.cos( x ), 'r', label = r'$\cos(x)$' )
+    plt.subplot(122)
+    plt.plot( x, np.sin( x ), 'k', label = r'$\sin(x)$' )
+    plt.plot( x, np.cos( x ), 'r', label = r'$\cos(x)$' )
+```
+
+![cplt-subplot1](sample/fig_cplt_subplot1.svg)
