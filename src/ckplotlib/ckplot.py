@@ -330,6 +330,12 @@ def get_lines_x_minima_maxima(
         # xmin_ = x[0]  if xmin is None else xmin
         # xmax_ = x[-1] if xmax is None else xmax
 
+        if np.size( x ) == 0 or np.size( y ) == 0:
+            print( '[error] ckplotlib.ckplot.get_lines_x_minima_maxima' )
+            print( 'Figure includes a line without data.' )
+            print( f'{x = }, {y = }' )
+            sys.exit(1)
+
         ymin_ = np.min( y ) if ymin is None else ymin
         ymax_ = np.max( y ) if ymax is None else ymax
 
@@ -354,6 +360,12 @@ def get_lines_y_minima_maxima(
 
         # xmin_ = x[0]  if xmin is None else xmin
         # xmax_ = x[-1] if xmax is None else xmax
+
+        if np.size( x ) == 0 or np.size( y ) == 0:
+            print( '[error] ckplotlib.ckplot.get_lines_x_minima_maxima' )
+            print( 'Figure includes a line without data.' )
+            print( f'{x = }, {y = }' )
+            sys.exit(1)
 
         xmin_ = np.min( x ) if xmin is None else xmin
         xmax_ = np.max( x ) if xmax is None else xmax
