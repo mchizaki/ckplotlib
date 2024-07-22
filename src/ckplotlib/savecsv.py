@@ -97,18 +97,26 @@ def _get_ax_data(
     if ckLineProps:
         common_x_col = getattr( ckLineProps, 'name_x', common_x_col )
 
+
     # common_x check
     if common_x:
         x0, _ = line0.get_data()
 
-        if not all([
-            np.allclose( x0, line.get_data()[0] )
-            for line in lines
-        ]):
+        common = True
+        for line in lines:
+            _x, _ = line.get_data()
+            if np.size( x0 ) == np.size( _x ):
+                if not np.allclose( x0, _x ):
+                    common = False
+            else:
+                common = False
+
+        if not common:
             print( ' > ckplotlib.savecsv' )
             print( '   * x data arrays are not common.' )
             print( '   * common_x is changed to False.' )
             common_x = False
+
 
     dfs = []
     xcols = []
@@ -136,6 +144,7 @@ def _get_ax_data(
             columns = [ xcol, ycol ]
         )
         dfs.append( df )
+
 
     # duplicates check
     if len_lines > 1:
