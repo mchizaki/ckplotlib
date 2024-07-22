@@ -156,12 +156,17 @@ def _get_ax_data(
     if common_x:
         new_dfs = dfs[0]
         for df in dfs[1:]:
-            new_dfs = pd.merge(
-                new_dfs,
-                df,
-                how = 'left',
-                on  = xcol
+            new_dfs = pd.concat(
+                [ new_dfs, df.iloc[:,1] ],
+                axis = 1,
+                join = 'inner'
             )
+            # new_dfs = pd.merge(
+            #     new_dfs,
+            #     df,
+            #     how = 'inner',
+            #     on  = xcol
+            # )
     else:
         new_dfs = pd.concat(
             dfs,
