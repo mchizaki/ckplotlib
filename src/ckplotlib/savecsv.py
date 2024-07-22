@@ -97,6 +97,19 @@ def _get_ax_data(
     if ckLineProps:
         common_x_col = getattr( ckLineProps, 'name_x', common_x_col )
 
+    # common_x check
+    if common_x:
+        x0, _ = line0.get_data()
+
+        if not all([
+            np.allclose( x0, line.get_data()[0] )
+            for line in lines
+        ]):
+            print( ' > ckplotlib.savecsv' )
+            print( '   * x data arrays are not common.' )
+            print( '   * common_x is changed to False.' )
+            common_x = False
+
     dfs = []
     xcols = []
     ycols = []
@@ -146,7 +159,7 @@ def _get_ax_data(
             new_dfs = pd.merge(
                 new_dfs,
                 df,
-                how = 'outer',
+                how = 'left',
                 on  = xcol
             )
     else:
