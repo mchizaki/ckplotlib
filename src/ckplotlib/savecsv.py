@@ -202,11 +202,11 @@ def _get_fig_data(
     axes_len = len( axes )
     col_prefix = ''
     col_suffix = ''
+    show_msg = True
     for i, ax in enumerate( axes ):
         if axes_len > 1:
             col_prefix = f'f{i+1}['
             col_suffix = ']'
-        show_msg = True
         df = _get_ax_data(
             ax         = ax,
             common_x   = common_x,
