@@ -336,10 +336,15 @@ def get_lines_x_minima_maxima(
             print( f'{x = }, {y = }' )
             sys.exit(1)
 
-        ymin_ = np.min( y ) if ymin is None else ymin
-        ymax_ = np.max( y ) if ymax is None else ymax
+        ymin_ = np.nanmin( y ) if ymin is None else ymin
+        ymax_ = np.nanmax( y ) if ymax is None else ymax
 
         new_x = x[ ( y >= ymin_ ) & ( y <= ymax_ ) ]
+
+        if np.size( new_x ) == 0:
+            print( '[error] ckplotlib.ckplot.get_lines_x_minima_maxima' )
+            print( 'size of new_x is zero.' )
+            sys.exit(1)
 
         x_minima.append( np.nanmin(new_x) )
         x_maxima.append( np.nanmax(new_x) )
@@ -367,11 +372,15 @@ def get_lines_y_minima_maxima(
             print( f'{x = }, {y = }' )
             sys.exit(1)
 
-        xmin_ = np.min( x ) if xmin is None else xmin
-        xmax_ = np.max( x ) if xmax is None else xmax
+        xmin_ = np.nanmin( x ) if xmin is None else xmin
+        xmax_ = np.nanmax( x ) if xmax is None else xmax
 
         new_y = y[ ( x >= xmin_ ) & ( x <= xmax_ ) ]
 
+        if np.size( new_y ) == 0:
+            print( '[error] ckplotlib.ckplot.get_lines_y_minima_maxima' )
+            print( 'size of new_y is zero.' )
+            sys.exit(1)
 
         y_minima.append( np.nanmin(new_y) )
         y_maxima.append( np.nanmax(new_y) )

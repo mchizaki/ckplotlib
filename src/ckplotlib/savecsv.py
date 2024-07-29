@@ -77,7 +77,8 @@ def _get_ax_data(
     lines: list[plt.Line2D] | None = None,
     common_x:   bool = False,
     col_prefix: str  = '',
-    col_suffix: str  = ''
+    col_suffix: str  = '',
+    show_msg:   bool = True
 ) -> list[ pd.DataFrame ]:
 
     if ax is None: ax = plt.gca()
@@ -112,9 +113,11 @@ def _get_ax_data(
                 common = False
 
         if not common:
-            print( ' > ckplotlib.savecsv' )
-            print( '   * x data arrays are not common.' )
-            print( '   * common_x is changed to False.' )
+            if show_msg:
+                print( '   * ckplotlib.savecsv' )
+                print( '       * x data arrays are not common.' )
+                print( '       * common_x is changed to False.' )
+                show_msg = False
             common_x = False
 
 
@@ -203,11 +206,13 @@ def _get_fig_data(
         if axes_len > 1:
             col_prefix = f'f{i+1}['
             col_suffix = ']'
+        show_msg = True
         df = _get_ax_data(
             ax         = ax,
             common_x   = common_x,
             col_prefix = col_prefix,
-            col_suffix = col_suffix
+            col_suffix = col_suffix,
+            show_msg   = show_msg
         )
         dfs.append( df )
 
