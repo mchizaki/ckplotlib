@@ -186,7 +186,7 @@ def _get_ax_data(
             join = 'outer'
         )
 
-    return new_dfs
+    return new_dfs, show_msg
 
 
 def _get_fig_data(
@@ -207,7 +207,7 @@ def _get_fig_data(
         if axes_len > 1:
             col_prefix = f'f{i+1}['
             col_suffix = ']'
-        df = _get_ax_data(
+        df, show_msg = _get_ax_data(
             ax         = ax,
             common_x   = common_x,
             col_prefix = col_prefix,
