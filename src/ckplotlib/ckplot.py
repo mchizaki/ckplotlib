@@ -570,6 +570,22 @@ class CkFigure:
     #     )
     # )
 
+    # hlines & vlines
+    hlines_vals = []
+    vlines_vals = []
+    hlines_props = dict(
+        color     = ckcolor[ 'lightgray' ],
+        linewidth = 1,
+        linestyle = '--',
+        zorder    = -100
+    )
+    vlines_props = dict(
+        color     = ckcolor[ 'lightgray' ],
+        linewidth = 1,
+        linestyle = '--',
+        zorder    = -100
+    )
+
     # annotate
     annotate_str = None
     annotate_props = dict(
@@ -960,6 +976,10 @@ class CkFigure:
         #################
         if self.no_line: self.adjust_lim = False
         if not self.adjust_lim:
+            # hlines & vlines
+            self._hlines( ax )
+            self._vlines( ax )
+
             return getattr( ax, 'ckAxesProps', None )
 
 
@@ -1005,7 +1025,6 @@ class CkFigure:
                 lim[1] = lim_[1]
 
         # max_range
-        # x test
         if ax.ckAxesProps.is_xlog:
             if self.set_xlog_range_max:
 
@@ -1118,8 +1137,26 @@ class CkFigure:
                 axis.set_major_locator( copy.copy( WIDE_LOG_LOC_MAJ ) )
                 axis.set_minor_locator( copy.copy( WIDE_LOG_LOC_MIN ) )
 
+        # hlines & vlines
+        self._hlines( ax )
+        self._vlines( ax )
 
         return ax.ckAxesProps
+
+
+    #==============================================================#
+    # plot
+    #==============================================================#
+    def _hlines( self, ax: plt.Axes ) -> None:
+        _xlim = ax.get_xlim()
+        for y in self.hlines_vals:
+            plt.hlines( y, *_xlim, **self.hlines_props )
+
+
+    def _vlines( self, ax: plt.Axes ) -> None:
+        _ylim = ax.get_ylim()
+        for x in self.vlines_vals:
+            plt.vlines( x, *_ylim, **self.vlines_props )
 
 
     #==============================================================#
@@ -1460,6 +1497,11 @@ def get_figure_props(
     axes_xmargins: list[float, float] | None = None,
     axes_ymargins: list[float, float] | None = None,
 
+    hlines_vals: list[float] | None = None,
+    hlines_props: dict | None = None,
+    vlines_vals: list[float] | None = None,
+    vlines_props: dict | None = None,
+
     annotate_str:   str  | None = None,
     annotate_props: dict | None = None,
 
@@ -1550,6 +1592,11 @@ def get_figure_props(
 
         axes_xmargins = axes_xmargins,
         axes_ymargins = axes_ymargins,
+
+        hlines_vals  = hlines_vals,
+        hlines_props = hlines_props,
+        vlines_vals  = vlines_vals,
+        vlines_props = vlines_props,
 
         annotate_str   = annotate_str,
         annotate_props = annotate_props,

@@ -13,7 +13,10 @@ ckcolor = dict(
     green     = '#6b8d4d',
     lightblue = '#1894b1',
     blue      = '#175487',
-    grey      = '#515151'
+    grey      = '#515151',
+    gray      = '#515151',
+    lightgrey = '#848484'
+    lightgray = '#848484'
 )
 
 ckcolors = [
