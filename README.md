@@ -515,10 +515,10 @@ The respective options for `x` and `y` axes are valid if `plt.xscale` and `plt.y
 
 ### (6) hlines and vlines options
 
-- **hlines_yvals : *list[float]*, default: `[ ]`**
+- **hlines_yvals : *list[float]*, default: `[ ]`**<br>
   list of y values for which you want to draw horizontal lines by `plt.hlines`
 
-- **vlines_xvals : *list[float]*, default: `[ ]`**
+- **vlines_xvals : *list[float]*, default: `[ ]`**<br>
   list of x values for which you want to draw vertical lines by `plt.vlines`
 
 - **hlines_props | vlines_props: *dict*, default:**
