@@ -15,7 +15,7 @@ ckcolor = dict(
     blue      = '#175487',
     grey      = '#515151',
     gray      = '#515151',
-    lightgrey = '#848484'
+    lightgrey = '#848484',
     lightgray = '#848484'
 )
 

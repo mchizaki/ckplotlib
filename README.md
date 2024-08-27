@@ -513,7 +513,30 @@ The respective options for `x` and `y` axes are valid if `plt.xscale` and `plt.y
 
 
 
-### (6) Annotation options
+### (6) hlines and vlines options
+
+- **hlines_yvals : *list[float]*, default: `[ ]`**
+  list of y values for which you want to draw horizontal lines by `plt.hlines`
+
+- **vlines_xvals : *list[float]*, default: `[ ]`**
+  list of x values for which you want to draw vertical lines by `plt.vlines`
+
+- **hlines_props | vlines_props: *dict*, default:**
+
+  ```python
+  dict(
+      color     = ckcolor[ 'lightgray' ],
+      linewidth = 1,
+      linestyle = '--',
+      zorder    = -100
+  )
+  ```
+
+  options of `plt.hlines` or `plt.vlines`
+
+
+
+### (7) Annotation options
 
 - **annotate_str : *str | None*, default: `None`**
 
@@ -548,7 +571,7 @@ The respective options for `x` and `y` axes are valid if `plt.xscale` and `plt.y
 
 
 
-### (7) Other options
+### (8) Other options
 
 - **no_line : *bool*, default: `False`**<br>Set to `True` if you intend that `matplotlib.pyplot.Line2D` is not included in the figure. Normally, this decision is made automatically, so this option is not likely to be used.
 
@@ -893,6 +916,30 @@ with cplt.ckfigure(**figure_props):
 ```
 
 ![cplt-axes-margin](sample/fig_cplt_axes_margin.svg)
+
+
+
+### hlines and vlines
+
+```python
+figure_props = cplt.get_figure_props(
+    save_dirname = 'result',
+    save_fname   = 'fig_cplt_hlines_vlines',
+    hlines_yvals  = [ 0, 1, -0.5 ],
+    vlines_xvals  = [ 4 ],
+    vlines_props  = dict(
+        color     = 'r',
+        linewidth = 2,
+        linestyle = '-.',
+        zorder    = 10
+    )
+)
+with cplt.ckfigure( **figure_props ):
+    plt.figure()
+    plt.plot( x, y )
+```
+
+![cplt-annotate1](sample/fig_cplt_hlines_vlines.svg)
 
 
 

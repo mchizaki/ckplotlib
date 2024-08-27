@@ -143,6 +143,29 @@ with cplt.ckfigure( **figure_props ):
     plt.plot( x, y )
 
 
+
+#%% [markdown]
+"""
+### with hlines and vlines
+"""
+#%%
+figure_props = cplt.get_figure_props(
+    save_dirname = SAVE_DIRNAME,
+    save_fname   = 'fig_cplt_hlines_vlines',
+    hlines_yvals  = [ 0, 1, -0.5 ],
+    vlines_xvals  = [ 4 ],
+    vlines_props  = dict(
+        color     = 'r',
+        linewidth = 2,
+        linestyle = '-.',
+        zorder    = 10
+    )
+)
+with cplt.ckfigure( **figure_props ):
+    plt.figure()
+    plt.plot( x, y )
+
+
 #%% [markdown]
 """
 ### with annotate
