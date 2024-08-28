@@ -1103,8 +1103,7 @@ class CkFigure:
             is_log, is_log_format,
             axis,
             lim,
-            ticker_range_thr,
-            skip_adjust_lim
+            ticker_range_thr
         ) in zip(
             #
             [ ax.ckAxesProps.is_xlog,  ax.ckAxesProps.is_ylog  ],
@@ -1112,17 +1111,13 @@ class CkFigure:
             #
             [ ax.xaxis,  ax.yaxis ],
             #
-            [ ax.ckAxesProps.xlim, ax.ckAxesProps.ylim ],
+            [ ax.get_xlim(), ax.get_ylim() ],
             #
             [
                 self.xlog_ticker_exponent_range_thr,
                 self.ylog_ticker_exponent_range_thr
-            ],
-            #
-            [ skip_adjust_xlim, skip_adjust_ylim ]
+            ]
         ):
-
-            if skip_adjust_lim: continue
 
             if not is_log: continue
 
