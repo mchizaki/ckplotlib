@@ -87,7 +87,7 @@ def _is_inline() -> bool:
 
 
 
-def legend(
+def _legend(
     lines: list[plt.Line2D],
     *arg,
     **kwargs
@@ -104,6 +104,12 @@ def legend(
         new_kwargs.update( **HANDLE_LENGTH_ZERO )
 
     plt.legend( *arg, **new_kwargs )
+
+
+
+def legend( *args, **kwargs ) -> None:
+    lines = plt.gca().get_lines()
+    _legend( lines, *args, **kwargs )
 
 
 
@@ -933,7 +939,7 @@ class CkFigure:
             kwargs = self.plt_prop_kwargs.get( key, {} )
 
             if key == 'legend':
-                legend( lines, val, **kwargs )
+                _legend( lines, val, **kwargs )
                 continue
 
             # getattr( plt, key )( val, **kwargs )
@@ -948,7 +954,7 @@ class CkFigure:
             kwargs = val
 
             if key == 'legend':
-                legend( lines, **kwargs )
+                _legend( lines, **kwargs )
                 continue
 
             # getattr( plt, key )( **kwargs )
