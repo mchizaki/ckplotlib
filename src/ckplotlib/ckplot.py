@@ -87,7 +87,7 @@ def _is_inline() -> bool:
 
 
 
-def legend_adjust_handle_length(
+def legend(
     lines: list[plt.Line2D],
     *arg,
     **kwargs
@@ -933,7 +933,7 @@ class CkFigure:
             kwargs = self.plt_prop_kwargs.get( key, {} )
 
             if key == 'legend':
-                legend_adjust_handle_length( lines, val, **kwargs )
+                legend( lines, val, **kwargs )
                 continue
 
             # getattr( plt, key )( val, **kwargs )
@@ -948,7 +948,7 @@ class CkFigure:
             kwargs = val
 
             if key == 'legend':
-                legend_adjust_handle_length( lines, **kwargs )
+                legend( lines, **kwargs )
                 continue
 
             # getattr( plt, key )( **kwargs )
