@@ -612,8 +612,8 @@ class CkFigure:
     # x/ylog_intlim
     # - axis range = [10^a, 10^b] (a & b are integer)
     # - this props is valid if plt.xscale/yscale is 'log'
-    is_xlog_intlim = False
-    is_ylog_intlim = True
+    use_xlog_intlim = False
+    use_ylog_intlim = True
 
     # x/ylog_format
     # - use exponential notation
@@ -1012,20 +1012,20 @@ class CkFigure:
 
 
         for (
-            is_log, is_log_intlim,
+            is_log, use_log_intlim,
             lim,
             skip_adjust_lim
         ) in zip(
             #
             [ ax.ckAxesProps.is_xlog,  ax.ckAxesProps.is_ylog  ],
-            [ self.is_xlog_intlim, self.is_ylog_intlim ],
+            [ self.use_xlog_intlim, self.use_ylog_intlim ],
             #
             [ ax.ckAxesProps.xlim, ax.ckAxesProps.ylim ],
             #
             [ skip_adjust_xlim, skip_adjust_ylim ]
         ):
             if skip_adjust_lim: continue
-            if is_log and is_log_intlim:
+            if is_log and use_log_intlim:
                 lim_ = axes_log_limits( *lim )
                 lim[0] = lim_[0]
                 lim[1] = lim_[1]
@@ -1485,8 +1485,8 @@ def get_figure_props(
     common_ylim: bool | None = None,
     adjust_ylim_in_xlim: bool | None = None,
 
-    is_xlog_intlim: bool | None = None,
-    is_ylog_intlim: bool | None = None,
+    use_xlog_intlim: bool | None = None,
+    use_ylog_intlim: bool | None = None,
     is_xlog_format: bool | None = None,
     is_ylog_format: bool | None = None,
 
@@ -1537,7 +1537,7 @@ def get_figure_props(
         - `adjust_lim`
 
     - Range options for logscale
-        - `is_xlog_intlim` | `is_ylog_intlim`
+        - `use_xlog_intlim` | `use_ylog_intlim`
         - `is_xlog_format` | `is_ylog_format`
         - `xlog_ticker_exponent_range_thr` | `ylog_ticker_exponent_range_thr`
         - Range max options:
@@ -1581,8 +1581,8 @@ def get_figure_props(
         common_ylim = common_ylim,
         adjust_ylim_in_xlim = adjust_ylim_in_xlim,
 
-        is_xlog_intlim = is_xlog_intlim,
-        is_ylog_intlim = is_ylog_intlim,
+        use_xlog_intlim = use_xlog_intlim,
+        use_ylog_intlim = use_ylog_intlim,
         is_xlog_format = is_xlog_format,
         is_ylog_format = is_ylog_format,
 

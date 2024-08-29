@@ -480,7 +480,7 @@ plt_kwargs = dict(
 
 The respective options for `x` and `y` axes are valid if `plt.xscale` and `plt.yscale` are `"logscale"`.
 
-- **is_xlog_intlim : *bool*, default: `False`** | **is_ylog_intlim : *bool*, default: `True`**<br>If `True`: axis range of $[10^a, 10^b]$ is determined so that $a$ and $b$ are integers.
+- **use_xlog_intlim : *bool*, default: `False`** | **use_ylog_intlim : *bool*, default: `True`**<br>If `True`: axis range of $[10^a, 10^b]$ is determined so that $a$ and $b$ are integers.
 
 - **is_xlog_format | is_ylog_format : *bool*, default: `True`**<br>If `True`: Exponential notation like $10^a$​ is used.
 
@@ -993,7 +993,7 @@ figure_props = cplt.get_figure_props(
         ylabel = '$y$ label',
         yscale = 'log'
     ),
-    is_ylog_intlim = False
+    use_ylog_intlim = False
 )
 
 with cplt.ckfigure(**figure_props):
@@ -1040,7 +1040,7 @@ figure_props = cplt.get_figure_props(
         ylabel = '$y$ label',
         yscale = 'log'
     ),
-    is_ylog_intlim = False
+    use_ylog_intlim = False
 )
 
 with cplt.ckfigure(**figure_props):

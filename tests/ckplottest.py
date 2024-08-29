@@ -238,7 +238,7 @@ figure_props = cplt.get_figure_props(
         ylabel = '$y$ label',
         yscale = 'log'
     ),
-    is_ylog_intlim = False
+    use_ylog_intlim = False
 )
 
 with cplt.ckfigure( **figure_props ):
@@ -280,7 +280,7 @@ figure_props = cplt.get_figure_props(
         ylabel = '$y$ label',
         yscale = 'log'
     ),
-    is_ylog_intlim = False
+    use_ylog_intlim = False
 )
 
 with cplt.ckfigure( **figure_props ):
