@@ -82,7 +82,9 @@ with cplt.ckfigure():
     plt.xlabel('$x$ label')
     plt.ylabel('$y$ label')
     plt.title('title')
-    plt.legend(title='func', **cplt.LGD_PARAMS)
+    cplt.legend(title='func')
+    # or
+    # plt.legend(title='func', **cplt.LGD_PARAMS)
 ```
 
 How to save this figure => next section
@@ -101,7 +103,7 @@ def plot_func():
     plt.xlabel('$x$ label')
     plt.ylabel('$y$ label')
     plt.title('title')
-    plt.legend(title='func', **cplt.LGD_PARAMS)
+    cplt.legend(title='func')
 
 plot_func()
 ```
