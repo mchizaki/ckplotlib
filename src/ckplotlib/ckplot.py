@@ -562,10 +562,10 @@ class CkFigure:
         subplot_common_x = False
     )
 
-    plt_props = {}
+    plt_args = {}
     plt_prop_kwargs = {}
 
-    # plt_props = dict(
+    # plt_args = dict(
     #     xlabel = 'Temperature (K)',
     #     yscale = 'log'
     # )
@@ -915,11 +915,11 @@ class CkFigure:
 
 
         #################
-        # plt_props & plt_props_kwargs
+        # plt_args & plt_prop_kwargs
         #################
         """
-        * formats of "plt_props" & "plt_props_kwargs" are as followings:
-            plt_props = dict(
+        * formats of "plt_args" & "plt_prop_kwargs" are as followings:
+            plt_args = dict(
                 xlabel = 'Temperature (K)',
                 yscale = 'log'
             )
@@ -935,7 +935,7 @@ class CkFigure:
                 print( f'[error] self.plt_prop_kwargs[{key}] must be dict.' )
                 sys.exit(1)
 
-        for key, val in self.plt_props.items():
+        for key, val in self.plt_args.items():
             kwargs = self.plt_prop_kwargs.get( key, {} )
 
             if key == 'legend':
@@ -950,7 +950,7 @@ class CkFigure:
                 pltfunc( val, **kwargs )
 
         for key, val in self.plt_prop_kwargs.items():
-            if key in self.plt_props: continue
+            if key in self.plt_args: continue
             kwargs = val
 
             if key == 'legend':
@@ -1474,7 +1474,7 @@ def get_figure_props(
     savecsv_subdirname: str  | None = None,
     savecsv_props:      dict = {},
 
-    plt_props:       dict | None = None,
+    plt_args:       dict | None = None,
     plt_prop_kwargs: dict | None = None,
 
     xmin: float | None = None,
@@ -1515,7 +1515,7 @@ def get_figure_props(
     save_original_fig: bool | None = None
 ) -> dict:
     """
-    - `plt_props`
+    - `plt_args`
     - `plt_prop_kwargs`
 
     - save figure
@@ -1570,7 +1570,7 @@ def get_figure_props(
         fig = fig,
         csv = csv,
 
-        plt_props = plt_props,
+        plt_args = plt_args,
         plt_prop_kwargs = plt_prop_kwargs,
 
         xmin = xmin,

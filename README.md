@@ -163,7 +163,7 @@ Figure markup with `pyplot`, such as `plt.xlabel`, `plt.ylabel`, etc., can be re
 props = cplt.get_figure_props(
     save_dirname = 'result',
     save_fname   = 'fig_cplt_test1_',
-    plt_props = dict(
+    plt_args = dict(
         xlabel = '$x$ label',
         ylabel = '$y$ label',
         title  = 'title'
@@ -277,14 +277,14 @@ Dictionary with figure settings.  The function of `ckplotlib.ckplot.get_figure_p
 
 ### (1) Markup options of `matplotlib.pyplot`
 
-- **plt_props: *dict*, default: `{}`**
+- **plt_args: *dict*, default: `{}`**
 
 - **plt_prop_kwargs : *dict*, default: `{}`**
 
 e.g.
 
 ```python
-plt_props = dict(
+plt_args = dict(
     xlabel = 'Temperature (K)',
     yscale = 'log'
 )
@@ -869,7 +869,7 @@ with cplt.ckfigure():
 figure_props = cplt.get_figure_props(
     save_dirname = 'result',
     save_fname   = 'fig_cplt1',
-    plt_props = dict(
+    plt_args = dict(
         xlabel = '$x$ label',
         ylabel = '$y$ label',
         title  = 'title'
@@ -966,7 +966,7 @@ with cplt.ckfigure(**figure_props):
 figure_props = cplt.get_figure_props(
     save_dirname = 'result',
     save_fname   = 'fig_cplt_log1',
-    plt_props = dict(
+    plt_args = dict(
         xlabel = '$x$ label',
         ylabel = '$y$ label',
         yscale = 'log'
@@ -988,7 +988,7 @@ with cplt.ckfigure(**figure_props):
 figure_props = cplt.get_figure_props(
     save_dirname = 'result',
     save_fname   = 'fig_cplt_log2',
-    plt_props = dict(
+    plt_args = dict(
         xlabel = '$x$ label',
         ylabel = '$y$ label',
         yscale = 'log'
@@ -1011,7 +1011,7 @@ with cplt.ckfigure(**figure_props):
 figure_props = cplt.get_figure_props(
     save_dirname = 'result',
     save_fname   = 'fig_cplt_log3',
-    plt_props = dict(
+    plt_args = dict(
         xlabel = '$x$ label',
         ylabel = '$y$ label',
         yscale = 'log'
@@ -1035,7 +1035,7 @@ If the data contains a value less than zero, the axis is not adjusted.
 figure_props = cplt.get_figure_props(
     save_dirname = 'result',
     save_fname   = 'fig_cplt_log4',
-    plt_props = dict(
+    plt_args = dict(
         xlabel = '$x$ label',
         ylabel = '$y$ label',
         yscale = 'log'
@@ -1059,7 +1059,7 @@ figure_props_list = [
     cplt.get_figure_props(
         save_dirname = SAVE_DIRNAME,
         save_fname   = 'fig_cplt_subplot1',
-        plt_props = dict(
+        plt_args = dict(
             xlabel = '$x$ label',
             ylabel = r'$\sin(x)$',
             title  = 'title 1'
@@ -1068,7 +1068,7 @@ figure_props_list = [
         ymax = 2
     ),
     cplt.get_figure_props(
-        plt_props = dict(
+        plt_args = dict(
             xlabel = '$x$ label',
             ylabel = r'$\cos(x)$',
             title  = 'title 2'

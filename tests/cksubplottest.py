@@ -15,7 +15,7 @@ x = np.linspace( 0, 10, 500 )
 figure_props = cplt.get_figure_props(
     save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt_subplot0',
-    plt_props = dict(
+    plt_args = dict(
         xlabel = '$x$ label',
         ylabel = '$y$ label',
         title  = 'title'
@@ -47,7 +47,7 @@ figure_props_list = [
     cplt.get_figure_props(
         save_dirname = SAVE_DIRNAME,
         save_fname   = 'fig_cplt_subplot1',
-        plt_props = dict(
+        plt_args = dict(
             xlabel = '$x$ label',
             ylabel = r'$\sin(x)$',
             title  = 'title 1'
@@ -56,7 +56,7 @@ figure_props_list = [
         ymax = 2
     ),
     cplt.get_figure_props(
-        plt_props = dict(
+        plt_args = dict(
             xlabel = '$x$ label',
             ylabel = r'$\cos(x)$',
             title  = 'title 2'
