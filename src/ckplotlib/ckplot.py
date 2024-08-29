@@ -607,8 +607,8 @@ class CkFigure:
 
 
     # use common axis range if fig includes multiple ax subplots
-    common_xlim: bool = True
-    common_ylim: bool = True
+    common_xlim: bool = False
+    common_ylim: bool = False
 
     save_original_fig: bool = True
 

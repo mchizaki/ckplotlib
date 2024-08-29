@@ -484,6 +484,8 @@ The respective options for `x` and `y` axes are valid if `plt.xscale` and `plt.y
 
 - **use_xlog_formatter | use_ylog_formatter : *bool*, default: `True`**<br>If `True`: Exponential notation like $10^a$​ is used.
 
+- **use_xlog_locator | use_ylog_locator : *bool*, default: `True`**<br>If `True`: Auto loglocator in ckplotlib is used.
+
 - **xlog_locator_thrscale | ylog_locator_thrscale, *int*, default: `10`**<br>If $b / a$ exceeds this threshold value where the axis range is $[10^a, 10^b]$, minor ticks are set at $10^m$ ($m$ is an integer).
 
     | Normal logscale `ticker`               | Wide-range logscale `ticker`           |
