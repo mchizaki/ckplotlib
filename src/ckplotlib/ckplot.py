@@ -1082,8 +1082,8 @@ class CkFigure:
             if not use_log_formatter:
                 axis.set_major_formatter( copy.copy( LOG_SCALAR_FMT_MAJ ) )
 
-                if np.abs( np.log10(lim[0]) - np.log10(lim[1]) ) > 0.5:
-                    axis.set_minor_formatter( FormatStrFormatter('') )
+            if np.abs( np.log10(lim[0]) - np.log10(lim[1]) ) > 0.5:
+                axis.set_minor_formatter( FormatStrFormatter('') )
 
             # locator
             if not use_log_locator: continue
