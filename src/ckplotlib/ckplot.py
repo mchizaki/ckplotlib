@@ -618,8 +618,8 @@ class CkFigure:
     # x/ylog_format
     # - use exponential notation
     # - this props is valid if plt.xscale/yscale is 'log'
-    is_xlog_format = True
-    is_ylog_format = True
+    use_xlog_formatter = True
+    use_ylog_formatter = True
 
     # minimum/maximum value that determines the display range of graph
     # - None => not specified: automatically determinted
@@ -1100,14 +1100,14 @@ class CkFigure:
         # ticks
         #################
         for (
-            is_log, is_log_format,
+            is_log, use_log_formatter,
             axis,
             lim,
             ticker_range_thr
         ) in zip(
             #
             [ ax.ckAxesProps.is_xlog,  ax.ckAxesProps.is_ylog  ],
-            [ self.is_xlog_format, self.is_ylog_format ],
+            [ self.use_xlog_formatter, self.use_ylog_formatter ],
             #
             [ ax.xaxis,  ax.yaxis ],
             #
@@ -1122,7 +1122,7 @@ class CkFigure:
             if not is_log: continue
 
             # formatter
-            if not is_log_format:
+            if not use_log_formatter:
                 axis.set_major_formatter( copy.copy( LOG_SCALAR_FMT_MAJ ) )
 
             if np.abs( np.log10(lim[0]) - np.log10(lim[1]) ) > 0.5:
@@ -1487,8 +1487,8 @@ def get_figure_props(
 
     use_xlog_intlim: bool | None = None,
     use_ylog_intlim: bool | None = None,
-    is_xlog_format: bool | None = None,
-    is_ylog_format: bool | None = None,
+    use_xlog_formatter: bool | None = None,
+    use_ylog_formatter: bool | None = None,
 
     set_xlog_range_max: bool | None = None,
     set_ylog_range_max: bool | None = None,
@@ -1538,7 +1538,7 @@ def get_figure_props(
 
     - Range options for logscale
         - `use_xlog_intlim` | `use_ylog_intlim`
-        - `is_xlog_format` | `is_ylog_format`
+        - `use_xlog_formatter` | `use_ylog_formatter`
         - `xlog_ticker_exponent_range_thr` | `ylog_ticker_exponent_range_thr`
         - Range max options:
             - `set_xlog_range_max` | `set_ylog_range_max`
@@ -1583,8 +1583,8 @@ def get_figure_props(
 
         use_xlog_intlim = use_xlog_intlim,
         use_ylog_intlim = use_ylog_intlim,
-        is_xlog_format = is_xlog_format,
-        is_ylog_format = is_ylog_format,
+        use_xlog_formatter = use_xlog_formatter,
+        use_ylog_formatter = use_ylog_formatter,
 
         set_xlog_range_max = set_xlog_range_max,
         set_ylog_range_max = set_ylog_range_max,

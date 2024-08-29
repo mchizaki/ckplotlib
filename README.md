@@ -482,7 +482,7 @@ The respective options for `x` and `y` axes are valid if `plt.xscale` and `plt.y
 
 - **use_xlog_intlim : *bool*, default: `False`** | **use_ylog_intlim : *bool*, default: `True`**<br>If `True`: axis range of $[10^a, 10^b]$ is determined so that $a$ and $b$ are integers.
 
-- **is_xlog_format | is_ylog_format : *bool*, default: `True`**<br>If `True`: Exponential notation like $10^a$​ is used.
+- **use_xlog_formatter | use_ylog_formatter : *bool*, default: `True`**<br>If `True`: Exponential notation like $10^a$​ is used.
 
 - **xlog_ticker_exponent_range_thr | ylog_ticker_exponent_range_thr, *int*, default: `10`**<br>If $b / a$ exceeds this threshold value where the axis range is $[10^a, 10^b]$, minor ticks are set at $10^m$ ($m$ is an integer).
 
