@@ -602,8 +602,8 @@ class CkFigure:
     yloglim_maxscale: int|None = None
     yloglim_fixed_top: bool    = True
 
-    xlog_ticker_exponent_range_thr: int = 10
-    ylog_ticker_exponent_range_thr: int = 10
+    xlog_locator_thrscale: int = 10
+    ylog_locator_thrscale: int = 10
 
 
     # use common axis range if fig includes multiple ax subplots
@@ -1073,8 +1073,8 @@ class CkFigure:
             [ ax.get_xlim(), ax.get_ylim() ],
             #
             [
-                self.xlog_ticker_exponent_range_thr,
-                self.ylog_ticker_exponent_range_thr
+                self.xlog_locator_thrscale,
+                self.ylog_locator_thrscale
             ]
         ):
 
@@ -1084,8 +1084,8 @@ class CkFigure:
             if not use_log_formatter:
                 axis.set_major_formatter( copy.copy( LOG_SCALAR_FMT_MAJ ) )
 
-            if np.abs( np.log10(lim[0]) - np.log10(lim[1]) ) > 0.5:
-                axis.set_minor_formatter( FormatStrFormatter('') )
+                if np.abs( np.log10(lim[0]) - np.log10(lim[1]) ) > 0.5:
+                    axis.set_minor_formatter( FormatStrFormatter('') )
 
             # locator
             if not use_log_locator: continue
@@ -1472,8 +1472,8 @@ def get_figure_props(
     no_line:    bool | None = None,
     adjust_lim: bool | None = None,
 
-    xlog_ticker_exponent_range_thr: int | None = None,
-    ylog_ticker_exponent_range_thr: int | None = None,
+    xlog_locator_thrscale: int | None = None,
+    ylog_locator_thrscale: int | None = None,
 
     save_original_fig: bool | None = None
 ) -> dict:
@@ -1502,7 +1502,7 @@ def get_figure_props(
     - Range options for logscale
         - `use_xlog_intlim` | `use_ylog_intlim`
         - `use_xlog_formatter` | `use_ylog_formatter`
-        - `xlog_ticker_exponent_range_thr` | `ylog_ticker_exponent_range_thr`
+        - `xlog_locator_thrscale` | `ylog_locator_thrscale`
         - Range max options:
             - `xloglim_maxscale` | `yloglim_maxscale`
             - `xloglim_fixed_right` | `yloglim_fixed_right`
@@ -1570,8 +1570,8 @@ def get_figure_props(
         no_line    = no_line,
         adjust_lim = adjust_lim,
 
-        xlog_ticker_exponent_range_thr = xlog_ticker_exponent_range_thr,
-        ylog_ticker_exponent_range_thr = ylog_ticker_exponent_range_thr,
+        xlog_locator_thrscale = xlog_locator_thrscale,
+        ylog_locator_thrscale = ylog_locator_thrscale,
 
         save_original_fig = save_original_fig
     )
