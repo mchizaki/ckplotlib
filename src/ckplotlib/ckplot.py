@@ -625,7 +625,7 @@ class CkFigure:
     # - None => not specified: automatically determinted
     xmin = None; xmax = None
     ymin = None; ymax = None
-    is_ylim_adjust_xlim = True
+    adjust_ylim_in_xlim = True
 
     no_line     = False
     adjust_lim  = True
@@ -724,7 +724,7 @@ class CkFigure:
 
         ### adjust lims
         # adjust y range in x range
-        if self.is_ylim_adjust_xlim:
+        if self.adjust_ylim_in_xlim:
             y_minima, y_maxima = get_lines_y_minima_maxima(
                 lines = lines,
                 xmin  = ax.ckAxesProps.xlim[0],
@@ -796,7 +796,7 @@ class CkFigure:
                 ymax = max( y_maxima )
 
 
-            if self.is_ylim_adjust_xlim:
+            if self.adjust_ylim_in_xlim:
                 if self.common_xlim and self.common_ylim:
                     y_minima = [];  y_maxima = []
                     for ax in fig.get_axes():
@@ -831,7 +831,7 @@ class CkFigure:
                 _xrange_update = True
                 _xrange_update_props.update( xmax = self.xmax )
 
-            if self.is_ylim_adjust_xlim:
+            if self.adjust_ylim_in_xlim:
                 if _xrange_update:
                     y_minima = []
                     y_maxima = []
@@ -1483,7 +1483,7 @@ def get_figure_props(
     ymax: float | None = None,
     common_xlim: bool | None = None,
     common_ylim: bool | None = None,
-    is_ylim_adjust_xlim: bool | None = None,
+    adjust_ylim_in_xlim: bool | None = None,
 
     is_xlog_intlim: bool | None = None,
     is_ylog_intlim: bool | None = None,
@@ -1532,7 +1532,7 @@ def get_figure_props(
     - Range options
         - `xmin`, `xmax`, `ymin`, `ymax`
         - `common_xlim` | `common_ylim`
-        - `is_ylim_adjust_xlim`
+        - `adjust_ylim_in_xlim`
         - `axes_xmargins` | `axes_ymargins`
         - `adjust_lim`
 
@@ -1579,7 +1579,7 @@ def get_figure_props(
         ymax = ymax,
         common_xlim = common_xlim,
         common_ylim = common_ylim,
-        is_ylim_adjust_xlim = is_ylim_adjust_xlim,
+        adjust_ylim_in_xlim = adjust_ylim_in_xlim,
 
         is_xlog_intlim = is_xlog_intlim,
         is_ylog_intlim = is_ylog_intlim,

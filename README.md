@@ -229,7 +229,7 @@ Context manager of `ckplotlib.ckplot.ckfigure` has many options to markup and sa
    - **inline_show : *bool*, default: `True`**<br>If `True`: show figure when you use Matplotlib Inline Back-end.
 
    - **close : *bool*, default: `True`**<br>If `True`: close figure after saving figures.
-   
+
    - **common_subplot_props : *bool*, default: `True`**<br>This option is valid when `fig_props_list` of ckfigure's option and `plt.subplot` are used. If this option is `False`, the individual `figure_props` can be applied to each subplot. Each `figure_props` is set as an element of a list of `figure_props_list`. The length of the list of `figure_props_list` and the number of subplots (namely, the length of the list of `plt.gcf().axes`) must be equal (See: <a id='#figure-example-subplot1'>Sample figures (subplot)</a>).
 
 > [!Important]
@@ -347,7 +347,7 @@ plt_prop_kwargs = dict(
     )
     ```
 
-    
+
 
 ### (3) Export plotted data as csv file
 
@@ -467,7 +467,7 @@ plt_prop_kwargs = dict(
 
 - **common_xlim, common_ylim : *bool*, default: `True`** <br>Use common axis range when the figure includes multiple ax subplots
 
-- **is_ylim_adjust_xlim : *bool*, default: `True`**<br>y-axis range is determined by the maximum and minimum values of plotted data. If `True`,  the maximum/minimum value is determined by the data within the specified x-range. Otherwise, the maximum/minimum value is determined by all data including outside the specified x-axis range.
+- **adjust_ylim_in_xlim : *bool*, default: `True`**<br>y-axis range is determined by the maximum and minimum values of plotted data. If `True`,  the maximum/minimum value is determined by the data within the specified x-range. Otherwise, the maximum/minimum value is determined by all data including outside the specified x-axis range.
 
 - **axes_xmargins, axes_ymargins : *list[float]*, default: `[0.05, 0.05]`**<br>Padding from minimum and maximum values in the graph,
     specified as a percentage of the size of Axis [from 0 to 1]
@@ -493,7 +493,7 @@ The respective options for `x` and `y` axes are valid if `plt.xscale` and `plt.y
 - Range max options:
     - **set_xlog_range_max | set_ylog_range_max : *bool*, default: `False`**<br>If `True`: Limit the drawing range according to the `set_x(y)log_range_max_props` option.
 
-    - **set_xlog_range_max_props | set_ylog_range_max_props : *dict*, default:** 
+    - **set_xlog_range_max_props | set_ylog_range_max_props : *dict*, default:**
 
         ```python
         dict(
@@ -646,7 +646,7 @@ cos_theta = np.cos(theta)
    ...
    ```
 
-   
+
 
 2. Example (with using `addlinename` [only yname])
 
@@ -673,7 +673,7 @@ cos_theta = np.cos(theta)
    ...
    ```
 
-   
+
 
 3. Example (with using `addlinename` [xname and yname])
 
@@ -700,7 +700,7 @@ cos_theta = np.cos(theta)
      ...
    ```
 
-   
+
 
 4. Example (with `common_x = False`)
 
