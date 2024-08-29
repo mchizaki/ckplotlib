@@ -168,7 +168,7 @@ props = cplt.get_figure_props(
         ylabel = '$y$ label',
         title  = 'title'
     ),
-    plt_prop_kwargs = dict(
+    plt_kwargs = dict(
         legend = dict(
             title = 'func'
         )
@@ -279,7 +279,7 @@ Dictionary with figure settings.  The function of `ckplotlib.ckplot.get_figure_p
 
 - **plt_args: *dict*, default: `{}`**
 
-- **plt_prop_kwargs : *dict*, default: `{}`**
+- **plt_kwargs : *dict*, default: `{}`**
 
 e.g.
 
@@ -289,7 +289,7 @@ plt_args = dict(
     yscale = 'log'
 )
 
-plt_prop_kwargs = dict(
+plt_kwargs = dict(
     legend = dict(
         bbox_to_anchor = (1, 1)
     )
@@ -1073,7 +1073,7 @@ figure_props_list = [
             ylabel = r'$\cos(x)$',
             title  = 'title 2'
         ),
-        plt_prop_kwargs = dict(
+        plt_kwargs = dict(
             legend = dict(
                 title = 'lgd title'
             )

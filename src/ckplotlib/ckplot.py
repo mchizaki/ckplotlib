@@ -563,14 +563,14 @@ class CkFigure:
     )
 
     plt_args = {}
-    plt_prop_kwargs = {}
+    plt_kwargs = {}
 
     # plt_args = dict(
     #     xlabel = 'Temperature (K)',
     #     yscale = 'log'
     # )
 
-    # plt_prop_kwargs = dict(
+    # plt_kwargs = dict(
     #     legend = dict(
     #         bbox_to_anchor = (1, 1)
     #     )
@@ -915,28 +915,28 @@ class CkFigure:
 
 
         #################
-        # plt_args & plt_prop_kwargs
+        # plt_args & plt_kwargs
         #################
         """
-        * formats of "plt_args" & "plt_prop_kwargs" are as followings:
+        * formats of "plt_args" & "plt_kwargs" are as followings:
             plt_args = dict(
                 xlabel = 'Temperature (K)',
                 yscale = 'log'
             )
 
-            plt_prop_kwargs = dict(
+            plt_kwargs = dict(
                 legend = dict(
                     bbox_to_anchor = (1, 1)
                 )
             )
         """
-        for key, val in self.plt_prop_kwargs.items():
+        for key, val in self.plt_kwargs.items():
             if not isinstance( val, dict ):
-                print( f'[error] self.plt_prop_kwargs[{key}] must be dict.' )
+                print( f'[error] self.plt_kwargs[{key}] must be dict.' )
                 sys.exit(1)
 
         for key, val in self.plt_args.items():
-            kwargs = self.plt_prop_kwargs.get( key, {} )
+            kwargs = self.plt_kwargs.get( key, {} )
 
             if key == 'legend':
                 _legend( lines, val, **kwargs )
@@ -949,7 +949,7 @@ class CkFigure:
             else:
                 pltfunc( val, **kwargs )
 
-        for key, val in self.plt_prop_kwargs.items():
+        for key, val in self.plt_kwargs.items():
             if key in self.plt_args: continue
             kwargs = val
 
@@ -1475,7 +1475,7 @@ def get_figure_props(
     savecsv_props:      dict = {},
 
     plt_args:       dict | None = None,
-    plt_prop_kwargs: dict | None = None,
+    plt_kwargs: dict | None = None,
 
     xmin: float | None = None,
     xmax: float | None = None,
@@ -1516,7 +1516,7 @@ def get_figure_props(
 ) -> dict:
     """
     - `plt_args`
-    - `plt_prop_kwargs`
+    - `plt_kwargs`
 
     - save figure
         - `fig`
@@ -1571,7 +1571,7 @@ def get_figure_props(
         csv = csv,
 
         plt_args = plt_args,
-        plt_prop_kwargs = plt_prop_kwargs,
+        plt_kwargs = plt_kwargs,
 
         xmin = xmin,
         xmax = xmax,

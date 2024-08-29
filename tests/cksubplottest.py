@@ -20,7 +20,7 @@ figure_props = cplt.get_figure_props(
         ylabel = '$y$ label',
         title  = 'title'
     ),
-    plt_prop_kwargs = dict(
+    plt_kwargs = dict(
         legend = dict(
             title = 'lgd title'
         )
@@ -61,7 +61,7 @@ figure_props_list = [
             ylabel = r'$\cos(x)$',
             title  = 'title 2'
         ),
-        plt_prop_kwargs = dict(
+        plt_kwargs = dict(
             legend = dict(
                 title = 'lgd title'
             )
