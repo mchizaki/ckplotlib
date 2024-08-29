@@ -594,7 +594,6 @@ class CkFigure:
     no_line   : bool = False
     adjust_lim: bool = True
 
-
     # * this props is valid if plt.xscale is 'log'
     xloglim_maxscale: int|None = None
     xloglim_fixed_right: bool  = True
@@ -604,7 +603,6 @@ class CkFigure:
 
     xlog_locator_thrscale: int = 10
     ylog_locator_thrscale: int = 10
-
 
     # use common axis range if fig includes multiple ax subplots
     common_xlim: bool = False
