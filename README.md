@@ -82,7 +82,9 @@ with cplt.ckfigure():
     plt.xlabel('$x$ label')
     plt.ylabel('$y$ label')
     plt.title('title')
-    plt.legend(title='func', **cplt.LGD_PARAMS)
+    cplt.legend(title='func')
+    # or
+    # plt.legend(title='func', **cplt.LGD_PARAMS)
 ```
 
 How to save this figure => next section
@@ -101,7 +103,7 @@ def plot_func():
     plt.xlabel('$x$ label')
     plt.ylabel('$y$ label')
     plt.title('title')
-    plt.legend(title='func', **cplt.LGD_PARAMS)
+    cplt.legend(title='func')
 
 plot_func()
 ```
@@ -163,12 +165,12 @@ Figure markup with `pyplot`, such as `plt.xlabel`, `plt.ylabel`, etc., can be re
 props = cplt.get_figure_props(
     save_dirname = 'result',
     save_fname   = 'fig_cplt_test1_',
-    plt_props = dict(
+    plt_args = dict(
         xlabel = '$x$ label',
         ylabel = '$y$ label',
         title  = 'title'
     ),
-    plt_prop_kwargs = dict(
+    plt_kwargs = dict(
         legend = dict(
             title = 'func'
         )
@@ -229,7 +231,7 @@ Context manager of `ckplotlib.ckplot.ckfigure` has many options to markup and sa
    - **inline_show : *bool*, default: `True`**<br>If `True`: show figure when you use Matplotlib Inline Back-end.
 
    - **close : *bool*, default: `True`**<br>If `True`: close figure after saving figures.
-   
+
    - **common_subplot_props : *bool*, default: `True`**<br>This option is valid when `fig_props_list` of ckfigure's option and `plt.subplot` are used. If this option is `False`, the individual `figure_props` can be applied to each subplot. Each `figure_props` is set as an element of a list of `figure_props_list`. The length of the list of `figure_props_list` and the number of subplots (namely, the length of the list of `plt.gcf().axes`) must be equal (See: <a id='#figure-example-subplot1'>Sample figures (subplot)</a>).
 
 > [!Important]
@@ -277,19 +279,19 @@ Dictionary with figure settings.  The function of `ckplotlib.ckplot.get_figure_p
 
 ### (1) Markup options of `matplotlib.pyplot`
 
-- **plt_props: *dict*, default: `{}`**
+- **plt_args: *dict*, default: `{}`**
 
-- **plt_prop_kwargs : *dict*, default: `{}`**
+- **plt_kwargs : *dict*, default: `{}`**
 
 e.g.
 
 ```python
-plt_props = dict(
+plt_args = dict(
     xlabel = 'Temperature (K)',
     yscale = 'log'
 )
 
-plt_prop_kwargs = dict(
+plt_kwargs = dict(
     legend = dict(
         bbox_to_anchor = (1, 1)
     )
@@ -347,7 +349,7 @@ plt_prop_kwargs = dict(
     )
     ```
 
-    
+
 
 ### (3) Export plotted data as csv file
 
@@ -467,7 +469,7 @@ plt_prop_kwargs = dict(
 
 - **common_xlim, common_ylim : *bool*, default: `True`** <br>Use common axis range when the figure includes multiple ax subplots
 
-- **is_ylim_adjust_xlim : *bool*, default: `True`**<br>y-axis range is determined by the maximum and minimum values of plotted data. If `True`,  the maximum/minimum value is determined by the data within the specified x-range. Otherwise, the maximum/minimum value is determined by all data including outside the specified x-axis range.
+- **adjust_ylim_in_xlim : *bool*, default: `True`**<br>y-axis range is determined by the maximum and minimum values of plotted data. If `True`,  the maximum/minimum value is determined by the data within the specified x-range. Otherwise, the maximum/minimum value is determined by all data including outside the specified x-axis range.
 
 - **axes_xmargins, axes_ymargins : *list[float]*, default: `[0.05, 0.05]`**<br>Padding from minimum and maximum values in the graph,
     specified as a percentage of the size of Axis [from 0 to 1]
@@ -480,32 +482,24 @@ plt_prop_kwargs = dict(
 
 The respective options for `x` and `y` axes are valid if `plt.xscale` and `plt.yscale` are `"logscale"`.
 
-- **is_xlog_intlim : *bool*, default: `False`** | **is_ylog_intlim : *bool*, default: `True`**<br>If `True`: axis range of $[10^a, 10^b]$ is determined so that $a$ and $b$ are integers.
+- **use_xlog_intlim : *bool*, default: `False`** | **use_ylog_intlim : *bool*, default: `True`**<br>If `True`: axis range of $[10^a, 10^b]$ is determined so that $a$ and $b$ are integers.
 
-- **is_xlog_format | is_ylog_format : *bool*, default: `True`**<br>If `True`: Exponential notation like $10^a$​ is used.
+- **use_xlog_formatter | use_ylog_formatter : *bool*, default: `True`**<br>If `True`: Exponential notation like $10^a$​ is used.
 
-- **xlog_ticker_exponent_range_thr | ylog_ticker_exponent_range_thr, *int*, default: `10`**<br>If $b / a$ exceeds this threshold value where the axis range is $[10^a, 10^b]$, minor ticks are set at $10^m$ ($m$ is an integer).
+- **use_xlog_locator | use_ylog_locator : *bool*, default: `True`**<br>If `True`: Auto loglocator in ckplotlib is used.
+
+- **xlog_locator_thrscale | ylog_locator_thrscale, *int*, default: `10`**<br>If $b / a$ exceeds this threshold value where the axis range is $[10^a, 10^b]$, minor ticks are set at $10^m$ ($m$ is an integer).
 
     | Normal logscale `ticker`               | Wide-range logscale `ticker`           |
     | -------------------------------------- | -------------------------------------- |
     | ![cplt-log1](sample/fig_cplt_log1.svg) | ![cplt-log3](sample/fig_cplt_log3.svg) |
 
 - Range max options:
-    - **set_xlog_range_max | set_ylog_range_max : *bool*, default: `False`**<br>If `True`: Limit the drawing range according to the `set_x(y)log_range_max_props` option.
+    - **xloglim_maxscale | yloglim_maxscale : *int | None*, default: `None`**<br>If not `None`: Limit the drawing range so that it does not exceed `10**x(y)loglim_maxscale`.
 
-    - **set_xlog_range_max_props | set_ylog_range_max_props : *dict*, default:** 
+    - **xloglim_fixed_top | yloglim_fixed_right : *bool*, default: `True`<br>If `True`: fix the maximum side of the drawing range.
 
-        ```python
-        dict(
-            exponent_range_max = 8,
-            max_is_fixed       = True,
-            min_is_fixed       = False
-        )
-        ```
-
-        Limit the drawing range so that it does not exceed `10**exponent_range_max`. Set `max_is_fixed` (`min_is_fixed`) to `True` to fix the maximum (minimum) side of the drawing range. Do not set both `max_is_fixed` and `min_is_fixed` to the same setting.
-
-        | set_ylog_range_max: `False`                                  | set_ylog_range_max: `True`                                |
+        | yloglim_maxscale: `None`                                     | yloglim_maxscale: 8                                       |
         | ------------------------------------------------------------ | --------------------------------------------------------- |
         | ![cplt-log-range_max-original](sample/fig_cplt_ylog_range_max_original.svg) | ![cplt-log-range-max](sample/fig_cplt_ylog_range_max.svg) |
 
@@ -646,7 +640,7 @@ cos_theta = np.cos(theta)
    ...
    ```
 
-   
+
 
 2. Example (with using `addlinename` [only yname])
 
@@ -673,7 +667,7 @@ cos_theta = np.cos(theta)
    ...
    ```
 
-   
+
 
 3. Example (with using `addlinename` [xname and yname])
 
@@ -700,7 +694,7 @@ cos_theta = np.cos(theta)
      ...
    ```
 
-   
+
 
 4. Example (with `common_x = False`)
 
@@ -869,7 +863,7 @@ with cplt.ckfigure():
 figure_props = cplt.get_figure_props(
     save_dirname = 'result',
     save_fname   = 'fig_cplt1',
-    plt_props = dict(
+    plt_args = dict(
         xlabel = '$x$ label',
         ylabel = '$y$ label',
         title  = 'title'
@@ -966,7 +960,7 @@ with cplt.ckfigure(**figure_props):
 figure_props = cplt.get_figure_props(
     save_dirname = 'result',
     save_fname   = 'fig_cplt_log1',
-    plt_props = dict(
+    plt_args = dict(
         xlabel = '$x$ label',
         ylabel = '$y$ label',
         yscale = 'log'
@@ -988,12 +982,12 @@ with cplt.ckfigure(**figure_props):
 figure_props = cplt.get_figure_props(
     save_dirname = 'result',
     save_fname   = 'fig_cplt_log2',
-    plt_props = dict(
+    plt_args = dict(
         xlabel = '$x$ label',
         ylabel = '$y$ label',
         yscale = 'log'
     ),
-    is_ylog_intlim = False
+    use_ylog_intlim = False
 )
 
 with cplt.ckfigure(**figure_props):
@@ -1011,7 +1005,7 @@ with cplt.ckfigure(**figure_props):
 figure_props = cplt.get_figure_props(
     save_dirname = 'result',
     save_fname   = 'fig_cplt_log3',
-    plt_props = dict(
+    plt_args = dict(
         xlabel = '$x$ label',
         ylabel = '$y$ label',
         yscale = 'log'
@@ -1035,12 +1029,12 @@ If the data contains a value less than zero, the axis is not adjusted.
 figure_props = cplt.get_figure_props(
     save_dirname = 'result',
     save_fname   = 'fig_cplt_log4',
-    plt_props = dict(
+    plt_args = dict(
         xlabel = '$x$ label',
         ylabel = '$y$ label',
         yscale = 'log'
     ),
-    is_ylog_intlim = False
+    use_ylog_intlim = False
 )
 
 with cplt.ckfigure(**figure_props):
@@ -1059,7 +1053,7 @@ figure_props_list = [
     cplt.get_figure_props(
         save_dirname = SAVE_DIRNAME,
         save_fname   = 'fig_cplt_subplot1',
-        plt_props = dict(
+        plt_args = dict(
             xlabel = '$x$ label',
             ylabel = r'$\sin(x)$',
             title  = 'title 1'
@@ -1068,12 +1062,12 @@ figure_props_list = [
         ymax = 2
     ),
     cplt.get_figure_props(
-        plt_props = dict(
+        plt_args = dict(
             xlabel = '$x$ label',
             ylabel = r'$\cos(x)$',
             title  = 'title 2'
         ),
-        plt_prop_kwargs = dict(
+        plt_kwargs = dict(
             legend = dict(
                 title = 'lgd title'
             )

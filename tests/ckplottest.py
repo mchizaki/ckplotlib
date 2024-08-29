@@ -63,7 +63,7 @@ with cplt.ckfigure( **figure_props ):
 figure_props = cplt.get_figure_props(
     save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt1',
-    plt_props = dict(
+    plt_args = dict(
         xlabel = '$x$ label',
         ylabel = '$y$ label',
         title  = 'title'
@@ -84,12 +84,12 @@ with cplt.ckfigure( **figure_props ):
 figure_props = cplt.get_figure_props(
     save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt2',
-    plt_props = dict(
+    plt_args = dict(
         xlabel = '$x$ label',
         ylabel = '$y$ label',
         title  = 'title'
     ),
-    plt_prop_kwargs = dict(
+    plt_kwargs = dict(
         legend = dict(
             title = 'lgd title'
         )
@@ -110,12 +110,12 @@ with cplt.ckfigure( **figure_props ):
 figure_props = cplt.get_figure_props(
     save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt3',
-    plt_props = dict(
+    plt_args = dict(
         xlabel = '$x$ label',
         ylabel = '$y$ label',
         title  = 'title'
     ),
-    plt_prop_kwargs = dict(
+    plt_kwargs = dict(
         legend = {}
     )
 )
@@ -213,7 +213,7 @@ with cplt.ckfigure( **figure_props ):
 figure_props = cplt.get_figure_props(
     save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt_log1',
-    plt_props = dict(
+    plt_args = dict(
         xlabel = '$x$ label',
         ylabel = '$y$ label',
         yscale = 'log'
@@ -233,12 +233,12 @@ with cplt.ckfigure( **figure_props ):
 figure_props = cplt.get_figure_props(
     save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt_log2',
-    plt_props = dict(
+    plt_args = dict(
         xlabel = '$x$ label',
         ylabel = '$y$ label',
         yscale = 'log'
     ),
-    is_ylog_intlim = False
+    use_ylog_intlim = False
 )
 
 with cplt.ckfigure( **figure_props ):
@@ -254,7 +254,7 @@ with cplt.ckfigure( **figure_props ):
 figure_props = cplt.get_figure_props(
     save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt_log3',
-    plt_props = dict(
+    plt_args = dict(
         xlabel = '$x$ label',
         ylabel = '$y$ label',
         yscale = 'log'
@@ -275,12 +275,12 @@ If the data contains zero values, the axis is not adjusted.
 figure_props = cplt.get_figure_props(
     save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt_log4',
-    plt_props = dict(
+    plt_args = dict(
         xlabel = '$x$ label',
         ylabel = '$y$ label',
         yscale = 'log'
     ),
-    is_ylog_intlim = False
+    use_ylog_intlim = False
 )
 
 with cplt.ckfigure( **figure_props ):
@@ -296,10 +296,10 @@ with cplt.ckfigure( **figure_props ):
 figure_props = cplt.get_figure_props(
     save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt_ylog_range_max',
-    plt_props = dict(
+    plt_args = dict(
         yscale = 'log'
     ),
-    set_ylog_range_max = True
+    yloglim_maxscale = 8
 )
 
 x1 = np.logspace( -30, 2, 500 )

@@ -115,24 +115,20 @@ def legend( *args, **kwargs ) -> None:
 
 def modify_loglim(
     lim: list,
-    exponent_range_max: float = 1e8,
+    maxscale_exponent: int = 8,
     max_is_fixed: bool = True,
-    min_is_fixed: bool = False,
     minima: list | npt.NDArray | None = None,
     maxima: list | npt.NDArray | None = None
 ) -> None:
     modified = False
-    max_range = 10**exponent_range_max
+    max_range = 10**maxscale_exponent
     minima_maxima_exist = minima is not None and maxima is not None
 
     if minima_maxima_exist:
         minima = np.array( minima )
         maxima = np.array( maxima )
 
-    if all([ max_is_fixed, min_is_fixed ]):
-        return modified
-
-    elif max_is_fixed:
+    if max_is_fixed:
         new_min = lim[1] / max_range
 
         if lim[0] < new_min:
@@ -149,8 +145,7 @@ def modify_loglim(
             modified = True
         return modified
 
-
-    elif min_is_fixed:
+    else:
         new_max = lim[0] * max_range
 
         if lim[1] > new_max:
@@ -167,43 +162,6 @@ def modify_loglim(
             modified = True
         return modified
 
-    else:
-        print( '[error] modify_loglim' )
-        print( 'either max_is_fixed or min_is_fixed must be True.' )
-        sys.exit(1)
-
-# def modify_loglim(
-#     lim,
-#     exponent_range_max = 1e8,
-#     max_is_fixed = True,
-#     min_is_fixed = False,
-#     y_minima = None,
-#     y_maxima = None
-# ):
-#     modified = False
-#     max_range = 10**exponent_range_max
-#     minima_maxima_exist = y_minima is not None and y_maxima is not None
-
-#     if minima_maxima_exist:
-#         y_minima = np.array( y_minima )
-#         y_maxima = np.array( y_maxima )
-
-#     if all([ max_is_fixed, min_is_fixed ]):
-#         return modified
-
-#     elif max_is_fixed:
-#         new_min = lim[1] / max_range
-
-#         if lim[0] < new_min:
-#             lim[0] = new_min
-
-#             if minima_maxima_exist:
-#                 is_lower = y_maxima < new_min
-#                 if np.any( is_lower ):
-#                     lim[0] = np.min( y_minima[ ~is_lower ] )
-#             modified = True
-
-#         return modified
 
 
 #== Text ===================================#
@@ -540,8 +498,8 @@ class _CkAxesProps:
 ################################################################
 class CkFigure:
 
-    fig = True
-    save_props = dict(
+    fig: bool = True
+    save_props: dict = dict(
         dirname     = None,
         fname       = None,
         png         = ckFigureConfig.png,
@@ -552,8 +510,8 @@ class CkFigure:
     )
 
     # export plotted data as csv file
-    csv = ckFigureConfig.csv
-    savecsv_props = dict(
+    csv: bool = ckFigureConfig.csv
+    savecsv_props: dict = dict(
         dirname    = None,
         subdirname = None,
         fname      = None,
@@ -562,30 +520,30 @@ class CkFigure:
         subplot_common_x = False
     )
 
-    plt_props = {}
-    plt_prop_kwargs = {}
+    plt_args: dict = {}
+    plt_kwargs: dict = {}
 
-    # plt_props = dict(
+    # plt_args = dict(
     #     xlabel = 'Temperature (K)',
     #     yscale = 'log'
     # )
 
-    # plt_prop_kwargs = dict(
+    # plt_kwargs = dict(
     #     legend = dict(
     #         bbox_to_anchor = (1, 1)
     #     )
     # )
 
     # hlines & vlines
-    hlines_yvals = []
-    vlines_xvals = []
-    hlines_props = dict(
+    hlines_yvals: list[float] = []
+    vlines_xvals: list[float] = []
+    hlines_props: dict = dict(
         color     = ckcolor[ 'lightgray' ],
         linewidth = 1,
         linestyle = '--',
         zorder    = -100
     )
-    vlines_props = dict(
+    vlines_props: dict = dict(
         color     = ckcolor[ 'lightgray' ],
         linewidth = 1,
         linestyle = '--',
@@ -593,8 +551,8 @@ class CkFigure:
     )
 
     # annotate
-    annotate_str = None
-    annotate_props = dict(
+    annotate_str: str|None = None
+    annotate_props: dict = dict(
         fontsize = 'x-small',
         border   = True,
         loc      = 'bottom',
@@ -606,55 +564,51 @@ class CkFigure:
 
     # padding from minimum and maximum values in the graph,
     # specified as a percentage of the size of Axis [from 0 to 1]
-    axes_xmargins = [ 0.05, 0.05 ]
-    axes_ymargins = [ 0.05, 0.05 ]
+    axes_xmargins: list[float] = [ 0.05, 0.05 ]
+    axes_ymargins: list[float] = [ 0.05, 0.05 ]
 
-    # x/ylog_intlim
+    # use_x/ylog_intlim
     # - axis range = [10^a, 10^b] (a & b are integer)
     # - this props is valid if plt.xscale/yscale is 'log'
-    is_xlog_intlim = False
-    is_ylog_intlim = True
+    use_xlog_intlim: bool = False
+    use_ylog_intlim: bool = True
 
-    # x/ylog_format
+    # use_x/ylog_formatter
     # - use exponential notation
     # - this props is valid if plt.xscale/yscale is 'log'
-    is_xlog_format = True
-    is_ylog_format = True
+    use_xlog_formatter: bool = True
+    use_ylog_formatter: bool = True
+
+    # use_x/ylog_locator
+    use_xlog_locator: bool = True
+    use_ylog_locator: bool = True
 
     # minimum/maximum value that determines the display range of graph
     # - None => not specified: automatically determinted
-    xmin = None; xmax = None
-    ymin = None; ymax = None
-    is_ylim_adjust_xlim = True
+    xmin: float|None = None
+    xmax: float|None = None
+    ymin: float|None = None
+    ymax: float|None = None
+    adjust_ylim_in_xlim: bool = True
 
-    no_line     = False
-    adjust_lim  = True
-
+    no_line   : bool = False
+    adjust_lim: bool = True
 
     # * this props is valid if plt.xscale is 'log'
-    set_xlog_range_max = False
-    set_xlog_range_max_props = dict(
-        exponent_range_max = 8,
-        max_is_fixed       = True,
-        min_is_fixed       = False
-    )
+    xloglim_maxscale: int|None = None
+    xloglim_fixed_right: bool  = True
     # * this props is valid if plt.yscale is 'log'
-    set_ylog_range_max = False
-    set_ylog_range_max_props = dict(
-        exponent_range_max = 8,
-        max_is_fixed       = True,
-        min_is_fixed       = False
-    )
+    yloglim_maxscale: int|None = None
+    yloglim_fixed_top: bool    = True
 
-    xlog_ticker_exponent_range_thr = 10
-    ylog_ticker_exponent_range_thr = 10
-
+    xlog_locator_thrscale: int = 10
+    ylog_locator_thrscale: int = 10
 
     # use common axis range if fig includes multiple ax subplots
-    common_xlim = True
-    common_ylim = True
+    common_xlim: bool = False
+    common_ylim: bool = False
 
-    save_original_fig = True
+    save_original_fig: bool = True
 
 
     #==============================================================#
@@ -724,7 +678,7 @@ class CkFigure:
 
         ### adjust lims
         # adjust y range in x range
-        if self.is_ylim_adjust_xlim:
+        if self.adjust_ylim_in_xlim:
             y_minima, y_maxima = get_lines_y_minima_maxima(
                 lines = lines,
                 xmin  = ax.ckAxesProps.xlim[0],
@@ -796,7 +750,7 @@ class CkFigure:
                 ymax = max( y_maxima )
 
 
-            if self.is_ylim_adjust_xlim:
+            if self.adjust_ylim_in_xlim:
                 if self.common_xlim and self.common_ylim:
                     y_minima = [];  y_maxima = []
                     for ax in fig.get_axes():
@@ -831,7 +785,7 @@ class CkFigure:
                 _xrange_update = True
                 _xrange_update_props.update( xmax = self.xmax )
 
-            if self.is_ylim_adjust_xlim:
+            if self.adjust_ylim_in_xlim:
                 if _xrange_update:
                     y_minima = []
                     y_maxima = []
@@ -915,28 +869,28 @@ class CkFigure:
 
 
         #################
-        # plt_props & plt_props_kwargs
+        # plt_args & plt_kwargs
         #################
         """
-        * formats of "plt_props" & "plt_props_kwargs" are as followings:
-            plt_props = dict(
+        * formats of "plt_args" & "plt_kwargs" are as followings:
+            plt_args = dict(
                 xlabel = 'Temperature (K)',
                 yscale = 'log'
             )
 
-            plt_prop_kwargs = dict(
+            plt_kwargs = dict(
                 legend = dict(
                     bbox_to_anchor = (1, 1)
                 )
             )
         """
-        for key, val in self.plt_prop_kwargs.items():
+        for key, val in self.plt_kwargs.items():
             if not isinstance( val, dict ):
-                print( f'[error] self.plt_prop_kwargs[{key}] must be dict.' )
+                print( f'[error] self.plt_kwargs[{key}] must be dict.' )
                 sys.exit(1)
 
-        for key, val in self.plt_props.items():
-            kwargs = self.plt_prop_kwargs.get( key, {} )
+        for key, val in self.plt_args.items():
+            kwargs = self.plt_kwargs.get( key, {} )
 
             if key == 'legend':
                 _legend( lines, val, **kwargs )
@@ -949,8 +903,8 @@ class CkFigure:
             else:
                 pltfunc( val, **kwargs )
 
-        for key, val in self.plt_prop_kwargs.items():
-            if key in self.plt_props: continue
+        for key, val in self.plt_kwargs.items():
+            if key in self.plt_args: continue
             kwargs = val
 
             if key == 'legend':
@@ -998,13 +952,13 @@ class CkFigure:
 
         ax.ckAxesProps.set_all_positive()
         skip_adjust_xlim = any([
-            ax.ckAxesProps.is_xlog and ( not ax.ckAxesProps.all_x_is_positive and not self.set_xlog_range_max ),
+            ax.ckAxesProps.is_xlog and ( not ax.ckAxesProps.all_x_is_positive and self.xloglim_maxscale is None ),
             ax.ckAxesProps.is_xlog == 'symlog',
             ax.ckAxesProps.is_xlog == 'logit'
         ])
         skip_adjust_ylim = any([
             # ax.ckAxesProps.is_ylog and not ax.ckAxesProps.all_y_is_positive,
-            ax.ckAxesProps.is_ylog and ( not ax.ckAxesProps.all_y_is_positive and not self.set_ylog_range_max ),
+            ax.ckAxesProps.is_ylog and ( not ax.ckAxesProps.all_y_is_positive and self.yloglim_maxscale is None ),
             ax.ckAxesProps.is_ylog == 'symlog',
             ax.ckAxesProps.is_ylog == 'logit'
         ])
@@ -1012,27 +966,27 @@ class CkFigure:
 
 
         for (
-            is_log, is_log_intlim,
+            is_log, use_log_intlim,
             lim,
             skip_adjust_lim
         ) in zip(
             #
             [ ax.ckAxesProps.is_xlog,  ax.ckAxesProps.is_ylog  ],
-            [ self.is_xlog_intlim, self.is_ylog_intlim ],
+            [ self.use_xlog_intlim, self.use_ylog_intlim ],
             #
             [ ax.ckAxesProps.xlim, ax.ckAxesProps.ylim ],
             #
             [ skip_adjust_xlim, skip_adjust_ylim ]
         ):
             if skip_adjust_lim: continue
-            if is_log and is_log_intlim:
+            if is_log and use_log_intlim:
                 lim_ = axes_log_limits( *lim )
                 lim[0] = lim_[0]
                 lim[1] = lim_[1]
 
         # max_range
         if ax.ckAxesProps.is_xlog:
-            if self.set_xlog_range_max:
+            if self.xloglim_maxscale is not None:
 
                 # "lines" has priority over "ax.get_lines()"
                 lines = ax.get_lines() if lines is None else lines
@@ -1046,7 +1000,8 @@ class CkFigure:
 
                 range_exceed_maxval = modify_loglim(
                     ax.ckAxesProps.xlim,
-                    **self.set_xlog_range_max_props,
+                    maxscale_exponent = self.xloglim_maxscale,
+                    max_is_fixed      = self.xloglim_fixed_right,
                     minima = x_minima,
                     maxima = x_maxima
                 )
@@ -1055,7 +1010,7 @@ class CkFigure:
 
         # max_range
         if ax.ckAxesProps.is_ylog:
-            if self.set_ylog_range_max:
+            if self.yloglim_maxscale is not None:
 
                 # "lines" has priority over "ax.get_lines()"
                 lines = ax.get_lines() if lines is None else lines
@@ -1069,7 +1024,8 @@ class CkFigure:
 
                 range_exceed_maxval = modify_loglim(
                     ax.ckAxesProps.ylim,
-                    **self.set_ylog_range_max_props,
+                    maxscale_exponent = self.yloglim_maxscale,
+                    max_is_fixed      = self.yloglim_fixed_top,
                     minima = y_minima,
                     maxima = y_maxima
                 )
@@ -1100,35 +1056,38 @@ class CkFigure:
         # ticks
         #################
         for (
-            is_log, is_log_format,
+            is_log, use_log_formatter, use_log_locator,
             axis,
             lim,
             ticker_range_thr
         ) in zip(
             #
             [ ax.ckAxesProps.is_xlog,  ax.ckAxesProps.is_ylog  ],
-            [ self.is_xlog_format, self.is_ylog_format ],
+            [ self.use_xlog_formatter, self.use_ylog_formatter ],
+            [ self.use_xlog_locator,   self.use_ylog_locator   ],
             #
             [ ax.xaxis,  ax.yaxis ],
             #
             [ ax.get_xlim(), ax.get_ylim() ],
             #
             [
-                self.xlog_ticker_exponent_range_thr,
-                self.ylog_ticker_exponent_range_thr
+                self.xlog_locator_thrscale,
+                self.ylog_locator_thrscale
             ]
         ):
 
             if not is_log: continue
 
             # formatter
-            if not is_log_format:
+            if not use_log_formatter:
                 axis.set_major_formatter( copy.copy( LOG_SCALAR_FMT_MAJ ) )
 
-            if np.abs( np.log10(lim[0]) - np.log10(lim[1]) ) > 0.5:
-                axis.set_minor_formatter( FormatStrFormatter('') )
+                if np.abs( np.log10(lim[0]) - np.log10(lim[1]) ) > 0.5:
+                    axis.set_minor_formatter( FormatStrFormatter('') )
 
             # locator
+            if not use_log_locator: continue
+
             exponent_range = np.log10( lim[1] / lim[0] )
             if exponent_range < ticker_range_thr:
                 # normal log locator
@@ -1325,8 +1284,8 @@ class CkFigure:
 
         if self._range_exceed_maxval( ckAxesProps_results ):
             ckFig_ = copy.deepcopy( self )
-            ckFig_.set_xlog_range_max = False
-            ckFig_.set_ylog_range_max = False
+            ckFig_.xloglim_maxscale = None
+            ckFig_.yloglim_maxscale = None
             ckFig_.save_props[ 'dirname' ] += '/original'
             ckFig_.save_props[ 'fname' ] += '_original'
 
@@ -1436,8 +1395,8 @@ def make_figures(
     if ckFigures[-1]._range_exceed_maxval( ckAxesProps_results ):
         for ckFigure, ax in zip( ckFigures, axes ):
             ckFig_ = copy.deepcopy( ckFigure )
-            ckFig_.set_xlog_range_max = False
-            ckFig_.set_ylog_range_max = False
+            ckFig_.xloglim_maxscale = None
+            ckFig_.yloglim_maxscale = None
 
             # setstyle & savefig
             ckFig_.setattr_figure_data()
@@ -1474,8 +1433,8 @@ def get_figure_props(
     savecsv_subdirname: str  | None = None,
     savecsv_props:      dict = {},
 
-    plt_props:       dict | None = None,
-    plt_prop_kwargs: dict | None = None,
+    plt_args:       dict | None = None,
+    plt_kwargs: dict | None = None,
 
     xmin: float | None = None,
     xmax: float | None = None,
@@ -1483,17 +1442,19 @@ def get_figure_props(
     ymax: float | None = None,
     common_xlim: bool | None = None,
     common_ylim: bool | None = None,
-    is_ylim_adjust_xlim: bool | None = None,
+    adjust_ylim_in_xlim: bool | None = None,
 
-    is_xlog_intlim: bool | None = None,
-    is_ylog_intlim: bool | None = None,
-    is_xlog_format: bool | None = None,
-    is_ylog_format: bool | None = None,
+    use_xlog_intlim: bool | None = None,
+    use_ylog_intlim: bool | None = None,
+    use_xlog_formatter: bool | None = None,
+    use_ylog_formatter: bool | None = None,
+    use_xlog_locator: bool | None = None,
+    use_ylog_locator: bool | None = None,
 
-    set_xlog_range_max: bool | None = None,
-    set_ylog_range_max: bool | None = None,
-    set_xlog_range_max_props: dict | None = None,
-    set_ylog_range_max_props: dict | None = None,
+    xloglim_maxscale: int | None = None,
+    yloglim_maxscale: int | None = None,
+    xloglim_fixed_right: dict | None = None,
+    yloglim_fixed_right: dict | None = None,
 
     axes_xmargins: list[float, float] | None = None,
     axes_ymargins: list[float, float] | None = None,
@@ -1509,14 +1470,14 @@ def get_figure_props(
     no_line:    bool | None = None,
     adjust_lim: bool | None = None,
 
-    xlog_ticker_exponent_range_thr: int | None = None,
-    ylog_ticker_exponent_range_thr: int | None = None,
+    xlog_locator_thrscale: int | None = None,
+    ylog_locator_thrscale: int | None = None,
 
     save_original_fig: bool | None = None
 ) -> dict:
     """
-    - `plt_props`
-    - `plt_prop_kwargs`
+    - `plt_args`
+    - `plt_kwargs`
 
     - save figure
         - `fig`
@@ -1532,17 +1493,17 @@ def get_figure_props(
     - Range options
         - `xmin`, `xmax`, `ymin`, `ymax`
         - `common_xlim` | `common_ylim`
-        - `is_ylim_adjust_xlim`
+        - `adjust_ylim_in_xlim`
         - `axes_xmargins` | `axes_ymargins`
         - `adjust_lim`
 
     - Range options for logscale
-        - `is_xlog_intlim` | `is_ylog_intlim`
-        - `is_xlog_format` | `is_ylog_format`
-        - `xlog_ticker_exponent_range_thr` | `ylog_ticker_exponent_range_thr`
+        - `use_xlog_intlim` | `use_ylog_intlim`
+        - `use_xlog_formatter` | `use_ylog_formatter`
+        - `xlog_locator_thrscale` | `ylog_locator_thrscale`
         - Range max options:
-            - `set_xlog_range_max` | `set_ylog_range_max`
-            - `set_xlog_range_max_props` | `set_ylog_range_max_props`
+            - `xloglim_maxscale` | `yloglim_maxscale`
+            - `xloglim_fixed_right` | `yloglim_fixed_right`
             - `save_original_fig`
 
     - Annotation
@@ -1570,8 +1531,8 @@ def get_figure_props(
         fig = fig,
         csv = csv,
 
-        plt_props = plt_props,
-        plt_prop_kwargs = plt_prop_kwargs,
+        plt_args = plt_args,
+        plt_kwargs = plt_kwargs,
 
         xmin = xmin,
         xmax = xmax,
@@ -1579,17 +1540,19 @@ def get_figure_props(
         ymax = ymax,
         common_xlim = common_xlim,
         common_ylim = common_ylim,
-        is_ylim_adjust_xlim = is_ylim_adjust_xlim,
+        adjust_ylim_in_xlim = adjust_ylim_in_xlim,
 
-        is_xlog_intlim = is_xlog_intlim,
-        is_ylog_intlim = is_ylog_intlim,
-        is_xlog_format = is_xlog_format,
-        is_ylog_format = is_ylog_format,
+        use_xlog_intlim = use_xlog_intlim,
+        use_ylog_intlim = use_ylog_intlim,
+        use_xlog_formatter = use_xlog_formatter,
+        use_ylog_formatter = use_ylog_formatter,
+        use_xlog_locator = use_xlog_locator,
+        use_ylog_locator = use_ylog_locator,
 
-        set_xlog_range_max = set_xlog_range_max,
-        set_ylog_range_max = set_ylog_range_max,
-        set_xlog_range_max_props = set_xlog_range_max_props,
-        set_ylog_range_max_props = set_ylog_range_max_props,
+        xloglim_maxscale = xloglim_maxscale,
+        yloglim_maxscale = yloglim_maxscale,
+        xloglim_fixed_right = xloglim_fixed_right,
+        yloglim_fixed_right = yloglim_fixed_right,
 
         axes_xmargins = axes_xmargins,
         axes_ymargins = axes_ymargins,
@@ -1605,8 +1568,8 @@ def get_figure_props(
         no_line    = no_line,
         adjust_lim = adjust_lim,
 
-        xlog_ticker_exponent_range_thr = xlog_ticker_exponent_range_thr,
-        ylog_ticker_exponent_range_thr = ylog_ticker_exponent_range_thr,
+        xlog_locator_thrscale = xlog_locator_thrscale,
+        ylog_locator_thrscale = ylog_locator_thrscale,
 
         save_original_fig = save_original_fig
     )
