@@ -299,7 +299,7 @@ figure_props = cplt.get_figure_props(
     plt_args = dict(
         yscale = 'log'
     ),
-    set_ylog_range_max = True
+    yloglim_maxscale = 8
 )
 
 x1 = np.logspace( -30, 2, 500 )

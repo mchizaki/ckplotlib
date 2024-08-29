@@ -491,21 +491,11 @@ The respective options for `x` and `y` axes are valid if `plt.xscale` and `plt.y
     | ![cplt-log1](sample/fig_cplt_log1.svg) | ![cplt-log3](sample/fig_cplt_log3.svg) |
 
 - Range max options:
-    - **set_xlog_range_max | set_ylog_range_max : *bool*, default: `False`**<br>If `True`: Limit the drawing range according to the `set_x(y)log_range_max_props` option.
+    - **xloglim_maxscale | yloglim_maxscale : *int | None*, default: `None`**<br>If not `None`: Limit the drawing range so that it does not exceed `10**x(y)loglim_maxscale`.
 
-    - **set_xlog_range_max_props | set_ylog_range_max_props : *dict*, default:**
+    - **xloglim_fixed_top | yloglim_fixed_right : *bool*, default: `True`<br>If `True`: fix the maximum side of the drawing range.
 
-        ```python
-        dict(
-            exponent_range_max = 8,
-            max_is_fixed       = True,
-            min_is_fixed       = False
-        )
-        ```
-
-        Limit the drawing range so that it does not exceed `10**exponent_range_max`. Set `max_is_fixed` (`min_is_fixed`) to `True` to fix the maximum (minimum) side of the drawing range. Do not set both `max_is_fixed` and `min_is_fixed` to the same setting.
-
-        | set_ylog_range_max: `False`                                  | set_ylog_range_max: `True`                                |
+        | yloglim_maxscale: `None`                                     | yloglim_maxscale: 8                                       |
         | ------------------------------------------------------------ | --------------------------------------------------------- |
         | ![cplt-log-range_max-original](sample/fig_cplt_ylog_range_max_original.svg) | ![cplt-log-range-max](sample/fig_cplt_ylog_range_max.svg) |
 
