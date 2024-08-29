@@ -540,8 +540,8 @@ class _CkAxesProps:
 ################################################################
 class CkFigure:
 
-    fig = True
-    save_props = dict(
+    fig: bool = True
+    save_props: dict = dict(
         dirname     = None,
         fname       = None,
         png         = ckFigureConfig.png,
@@ -552,8 +552,8 @@ class CkFigure:
     )
 
     # export plotted data as csv file
-    csv = ckFigureConfig.csv
-    savecsv_props = dict(
+    csv: bool = ckFigureConfig.csv
+    savecsv_props: dict = dict(
         dirname    = None,
         subdirname = None,
         fname      = None,
@@ -562,8 +562,8 @@ class CkFigure:
         subplot_common_x = False
     )
 
-    plt_args = {}
-    plt_kwargs = {}
+    plt_args: dict = {}
+    plt_kwargs: dict = {}
 
     # plt_args = dict(
     #     xlabel = 'Temperature (K)',
@@ -577,15 +577,15 @@ class CkFigure:
     # )
 
     # hlines & vlines
-    hlines_yvals = []
-    vlines_xvals = []
-    hlines_props = dict(
+    hlines_yvals: list[float] = []
+    vlines_xvals: list[float] = []
+    hlines_props: dict = dict(
         color     = ckcolor[ 'lightgray' ],
         linewidth = 1,
         linestyle = '--',
         zorder    = -100
     )
-    vlines_props = dict(
+    vlines_props: dict = dict(
         color     = ckcolor[ 'lightgray' ],
         linewidth = 1,
         linestyle = '--',
@@ -593,8 +593,8 @@ class CkFigure:
     )
 
     # annotate
-    annotate_str = None
-    annotate_props = dict(
+    annotate_str: str|None = None
+    annotate_props: dict = dict(
         fontsize = 'x-small',
         border   = True,
         loc      = 'bottom',
@@ -606,55 +606,57 @@ class CkFigure:
 
     # padding from minimum and maximum values in the graph,
     # specified as a percentage of the size of Axis [from 0 to 1]
-    axes_xmargins = [ 0.05, 0.05 ]
-    axes_ymargins = [ 0.05, 0.05 ]
+    axes_xmargins: list[float] = [ 0.05, 0.05 ]
+    axes_ymargins: list[float] = [ 0.05, 0.05 ]
 
-    # x/ylog_intlim
+    # use_x/ylog_intlim
     # - axis range = [10^a, 10^b] (a & b are integer)
     # - this props is valid if plt.xscale/yscale is 'log'
-    use_xlog_intlim = False
-    use_ylog_intlim = True
+    use_xlog_intlim: bool = False
+    use_ylog_intlim: bool = True
 
-    # x/ylog_format
+    # use_x/ylog_formatter
     # - use exponential notation
     # - this props is valid if plt.xscale/yscale is 'log'
-    use_xlog_formatter = True
-    use_ylog_formatter = True
+    use_xlog_formatter: bool = True
+    use_ylog_formatter: bool = True
 
     # minimum/maximum value that determines the display range of graph
     # - None => not specified: automatically determinted
-    xmin = None; xmax = None
-    ymin = None; ymax = None
-    adjust_ylim_in_xlim = True
+    xmin: float|None = None
+    xmax: float|None = None
+    ymin: float|None = None
+    ymax: float|None = None
+    adjust_ylim_in_xlim: bool = True
 
-    no_line     = False
-    adjust_lim  = True
+    no_line   : bool = False
+    adjust_lim: bool = True
 
 
     # * this props is valid if plt.xscale is 'log'
     set_xlog_range_max = False
-    set_xlog_range_max_props = dict(
+    set_xlog_range_max_props: dict = dict(
         exponent_range_max = 8,
         max_is_fixed       = True,
         min_is_fixed       = False
     )
     # * this props is valid if plt.yscale is 'log'
     set_ylog_range_max = False
-    set_ylog_range_max_props = dict(
+    set_ylog_range_max_props: dict = dict(
         exponent_range_max = 8,
         max_is_fixed       = True,
         min_is_fixed       = False
     )
 
-    xlog_ticker_exponent_range_thr = 10
-    ylog_ticker_exponent_range_thr = 10
+    xlog_ticker_exponent_range_thr: int = 10
+    ylog_ticker_exponent_range_thr: int = 10
 
 
     # use common axis range if fig includes multiple ax subplots
-    common_xlim = True
-    common_ylim = True
+    common_xlim: bool = True
+    common_ylim: bool = True
 
-    save_original_fig = True
+    save_original_fig: bool = True
 
 
     #==============================================================#
