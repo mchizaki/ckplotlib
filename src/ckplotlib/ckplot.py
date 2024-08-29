@@ -579,6 +579,10 @@ class CkFigure:
     use_xlog_formatter: bool = True
     use_ylog_formatter: bool = True
 
+    # use_x/ylog_locator
+    use_xlog_locator: bool = True
+    use_ylog_locator: bool = True
+
     # minimum/maximum value that determines the display range of graph
     # - None => not specified: automatically determinted
     xmin: float|None = None
@@ -1054,7 +1058,7 @@ class CkFigure:
         # ticks
         #################
         for (
-            is_log, use_log_formatter,
+            is_log, use_log_formatter, use_log_locator,
             axis,
             lim,
             ticker_range_thr
@@ -1062,6 +1066,7 @@ class CkFigure:
             #
             [ ax.ckAxesProps.is_xlog,  ax.ckAxesProps.is_ylog  ],
             [ self.use_xlog_formatter, self.use_ylog_formatter ],
+            [ self.use_xlog_locator,   self.use_ylog_locator   ],
             #
             [ ax.xaxis,  ax.yaxis ],
             #
@@ -1083,6 +1088,8 @@ class CkFigure:
                 axis.set_minor_formatter( FormatStrFormatter('') )
 
             # locator
+            if not use_log_locator: continue
+
             exponent_range = np.log10( lim[1] / lim[0] )
             if exponent_range < ticker_range_thr:
                 # normal log locator
@@ -1443,6 +1450,8 @@ def get_figure_props(
     use_ylog_intlim: bool | None = None,
     use_xlog_formatter: bool | None = None,
     use_ylog_formatter: bool | None = None,
+    use_xlog_locator: bool | None = None,
+    use_ylog_locator: bool | None = None,
 
     xloglim_maxscale: int | None = None,
     yloglim_maxscale: int | None = None,
@@ -1539,6 +1548,8 @@ def get_figure_props(
         use_ylog_intlim = use_ylog_intlim,
         use_xlog_formatter = use_xlog_formatter,
         use_ylog_formatter = use_ylog_formatter,
+        use_xlog_locator = use_xlog_locator,
+        use_ylog_locator = use_ylog_locator,
 
         xloglim_maxscale = xloglim_maxscale,
         yloglim_maxscale = yloglim_maxscale,
