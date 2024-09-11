@@ -1454,7 +1454,7 @@ def get_figure_props(
     xloglim_maxscale: int | None = None,
     yloglim_maxscale: int | None = None,
     xloglim_fixed_right: dict | None = None,
-    yloglim_fixed_right: dict | None = None,
+    yloglim_fixed_top: dict | None = None,
 
     axes_xmargins: list[float, float] | None = None,
     axes_ymargins: list[float, float] | None = None,
@@ -1503,7 +1503,7 @@ def get_figure_props(
         - `xlog_locator_thrscale` | `ylog_locator_thrscale`
         - Range max options:
             - `xloglim_maxscale` | `yloglim_maxscale`
-            - `xloglim_fixed_right` | `yloglim_fixed_right`
+            - `xloglim_fixed_right` | `yloglim_fixed_top`
             - `save_original_fig`
 
     - Annotation
@@ -1552,7 +1552,7 @@ def get_figure_props(
         xloglim_maxscale = xloglim_maxscale,
         yloglim_maxscale = yloglim_maxscale,
         xloglim_fixed_right = xloglim_fixed_right,
-        yloglim_fixed_right = yloglim_fixed_right,
+        yloglim_fixed_top   = yloglim_fixed_top,
 
         axes_xmargins = axes_xmargins,
         axes_ymargins = axes_ymargins,
