@@ -1,4 +1,4 @@
-# ckplotlib
+ ckplotlib
 Add-on library of Matplotlib for publication quality plots
 
 
@@ -497,7 +497,7 @@ The respective options for `x` and `y` axes are valid if `plt.xscale` and `plt.y
 - Range max options:
     - **xloglim_maxscale | yloglim_maxscale : *int | None*, default: `None`**<br>If not `None`: Limit the drawing range so that it does not exceed `10**x(y)loglim_maxscale`.
 
-    - **xloglim_fixed_top | yloglim_fixed_right : *bool*, default: `True`<br>If `True`: fix the maximum side of the drawing range.
+    - **xloglim_fixed_right | yloglim_fixed_top : *bool*, default: `True`<br>If `True`: fix the maximum side of the drawing range.
 
         | yloglim_maxscale: `None`                                     | yloglim_maxscale: 8                                       |
         | ------------------------------------------------------------ | --------------------------------------------------------- |
