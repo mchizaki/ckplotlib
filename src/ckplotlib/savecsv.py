@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 import sys
 import os
 
+from .config import ckFigureConfig
+
 
 class _CkLineProps():
 
@@ -290,6 +292,9 @@ def savecsv(
             path   = save_path,
             header = header
         )
+
+    if ckFigureConfig.show_savefname:
+        print( f' > {save_path}' )
 
     dfs.to_csv(
         save_path,

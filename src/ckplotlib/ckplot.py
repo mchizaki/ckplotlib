@@ -1240,13 +1240,13 @@ class CkFigure:
     #==============================================================#
     def make_figure(
         self,
-        print_name: bool = ckFigureConfig.show_savefname,
+        # print_name: bool = ckFigureConfig.show_savefname,
         inline_show: bool = True,
         show: bool = False
     ) -> None:
 
-        if self.save_props.get( 'fname' ) and print_name:
-            print( f' > {self.save_props[ "fname" ]}' )
+        # if self.save_props.get( 'fname' ) and print_name:
+        #     print( f' > {self.save_props[ "fname" ]}' )
 
         # setstyle & savefig
         ckAxesProps_results = self.set_figure_style()

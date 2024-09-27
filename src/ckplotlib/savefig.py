@@ -11,6 +11,10 @@ SAVE_PARAMS = dict(
     pad_inches  = 0.2
 )
 
+def _print_savepath( path: str ) -> None:
+    if ckFigureConfig.show_savefname:
+        print( f' > {path}' )
+
 
 def savefig(
     fname: str,
@@ -37,6 +41,7 @@ def savefig(
     if png:
         save_fpath = f'{save_fname}.png'
         if replace or not os.path.isfile( save_fpath ):
+            _print_savepath( save_fpath )
             fig.savefig(
                 save_fpath,
                 format = 'png',
@@ -48,6 +53,7 @@ def savefig(
     if svg:
         save_fpath = f'{save_fname}.svg'
         if replace or not os.path.isfile( save_fpath ):
+            _print_savepath( save_fpath )
             fig.savefig(
                 save_fpath,
                 format = 'svg',
@@ -59,6 +65,7 @@ def savefig(
     if pgf:
         save_fpath = f'{save_fname}.pgf'
         if replace or not os.path.isfile( save_fpath ):
+            _print_savepath( save_fpath )
             fig.savefig(
                 save_fpath,
                 format = 'pgf',
@@ -69,5 +76,7 @@ def savefig(
     if pkl:
         save_fpath = f'{save_fname}.pkl'
         if replace or not os.path.isfile( save_fpath ):
+            _print_savepath( save_fpath )
             with open( save_fpath, 'wb' ) as f:
                 pickle.dump(fig, f)
+
