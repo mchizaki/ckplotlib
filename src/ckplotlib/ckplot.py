@@ -300,6 +300,9 @@ def get_lines_x_minima_maxima(
             print( f'{x = }, {y = }' )
             sys.exit(1)
 
+        if all( np.isnan( x ) ) or all( np.isnan( y ) ):
+            continue
+
         ymin_ = np.nanmin( y ) if ymin is None else ymin
         ymax_ = np.nanmax( y ) if ymax is None else ymax
 
@@ -312,6 +315,11 @@ def get_lines_x_minima_maxima(
 
         x_minima.append( np.nanmin(new_x) )
         x_maxima.append( np.nanmax(new_x) )
+
+    if 0 in [ len( x_minima ), len( x_maxima ) ]:
+        print( '[error] get_lines_x_minima_maxima' )
+        print( 'len of minima or maxima is 0.' )
+        sys.exit(1)
 
     return (
         x_minima,
@@ -336,6 +344,9 @@ def get_lines_y_minima_maxima(
             print( f'{x = }, {y = }' )
             sys.exit(1)
 
+        if all( np.isnan( x ) ) or all( np.isnan( y ) ):
+            continue
+
         xmin_ = np.nanmin( x ) if xmin is None else xmin
         xmax_ = np.nanmax( x ) if xmax is None else xmax
 
@@ -348,6 +359,11 @@ def get_lines_y_minima_maxima(
 
         y_minima.append( np.nanmin(new_y) )
         y_maxima.append( np.nanmax(new_y) )
+
+    if 0 in [ len( y_minima ), len( y_maxima ) ]:
+        print( '[error] get_lines_y_minima_maxima' )
+        print( 'len of minima or maxima is 0.' )
+        sys.exit(1)
 
     return (
         y_minima,
