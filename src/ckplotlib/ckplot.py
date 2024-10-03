@@ -305,7 +305,6 @@ def get_lines_x_minima_maxima(
         if all( np.isnan( x ) ) or all( np.isnan( y ) ):
             continue
 
-
         ymin_ = np.nanmin( y ) if ymin is None else ymin
         ymax_ = np.nanmax( y ) if ymax is None else ymax
 
