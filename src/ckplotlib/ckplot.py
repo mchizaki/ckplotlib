@@ -288,6 +288,8 @@ def get_lines_x_minima_maxima(
     ymax: int | float | None = None
 ) -> tuple[list[float]]:
     x_minima = []; x_maxima = []
+    print('\naaaaaaaaaaaaaaaaaa')
+    print( len(lines) )
     for line in lines:
         x, y = line.get_data()
 
@@ -302,6 +304,7 @@ def get_lines_x_minima_maxima(
 
         if all( np.isnan( x ) ) or all( np.isnan( y ) ):
             continue
+
 
         ymin_ = np.nanmin( y ) if ymin is None else ymin
         ymax_ = np.nanmax( y ) if ymax is None else ymax
