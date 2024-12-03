@@ -8,7 +8,7 @@ Add-on library of Matplotlib for publication quality plots
 You can install `ckplotlib` by `pip` command.
 
 ```
-$ pip install git+https://github.com/mchizaki/ckplotlib.git
+$ pip install ckplotlib
 ```
 
 Uninstallation:
