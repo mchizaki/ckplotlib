@@ -17,11 +17,10 @@ figure_props = cplt.get_figure_props(
     save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt_csv0'
 )
-with cplt.ckfigure(**figure_props):
+with cplt.ckfigure(**figure_props, show=True):
     plt.figure()
     plt.plot(theta, sin_theta)
     plt.plot(theta, cos_theta)
-    plt.show()
 
 
 figure_props = cplt.get_figure_props(

@@ -81,6 +81,20 @@ with cplt.ckfigure( **figure_props ):
 ### with markup options of plt kwargs
 """
 #%%
+# figure_props = cplt.get_figure_props(
+#     save_dirname = SAVE_DIRNAME,
+#     save_fname   = 'fig_cplt2'
+# )
+# with cplt.ckfigure( **figure_props ):
+#     plt.figure()
+#     plt.plot( x, y, label = r'$\sin(x)$' )
+#     plt.xlabel('$x$ label')
+#     plt.ylabel('$y$ label')
+#     plt.title('title')
+#     cplt.legend(title='lgd title')
+
+# 'or'
+
 figure_props = cplt.get_figure_props(
     save_dirname = SAVE_DIRNAME,
     save_fname   = 'fig_cplt2',

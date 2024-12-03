@@ -295,21 +295,27 @@ def get_lines_x_minima_maxima(
         # xmax_ = x[-1] if xmax is None else xmax
 
         if np.size( x ) == 0 or np.size( y ) == 0:
-            print( '[error] ckplotlib.ckplot.get_lines_x_minima_maxima' )
+            print( '\n[error] ckplotlib.ckplot.get_lines_x_minima_maxima' )
             print( 'Figure includes a line without data.' )
             print( f'{x = }, {y = }' )
             sys.exit(1)
 
         if all( np.isnan( x ) ) or all( np.isnan( y ) ):
+            print( '\n[error] ckplotlib.ckplot.get_lines_x_minima_maxima' )
+            print( 'all data = np.nan' )
+            continue
+        if all( np.isinf( x ) ) or all( np.isinf( y ) ):
+            print( '\n[error] ckplotlib.ckplot.get_lines_x_minima_maxima' )
+            print( 'all data = +/- np.inf' )
             continue
 
-        ymin_ = np.nanmin( y ) if ymin is None else ymin
-        ymax_ = np.nanmax( y ) if ymax is None else ymax
+        ymin_ = np.nanmin( y[ y!=-np.inf ] ) if ymin is None else ymin
+        ymax_ = np.nanmax( y[ y!= np.inf ] ) if ymax is None else ymax
 
         new_x = x[ ( y >= ymin_ ) & ( y <= ymax_ ) ]
 
         if np.size( new_x ) == 0:
-            print( '[error] ckplotlib.ckplot.get_lines_x_minima_maxima' )
+            print( '\n[error] ckplotlib.ckplot.get_lines_x_minima_maxima' )
             print( 'size of new_x is zero.' )
             sys.exit(1)
 
@@ -317,8 +323,8 @@ def get_lines_x_minima_maxima(
         x_maxima.append( np.nanmax(new_x) )
 
     if 0 in [ len( x_minima ), len( x_maxima ) ]:
-        print( '[error] get_lines_x_minima_maxima' )
-        print( 'len of minima or maxima is 0.' )
+        print( '\n[error] get_lines_x_minima_maxima' )
+        print( 'There are no data to plot.' )
         sys.exit(1)
 
     return (
@@ -339,29 +345,35 @@ def get_lines_y_minima_maxima(
         # xmax_ = x[-1] if xmax is None else xmax
 
         if np.size( x ) == 0 or np.size( y ) == 0:
-            print( '[error] ckplotlib.ckplot.get_lines_x_minima_maxima' )
+            print( '\n[error] ckplotlib.ckplot.get_lines_y_minima_maxima' )
             print( 'Figure includes a line without data.' )
             print( f'{x = }, {y = }' )
             sys.exit(1)
 
         if all( np.isnan( x ) ) or all( np.isnan( y ) ):
+            print( '\n[error] ckplotlib.ckplot.get_lines_y_minima_maxima' )
+            print( 'all data = np.nan' )
+            continue
+        if all( np.isinf( x ) ) or all( np.isinf( y ) ):
+            print( '\n[error] ckplotlib.ckplot.get_lines_y_minima_maxima' )
+            print( 'all data = +/- np.inf' )
             continue
 
-        xmin_ = np.nanmin( x ) if xmin is None else xmin
-        xmax_ = np.nanmax( x ) if xmax is None else xmax
+        xmin_ = np.nanmin( x[ x!=-np.inf ] ) if xmin is None else xmin
+        xmax_ = np.nanmax( x[ x!= np.inf ] ) if xmax is None else xmax
 
         new_y = y[ ( x >= xmin_ ) & ( x <= xmax_ ) ]
 
-        if np.size( new_y ) == 0:
-            print( '[error] ckplotlib.ckplot.get_lines_y_minima_maxima' )
+        if np.size( new_y[ new_y!=np.inf ] ) == 0:
+            print( '\n[error] ckplotlib.ckplot.get_lines_y_minima_maxima' )
             print( 'size of new_y is zero.' )
             sys.exit(1)
 
-        y_minima.append( np.nanmin(new_y) )
-        y_maxima.append( np.nanmax(new_y) )
+        y_minima.append( np.nanmin(new_y[ new_y!=-np.inf ]) )
+        y_maxima.append( np.nanmax(new_y[ new_y!= np.inf ]) )
 
     if 0 in [ len( y_minima ), len( y_maxima ) ]:
-        print( '[error] get_lines_y_minima_maxima' )
+        print( '\n[error] get_lines_y_minima_maxima' )
         print( 'len of minima or maxima is 0.' )
         sys.exit(1)
 
@@ -408,7 +420,7 @@ def axes_margin_limits(
         )
 
     else:
-        print( '[error] scale error in axes_margin_limits.' )
+        print( '\n[error] scale error in axes_margin_limits.' )
         print( f'invalid value of xscale: {xscale}' )
         sys.exit(1)
 
@@ -669,7 +681,7 @@ class CkFigure:
 
         ### check
         if len( lines ) == 0:
-            print( '[error] plot data does not exist.' )
+            print( '\n[error] plot data does not exist.' )
             sys.exit(1)
 
 
@@ -718,8 +730,10 @@ class CkFigure:
             fig = plt.gcf()
 
         if len( fig.get_axes() ) == 0:
-            print( '[error] CkFigure.set_figure_style' )
+            print( '\n[error] CkFigure.set_figure_style' )
             print( 'plot axes do not exist.' )
+            print( '\nIf you use plt.show(): please use the show option of ckfigure() instead of plt.show() as' )
+            print( '    with ckfigure(show = True):' )
             sys.exit(1)
 
         no_line = False
@@ -742,7 +756,7 @@ class CkFigure:
                 self.setattr_ax_data( ax = ax )
 
                 if not hasattr( ax, 'ckAxesProps' ):
-                    print( '[error] CkFigure.set_figure_style' )
+                    print( '\n[error] CkFigure.set_figure_style' )
                     print( 'ckAxesProps is not found in ax members.' )
                     sys.exit(1)
 
@@ -875,7 +889,7 @@ class CkFigure:
 
         if self.no_line: self.adjust_lim = False
         if self.adjust_lim and not hasattr( ax, 'ckAxesProps' ):
-            print( '[error] CkFigure.set_figure_style_ax' )
+            print( '\n[error] CkFigure.set_figure_style_ax' )
             print( 'ckAxesProps is not found in ax members.' )
             sys.exit(1)
 
@@ -902,7 +916,7 @@ class CkFigure:
         """
         for key, val in self.plt_kwargs.items():
             if not isinstance( val, dict ):
-                print( f'[error] self.plt_kwargs[{key}] must be dict.' )
+                print( f'\n[error] self.plt_kwargs[{key}] must be dict.' )
                 sys.exit(1)
 
         for key, val in self.plt_args.items():
@@ -1352,7 +1366,7 @@ def make_figures(
     #--------------------------------------------------------------#
     axes = plt.gcf().get_axes()
     if len( axes ) != len( ckFigures ):
-        print( '[error] ckplotlib.ckplot.make_figures' )
+        print( '\n[error] ckplotlib.ckplot.make_figures' )
         print( f'ckFigures len ({len( ckFigures )}) is not equal to axes len ({len( axes )}).' )
         sys.exit(1)
 

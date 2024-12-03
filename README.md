@@ -30,7 +30,7 @@ import numpy as np
 x = np.linspace(0, 10, 500)
 y1 = np.sin(x)
 y2 = np.cos(x)
-y3 = 1 - 0.2 * x/5
+y3 = 1 - .2 * x
 ```
 
 
@@ -240,11 +240,11 @@ Context manager of `ckplotlib.ckplot.ckfigure` has many options to markup and sa
 >
 > ```python
 > with cplt.ckfigure(**props):
->     plt.figure()
->     plt.plot(x, y1, label=r'$\sin(x)$')
->     plt.plot(x, y2, label=f'$\cos(x)$')
->     ...
->     plt.show()
+>        plt.figure()
+>        plt.plot(x, y1, label=r'$\sin(x)$')
+>        plt.plot(x, y2, label=f'$\cos(x)$')
+>        ...
+>        plt.show()
 > ```
 >
 > This script causes the following error message:
@@ -752,7 +752,7 @@ cos_theta = np.cos(theta)
 
 
 
-## Config files [optional]
+## <a id='config-files'>Config files [optional]</a>
 
 If you want to change the default settings of `ckplotlib`, you have to create some config files in `~/.config/ckplotlib`. Example files are placed in `config_example/`.
 
@@ -1095,3 +1095,36 @@ with cplt.ckfigure(
 ```
 
 ![cplt-subplot1](sample/fig_cplt_subplot1.svg)
+
+
+
+### font
+
+```python
+figure_props = cplt.get_figure_props(
+    save_dirname = SAVE_DIRNAME,
+    save_fname   = 'fig_cplt3_arial'
+)
+
+with cplt.ckfigure( **figure_props, mplstyle_font='arial' ):
+    plt.figure()
+    plt.plot( x, y, label = r'$\sin(x)$' )
+    plt.xlabel( '$x$ label' )
+    plt.ylabel( '$y$ label' )
+    plt.title( 'title' )
+    cplt.legend()
+
+```
+
+| times (default)                | arial                                      |
+| ------------------------------ | ------------------------------------------ |
+| ![cplt3](sample/fig_cplt3.svg) | ![cplt3-arial](sample/fig_cplt3_arial.svg) |
+
+>  [!NOTE]
+>
+> You can also change the default font by using `mplstyle_font` of the config file : see [Config files [optional]](#config-files).
+
+
+
+
+
